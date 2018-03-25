@@ -7,16 +7,17 @@ import android.view.View;
 
 import hayen.spectacle.R;
 
-public class InscriptionActivity extends AppCompatActivity {
+public class RecupererMdpActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_inscription);
+        setContentView(R.layout.activity_recuperer_mdp);
     }
 
-    public void inscrit(View view){
-        Intent intent = new Intent(this, CalendrierActivity.class);
+    public void send(View view){
+        Intent intent = new Intent(this, NouveauMdpActivity.class);
         startActivity(intent);
     }
+
 }

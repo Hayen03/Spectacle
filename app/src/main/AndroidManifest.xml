@@ -21,9 +21,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.RecupererMdp1Activity" />
+        <activity android:name=".activities.RecupererMdpActivity" />
         <activity android:name=".activities.NouveauMdpActivity" />
-        <activity android:name=".activities.InscriptionActivity"></activity>
+        <activity android:name=".activities.InscriptionActivity" />
+        <activity
+            android:name=".activities.CalendrierActivity"
+            android:label="@string/title_activity_calendrier"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>

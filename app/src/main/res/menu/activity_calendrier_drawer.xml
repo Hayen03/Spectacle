@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_calendrier"
+            android:icon="@drawable/ic_today"
+            android:title="Calendrier"
+            android:checked="true" />
+        <item
+            android:id="@+id/nav_recherche"
+            android:icon="@drawable/ic_search"
+            android:title="Recherche" />
+        <item
+            android:id="@+id/nav_profil"
+            android:icon="@drawable/ic_account_circle"
+            android:title="Profil" />
+        <item
+            android:id="@+id/nav_reservation"
+            android:icon="@drawable/ic_book"
+            android:title="Réservation" />
+        <item
+            android:id="@+id/nav_info"
+            android:icon="@drawable/ic_info_outline"
+            android:title="À propos" />
+    </group>
+
+    <item
+        android:id="@+id/nav_deconnexion"
+        android:title="Déconnexion" />
+
+</menu>

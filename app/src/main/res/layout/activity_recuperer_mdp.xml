@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hayen.spectacle.activities.RecupererMdp1Activity">
+    tools:context="hayen.spectacle.activities.RecupererMdpActivity">
 
     <Button
         android:id="@+id/sendRecupMdpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:onClick="send"
         android:text="Envoyer"
         app:layout_constraintEnd_toEndOf="@+id/emailRecupMdpEditText"
         app:layout_constraintStart_toStartOf="@+id/emailRecupMdpEditText"
