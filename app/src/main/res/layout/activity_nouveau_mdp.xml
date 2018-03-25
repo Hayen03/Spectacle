@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="hayen.spectacle.activities.NouveauMdpActivity">
+
+    <EditText
+        android:id="@+id/codeEditText"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="64dp"
+        android:ems="10"
+        android:hint="Code de récupération"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/renvoyerCodeButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Renvoyer le code"
+        app:layout_constraintEnd_toEndOf="@+id/codeEditText"
+        app:layout_constraintStart_toStartOf="@+id/codeEditText"
+        app:layout_constraintTop_toBottomOf="@+id/codeEditText" />
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:ems="10"
+        android:hint="Adresse couriel"
+        android:inputType="textEmailAddress"
+        app:layout_constraintEnd_toEndOf="@+id/codeEditText"
+        app:layout_constraintStart_toStartOf="@+id/codeEditText"
+        app:layout_constraintTop_toBottomOf="@+id/renvoyerCodeButton" />
+
+    <EditText
+        android:id="@+id/newMdpEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Nouveau Mot de passe"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/emailEditText"
+        app:layout_constraintStart_toStartOf="@+id/emailEditText"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+
+    <EditText
+        android:id="@+id/confirmMdpEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Confirmer le mot de passe"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="@+id/newMdpEditText"
+        app:layout_constraintStart_toStartOf="@+id/newMdpEditText"
+        app:layout_constraintTop_toBottomOf="@+id/newMdpEditText" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Changer le mot de passe"
+        app:layout_constraintEnd_toEndOf="@+id/confirmMdpEditText"
+        app:layout_constraintStart_toStartOf="@+id/confirmMdpEditText"
+        app:layout_constraintTop_toBottomOf="@+id/confirmMdpEditText" />
+</android.support.constraint.ConstraintLayout>
