@@ -22,7 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.RecupererMdp1Activity" />
-        <activity android:name=".activities.NouveauMdpActivity"></activity>
+        <activity android:name=".activities.NouveauMdpActivity" />
+        <activity android:name=".activities.InscriptionActivity"></activity>
     </application>
 
 </manifest>
