@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,5 +8,10 @@
     tools:context="hayen.spectacle.activities.CalendrierActivity"
     tools:showIn="@layout/app_bar_calendrier">
 
-</android.support.constraint.ConstraintLayout>
+    <fragment android:name="hayen.spectacle.fragments.CalendrierFragment"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/cal" />
+
+</FrameLayout>
 
