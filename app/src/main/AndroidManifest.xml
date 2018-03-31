@@ -28,6 +28,7 @@
             android:name=".activities.CalendrierActivity"
             android:label="@string/title_activity_calendrier"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activities.MainActivity" />
     </application>
 
 </manifest>
