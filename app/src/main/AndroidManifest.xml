@@ -27,8 +27,14 @@
         <activity
             android:name=".activities.CalendrierActivity"
             android:label="@string/title_activity_calendrier"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.MainActivity" />
+            android:theme="@style/AppTheme.NoActionBar" >
+
+
+        </activity>
+        <activity android:name=".activities.MainActivity" >
+
+
+        </activity>
     </application>
 
 </manifest>

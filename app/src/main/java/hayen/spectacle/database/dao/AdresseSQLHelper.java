@@ -4,11 +4,13 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 //import com.ift2905.reservation.database.entities.Adresse;
-import hayen.spectacle.database.entities.Adresse;
+import hayen.spectacle.database.data.Adresse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +27,31 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
 //                    " ville VARCHAR(60) NOT NULL, province VARCHAR(2) NOT NULL, " +
 //                    " code_postal VARCHAR(10) NOT NULL, longitude LONG DEFAULT 0, latitude LONG DEFAULT 0)";
 
-    public AdresseSQLHelper(Context context){
+    private static volatile AdresseSQLHelper adresseSqlHelper;
+    private SQLiteDatabase database;
+
+    private AdresseSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
     }
 
-    public AdresseSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private AdresseSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
+
+    public static AdresseSQLHelper getInstance(Context context){
+
+        if(adresseSqlHelper == null){
+            synchronized (AdresseSQLHelper.class){
+                if(adresseSqlHelper == null){
+                    adresseSqlHelper = new AdresseSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return adresseSqlHelper;
+    }
+
 
     //**********************************************************************************************
     //**********************************************************************************************
@@ -40,19 +59,19 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
     public Adresse getAdresseById(int id) {
 
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        Adresse adresse = null;
+        database = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_NAME,
+        Cursor cursor = database.query(TABLE_NAME,
                 new String[]{   Adresse.COLUMN_ID, Adresse.COLUMN_NUMERO, Adresse.COLUMN_RUE,
                                 Adresse.COLUMN_VILLE, Adresse.COLUMN_PROVINCE, Adresse.COLUMN_CODE_POSTAL,
                                 Adresse.COLUMN_LONGITUDE, Adresse.COLUMN_LATITUDE },
                 Adresse.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            Adresse adresse = new Adresse(
+            adresse = new Adresse(
                     cursor.getInt(cursor.getColumnIndex(Adresse.COLUMN_ID)),
                     cursor.getInt(cursor.getColumnIndex(Adresse.COLUMN_NUMERO)),
                     cursor.getString(cursor.getColumnIndex(Adresse.COLUMN_RUE)),
@@ -62,11 +81,13 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
                     cursor.getLong(cursor.getColumnIndex(Adresse.COLUMN_LONGITUDE)),
                     cursor.getLong(cursor.getColumnIndex(Adresse.COLUMN_LATITUDE)));
 
-            // close the db connection
-            cursor.close();
-            return adresse;
+             cursor.close();
+
         }
-        return null;
+
+        close();
+
+        return adresse;
     }
 
 
@@ -74,17 +95,20 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public List<Adresse> getAllAdresses() {
-        List<Adresse> adresses = new ArrayList<>();
+        List<Adresse> adresses = null;
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + Adresse.TABLE_NAME + " ORDER BY " +
                 Adresse.COLUMN_ID + " ASC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        database = this.getReadableDatabase();
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            adresses = new ArrayList<>();
+
             do {
                 Adresse adresse = new Adresse();
                 adresse.setId(cursor.getInt(cursor.getColumnIndex(Adresse.COLUMN_ID)));
@@ -98,10 +122,12 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
 
                 adresses.add(adresse);
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
 
-        db.close();
+        close();
 
         return adresses;
     }
@@ -110,14 +136,20 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int getAdressesCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + Adresse.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        Cursor cursor = database.rawQuery(countQuery, null);
 
-        db.close();
+        int count = 0;
+        if (cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
         return count;
     }
 
@@ -126,7 +158,8 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
 
 
     public long addAdresse(Adresse adresse) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Adresse.COLUMN_NUMERO, adresse.getNumero());
@@ -140,9 +173,9 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
         }
 
 
-        long nbAffectedRows = db.insert(Adresse.TABLE_NAME, null, values);
+        long nbAffectedRows = database.insert(Adresse.TABLE_NAME, null, values);
 
-        db.close();
+        close();
         return nbAffectedRows;
     }
 
@@ -151,7 +184,8 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
 
 
     public int updateAdresse(Adresse adresse) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Adresse.COLUMN_NUMERO, adresse.getNumero());
@@ -159,16 +193,17 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
         values.put(Adresse.COLUMN_VILLE, adresse.getVille());
         values.put(Adresse.COLUMN_PROVINCE, adresse.getProvince());
         values.put(Adresse.COLUMN_CODE_POSTAL, adresse.getCodePostal());
+
         if(adresse.getLongitude() > 0 && adresse.getLatitude() > 0) {
             values.put(Adresse.COLUMN_LONGITUDE, adresse.getLongitude());
             values.put(Adresse.COLUMN_LATITUDE, adresse.getLatitude());
         }
 
 
-        int nbAffectedRows= db.update (Adresse.TABLE_NAME, values, Adresse.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (Adresse.TABLE_NAME, values, Adresse.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(adresse.getId())});
 
-        db.close();
+        close();
 
         return nbAffectedRows;
     }
@@ -177,20 +212,42 @@ public class AdresseSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int deleteAdresse(Adresse adresse) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(Adresse.TABLE_NAME, Adresse.COLUMN_ID + " = ?",
+
+        database= this.getWritableDatabase();
+
+        int result = database.delete(Adresse.TABLE_NAME, Adresse.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(adresse.getId())});
-        db.close();
+        close();
 
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
 
     @Override
     public void onOpen(SQLiteDatabase db) {

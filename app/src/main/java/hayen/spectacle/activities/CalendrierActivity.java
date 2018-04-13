@@ -12,9 +12,21 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.List;
 
 import hayen.spectacle.R;
+import hayen.spectacle.database.dao.ArtisteSQLHelper;
+import hayen.spectacle.database.dao.SpectacleSQLHelper;
+import hayen.spectacle.database.data.Artiste;
+import hayen.spectacle.database.data.Spectacle;
+import hayen.spectacle.database.data.SpectacleAdapter;
 import hayen.spectacle.fragments.CalendrierFragment;
 import hayen.spectacle.fragments.InfoFragment;
 import hayen.spectacle.fragments.ProfilFragment;
@@ -36,29 +48,80 @@ public class CalendrierActivity
     private State fragState = null;
     private Fragment currFrag = null;
 
+
+
+    ListView listSpectacles;
+    SpectacleAdapter spectacleAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_calendrier);
+      //  setContentView(R.layout.activity_calendrier);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        if (savedInstanceState == null)
-            currFrag = loadFragment(State.calendrier);
-
-        drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        NavigationView nav = findViewById(R.id.nav_view);
-        nav.setNavigationItemSelectedListener(this);
+//        Toolbar toolbar = findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//
+//        if (savedInstanceState == null)
+//            currFrag = loadFragment(State.calendrier);
+//
+//        drawer = findViewById(R.id.drawer_layout);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawer.addDrawerListener(toggle);
+//        toggle.syncState();
+//        NavigationView nav = findViewById(R.id.nav_view);
+//        nav.setNavigationItemSelectedListener(this);
 
 
 //        ActionBar actionBar = getSupportActionBar();
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 //        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        setContentView(R.layout.activity_calendrier02);
+        listSpectacles =  findViewById(R.id.listViewSpectacle);
+
+
+        SpectacleSQLHelper spectacleSQLHelper =  SpectacleSQLHelper.getInstance(getBaseContext());
+
+
+        List<Spectacle>  spectacles =  spectacleSQLHelper.getAllSpectacles();
+
+
+
+        if(spectacles != null && spectacles.size() > 0) {
+            spectacleAdapter = new SpectacleAdapter(this, R.layout.ligne_spectacle);
+            for (Spectacle spectacle : spectacles) {
+                Log.i("RPI", "spectacle: " + spectacle);
+
+                List<Artiste> artistes =  spectacleSQLHelper.getAllArtistesBySpectacleId(spectacle.getId());
+
+                spectacle.setArtistes(artistes);
+
+                spectacleAdapter.add(spectacle);
+
+            }
+        }
+
+            listSpectacles.setAdapter(spectacleAdapter);
+
+         //  final  ArrayAdapter<Spectacle> adapterList = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, spectacles);
+
+
+
+       //     ListView listViewSpectacle = (ListView) findViewById(R.id.listViewSpectacle);
+//
+   //         listViewSpectacle.setAdapter(adapterList);
+
+   //         listViewSpectacle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                    Log.i("ENI", "Position " + String.valueOf(position));
+//                    String titre = adapterList.getItem(position).getTitre();
+//                    Log.i("ENI", "Titre : " + titre);
+//                }
+//            });        }
+
+
     }
 
     @Override

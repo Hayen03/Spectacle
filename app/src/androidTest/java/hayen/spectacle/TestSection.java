@@ -17,9 +17,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SectionSQLHelper;
 //import com.ift2905.reservation.database.entities.Section;
 
-import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.SectionSQLHelper;
-import hayen.spectacle.database.entities.Section;
+import hayen.spectacle.database.data.Section;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -32,11 +31,11 @@ public class TestSection {
     @Test
     public void getSection() {
 
-        Log.i("RPI", "Récupérer une Section");
+        Log.i("RPI", "**********************************Récupérer une Section");
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = new SectionSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
@@ -75,18 +74,19 @@ public class TestSection {
     @Test
     public void addSection(){
 
-        Log.i("RPI", "Ajout d'une Section");
+        Log.i("RPI", "**********************************Ajouter une Section");
 
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = new SectionSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
         assertNotNull(database);
 
         int nbSections = dbHelper.getSectionsCount();
+        Log.i("RPI","Count avant insertion:  " + nbSections);
 
         List<Section> sections = dbHelper.getAllSections();
 
@@ -97,9 +97,9 @@ public class TestSection {
         }
 
         Section section = new Section();
-        section.setName("Loge");
+        section.setName("Passerelle");
         section.setCategorie(5);
-        section.setNbSieges(20);
+        section.setNbSieges(100);
         section.setSalleId(1);
 
 
@@ -109,6 +109,7 @@ public class TestSection {
         long result = dbHelper.addSection(section);
 
         int nbSections2 = dbHelper.getSectionsCount();
+        Log.i("RPI","Count after insertion:  " + nbSections2);
 
         assertEquals(nbSections2, nbSections + 1);
 
@@ -133,10 +134,10 @@ public class TestSection {
 
     @Test
     public void updateSection() {
-        Log.i("RPI", "Mettre à jour un Section");
+        Log.i("RPI", "**********************************Mettre à jour une Section");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = new SectionSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -179,10 +180,10 @@ public class TestSection {
     @Test
     public void deleteSection() {
 
-        Log.i("RPI", "Effacer un Section");
+        Log.i("RPI", "**********************************Supprimer un Section");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = new SectionSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

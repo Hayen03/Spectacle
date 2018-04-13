@@ -23,4 +23,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textTitre">Titre</string>
+    <string name="textDate">Date</string>
+    <string name="textArtiste">Artiste</string>
+    <string name="textCalendrier">Calendrier des spectacles à venir</string>
 </resources>

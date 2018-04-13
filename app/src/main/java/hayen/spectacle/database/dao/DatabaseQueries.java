@@ -102,6 +102,7 @@ public class DatabaseQueries {
                     "   courriel varchar(40) not null unique, " +
                     "   telephone varchar(12),  " +
                     "   id_adresse integer default null,  " +
+                    "   role integer default 0,  " +
                     "   foreign key(id_adresse) references adresse(id) )",
 
             " create table if not exists reservation( " +
@@ -219,14 +220,15 @@ public class DatabaseQueries {
                     "   'La salle \"La Momie Pétrifée\" a été fondée en l''an de grâce 2517 B.C, sous le règne de Mykérinos de la IVe Dynastie.')\n"
     };
     public static final String[] INSERT_USER_QUERIES = {
-            "insert into utilisateur(prenom, nom, login, mot_passe, courriel, telephone, id_adresse) values " +
-                    "   ('Arnaud', 'Fournier', 'Enstives97', 'weWoh9zie', 'ArnaudFournier@dayrep.com', '819-217-5880', 2), " +
-                    "   ('Victorine', 'De La Ronde', 'Nowing1991', 'UuJ6uadu8', 'victorine.delaronde@teleworm.ca', null, 3), " +
-                    "   ('Felicienne', 'Gendron', 'Sincing', 'niQuieXu8pee', 'felicgend@dayrep.com', null, 4),\n" +
-                    "   ('Saville', 'Lacharité', 'Scia1966', 'Eegheel9Ohy', 'SavilleLacharite@rhyta.com', '613-295-6288', null),\n " +
-                    "   ('Claude', 'Fortin', 'Getiandre', 'ohrim2eeFee', 'ClaudeFortin@rhyta.com', '780-237-4447', 6),\n" +
-                    "   ('Rosamonde', 'Fréchette', 'Rubligod', 'UuJ6uadu8', 'rosamonde.frechette@teleworm.ca', '416-660-1103', 7),\n" +
-                    "   ('Ignace', 'Lemieux', 'Efuld1977', 'UuJ6uadu8', 'IgnaceLemieux@teleworm.ca', '450-645-9478', 8)\n"
+            "insert into utilisateur(id, prenom, nom, login, mot_passe, courriel, telephone, id_adresse, role) values " +
+                    "   (1, 'Joe', 'Administrateur', 'admin', 'admin123', 'admin@momie.com', '514-555-5555', 1, 1), " +
+                    "   (2, 'Arnaud', 'Fournier', 'Enstives97', 'weWoh9zie', 'ArnaudFournier@dayrep.com', '819-217-5880', 2, 0), " +
+                    "   (3, 'Victorine', 'De La Ronde', 'Nowing1991', 'UuJ6uadu8', 'victorine.delaronde@teleworm.ca', null, 3, 0), " +
+                    "   (4, 'Felicienne', 'Gendron', 'Sincing', 'niQuieXu8pee', 'felicgend@dayrep.com', null, 4, 0),\n" +
+                    "   (5, 'Saville', 'Lacharité', 'Scia1966', 'Eegheel9Ohy', 'SavilleLacharite@rhyta.com', '613-295-6288', null, 0),\n " +
+                    "   (6, 'Claude', 'Fortin', 'Getiandre', 'ohrim2eeFee', 'ClaudeFortin@rhyta.com', '780-237-4447', 6, 0),\n" +
+                    "   (7, 'Rosamonde', 'Fréchette', 'Rubligod', 'UuJ6uadu8', 'rosamonde.frechette@teleworm.ca', '416-660-1103', 7, 0),\n" +
+                    "   (8, 'Ignace', 'Lemieux', 'Efuld1977', 'UuJ6uadu8', 'IgnaceLemieux@teleworm.ca', '450-645-9478', 8, 0)\n"
     };
 
     public static final String[] INSERT_GENRE_QUERIES = {
@@ -415,17 +417,40 @@ public class DatabaseQueries {
     };
 
     public static final String[] INSERT_RESERVATION_QUERIES = {
-            "insert into reservation (num_confirmation, date_reservation, id_utilisateur) values\n" +
-                    "   (206553440898, '2018-03-21 16:31', 2),\n" +
-                    "   (549056770312, '2018-02-27 08:12', 1),\n" +
-                    "   (679397883628, '2018-03-17 17:45',5),\n" +
-                    "   (259410172631, '2018-03-02 19:20', 3),\n" +
-                    "   (841664029474, '2018-02-14 12:39', 7),\n" +
-                    "   (100570981564, '2018-02-21 09:03', 6),\n" +
-                    "   (8273618723851, '2018-03-19 07:22', 4),\n" +
-                    "   (2612031576235, '2018-03-24 19:12', 5)"
+            "insert into reservation (id, num_confirmation, date_reservation, id_utilisateur) values\n" +
+                    "   (1, 206553440898, '2018-02-21 08:12', 2),\n" +
+                    "   (2, 549056770312, '2018-02-27 16:31', 1),\n" +
+                    "   (3, 679397883628, '2018-03-04 17:45',5),\n" +
+                    "   (4, 259410172631, '2018-03-12 19:20', 3),\n" +
+                    "   (5, 841664029474, '2018-03-14 12:39', 7),\n" +
+                    "   (6, 100570981564, '2018-03-21 09:03', 6),\n" +
+                    "   (7, 827361872385, '2018-03-29 07:22', 4),\n" +
+                    "   (8, 261203157625, '2018-04-02 19:12', 5)"
 
     };
+
+    public static final String[] INSERT_CARTE_CREDIT_QUERIES = {
+            "insert into carte_credit (id_utilisateur, nom_utilisateur, nom_carte, numero, date_expiration, code) values\n" +
+                    "   (3, 'Felicienne Gendron', 'VISA', '7394127927901230', '2019-02-01 00:00',  664),\n" +
+                    "   (5, 'Claude Fortin', 'Master Card', '3792751870812842', '2020-08-01 00:00',  194), \n" +
+                    "   (1, 'Arnaud Fournier', 'Master Card', '4826802799200312', '2018-12-01 00:00',  521),\n" +
+                    "   (4, 'Saville Lacharité', 'VISA', '4548992196327140', '2021-07-01 00:00', 249)\n"
+
+    };
+
+    public static final String[] INSERT_PAIEMENT_QUERIES = {
+
+            "insert into paiement(montant, date_paiement, id_reservation) values " +
+                    "   (115.0, '2018-02-21 08:12:00', 1),\n" +
+                    "   (115.0, '2018-02-27 16:31:00', 2),\n" +
+                    "   (230.0, '2018-03-04 17:45:00', 3),\n" +
+                    "   (92.0, '2018-03-12 19:20:00', 4),\n" +
+                    "   (92.0, '2018-03-14 12:39:00', 5),\n" +
+                    "   (80.50, '2018-03-21 09:03:00', 6),\n" +
+                    "   (80.50, '2018-03-29 07:22:00', 7),\n" +
+                    "   (92.0, '2018-04-02 19:12:00', 8)\n"
+    };
+
 
     public static final String[] UPDATE_SPECTACLE_SIEGE_QUERIES = {
             "update spectacle_siege set reserve=1 where id_siege=47 and id_spectacle=1",
@@ -462,25 +487,5 @@ public class DatabaseQueries {
                     "   (6, 1, 108)"
     };
 
-    public static final String[] INSERT_CARTE_CREDIT_QUERIES = {
-            "insert into carte_credit (id_utilisateur, nom_utilisateur, nom_carte, numero, date_expiration, code) values\n" +
-                    "   (3, 'Felicienne Gendron', 'VISA', '7394127927901230', '2019-02-01 00:00',  664),\n" +
-                    "   (5, 'Claude Fortin', 'Master Card', '3792751870812842', '2020-08-01 00:00',  194), \n" +
-                    "   (1, 'Arnaud Fournier', 'Master Card', '4826802799200312', '2018-12-01 00:00',  521),\n" +
-                    "   (4, 'Saville Lacharité', 'VISA', '4548992196327140', '2021-07-01 00:00', 249)\n"
 
-    };
-
-    public static final String[] INSERT_PAIEMENT_QUERIES = {
-
-            "insert into paiement(montant, date_paiement, id_reservation) values " +
-                    "   (115.0, '2018-02-27 08:12:00', 1),\n" +
-                    "   (115.0, '2018-03-21 16:31:00', 2),\n" +
-                    "   (92.0, '2018-03-02 19:20:00', 4),\n" +
-                    "   (230.0, '2018-03-17 17:45:00', 3),\n" +
-                    "   (80.50, '2018-02-21 09:03:00', 6),\n" +
-                    "   (92.0, '2018-02-14 12:39:00', 5),\n" +
-                    "   (80.50, '2018-03-19 07:22:00', 7),\n" +
-                    "   (92.0, '2018-03-24 19:12:00', 8)\n"
-    };
 }

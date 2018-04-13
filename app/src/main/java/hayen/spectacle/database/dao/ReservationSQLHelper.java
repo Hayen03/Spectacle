@@ -4,8 +4,10 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ import java.util.List;
 
 
 //import com.ift2905.reservation.database.entities.Reservation;
-import hayen.spectacle.database.entities.Reservation;
+import hayen.spectacle.database.data.Reservation;
 
 
 
@@ -30,60 +32,85 @@ public class ReservationSQLHelper extends SQLiteOpenHelper {
 //                    " FOREIGN KEY (" + Reservation.COLUMN_USER_ID+ ") REFERENCES utilisateur(id), " +
 //                    " FOREIGN KEY (" + Reservation.COLUMN_SPECTACLE_ID + ") REFERENCES spectacle(id))";
 
+    private static volatile ReservationSQLHelper reservationSQLHelper;
 
-    public ReservationSQLHelper(Context context){
+    private SQLiteDatabase database;
+
+
+    private ReservationSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
     }
 
-
-    public ReservationSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private ReservationSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
+    public static ReservationSQLHelper getInstance(Context context){
+
+        if(reservationSQLHelper == null){
+            synchronized (ReservationSQLHelper.class){
+                if(reservationSQLHelper == null){
+                    reservationSQLHelper = new ReservationSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return reservationSQLHelper;
+    }
+
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public Reservation getReservationById(int id) {
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        database = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Reservation.TABLE_NAME,
+        Reservation reservation = null;
+
+        Cursor cursor = database.query(Reservation.TABLE_NAME,
                 new String[]{ Reservation.COLUMN_ID, Reservation.COLUMN_NUMERO_CONFIRMATION, Reservation.COLUMN_DATE_RESERVATION,
                 Reservation.COLUMN_USER_ID},
                 Reservation.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            Reservation reservation = new Reservation(
+            reservation = new Reservation(
                     cursor.getInt(cursor.getColumnIndex(Reservation.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Reservation.COLUMN_NUMERO_CONFIRMATION)),
                     cursor.getString(cursor.getColumnIndex(Reservation.COLUMN_DATE_RESERVATION)),
                     cursor.getInt(cursor.getColumnIndex(Reservation.COLUMN_USER_ID)));
 
             cursor.close();
-
-            return reservation;
         }
-        return null;
+
+        close();
+
+        return reservation;
+
     }
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public List<Reservation> getAllReservations() {
-        List<Reservation> reservations = new ArrayList<>();
+
+        List<Reservation> reservations = null;
 
         String selectQuery = "SELECT  * FROM " + Reservation.TABLE_NAME + " ORDER BY " +
                 Reservation.COLUMN_DATE_RESERVATION  + " DESC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
 
+        if (cursor != null && cursor.moveToFirst()) {
 
-        if (cursor.moveToFirst()) {
+            reservations = new ArrayList<>();
             do {
                 Reservation reservation = new Reservation();
                 reservation.setId(cursor.getInt(cursor.getColumnIndex(Reservation.COLUMN_ID)));
@@ -92,11 +119,15 @@ public class ReservationSQLHelper extends SQLiteOpenHelper {
                 reservation.setUserId(cursor.getInt(cursor.getColumnIndex(Reservation.COLUMN_USER_ID)));
 
                 reservations.add(reservation);
+
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
+        cursor.close();
 
-        db.close();
+        close();
 
         return reservations;
     }
@@ -105,13 +136,20 @@ public class ReservationSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int getReservationsCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + Reservation.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
+        Cursor cursor = database.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        int count = 0;
 
+        if(cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
 
         return count;
     }
@@ -123,14 +161,16 @@ public class ReservationSQLHelper extends SQLiteOpenHelper {
 
     public long addReservation(Reservation Reservation) {
 
-        SQLiteDatabase db = this.getWritableDatabase();
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Reservation.COLUMN_NUMERO_CONFIRMATION, Reservation.getNumeroConfirmation());
         values.put(Reservation.COLUMN_DATE_RESERVATION, Reservation.getDateReservation());
         values.put(Reservation.COLUMN_USER_ID, Reservation.getUserId());
 
-        long nbAffectedRows= db.insert(Reservation.TABLE_NAME, null, values);
+        long nbAffectedRows= database.insert(Reservation.TABLE_NAME, null, values);
+
+        close();
 
         return nbAffectedRows;
     }
@@ -140,15 +180,17 @@ public class ReservationSQLHelper extends SQLiteOpenHelper {
 
 
     public int updateReservation(Reservation Reservation) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Reservation.COLUMN_NUMERO_CONFIRMATION, Reservation.getNumeroConfirmation());
         values.put(Reservation.COLUMN_DATE_RESERVATION, Reservation.getDateReservation());
         values.put(Reservation.COLUMN_USER_ID, Reservation.getUserId());
 
-        int nbAffectedRows= db.update (Reservation.TABLE_NAME, values, Reservation.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (Reservation.TABLE_NAME, values, Reservation.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(Reservation.getId())});
+
+        close();
 
         return nbAffectedRows;
     }
@@ -159,20 +201,41 @@ public class ReservationSQLHelper extends SQLiteOpenHelper {
     public int deleteReservation(Reservation reservation) {
         //TODO: delete entry from reservation_siege table before
 
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(Reservation.TABLE_NAME, Reservation.COLUMN_ID + " = ?",
+        database = this.getWritableDatabase();
+        int result = database.delete(Reservation.TABLE_NAME, Reservation.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(reservation.getId())});
-        db.close();
+
+        close();
 
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public void onOpen(SQLiteDatabase db) {

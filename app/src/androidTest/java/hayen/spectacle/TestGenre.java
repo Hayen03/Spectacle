@@ -17,9 +17,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.Constant;
 //import com.ift2905.reservation.database.entities.Genre;
 
-import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.GenreSQLHelper;
-import hayen.spectacle.database.entities.Genre;
+import hayen.spectacle.database.data.Genre;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,7 +35,7 @@ public class TestGenre {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        GenreSQLHelper dbHelper = new GenreSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        GenreSQLHelper dbHelper = GenreSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -77,7 +76,8 @@ public class TestGenre {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        GenreSQLHelper dbHelper = new GenreSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        GenreSQLHelper dbHelper = GenreSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -128,7 +128,8 @@ public class TestGenre {
         Log.i("RPI", "Effacer une Genre");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        GenreSQLHelper dbHelper = new GenreSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        GenreSQLHelper dbHelper = GenreSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -180,7 +181,7 @@ public class TestGenre {
         Log.i("RPI", "Mettre à jour un Genre");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        GenreSQLHelper dbHelper = new GenreSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        GenreSQLHelper dbHelper = GenreSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

@@ -21,17 +21,16 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import hayen.spectacle.database.dao.AdresseSQLHelper;
-import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.UtilisateurSQLHelper;
-import hayen.spectacle.database.entities.Adresse;
-import hayen.spectacle.database.entities.Utilisateur;
+import hayen.spectacle.database.data.Adresse;
+import hayen.spectacle.database.data.Utilisateur;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 
 @RunWith(AndroidJUnit4.class)
-public class TestUtiisateur {
+public class TestUtilisateur {
 
 
     @Test

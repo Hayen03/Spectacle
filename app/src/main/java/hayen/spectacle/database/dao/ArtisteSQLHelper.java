@@ -5,11 +5,13 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 //import com.ift2905.reservation.database.entities.Artiste;
-import hayen.spectacle.database.entities.Artiste;
+import hayen.spectacle.database.data.Artiste;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,87 +27,107 @@ public class ArtisteSQLHelper extends SQLiteOpenHelper{
 //                    Artiste.COLUMN_FIRSTNAME + " VARCHAR(30) NOT NULL, " +
 //                    Artiste.COLUMN_LASTNAME + " VARCHAR(30))";
 
-    public ArtisteSQLHelper(Context context){
+
+    private static volatile ArtisteSQLHelper artisteSQLHelper;
+
+    private SQLiteDatabase database;
+
+    private ArtisteSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
     }
 
-    public ArtisteSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private ArtisteSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
+    public static ArtisteSQLHelper getInstance(Context context){
+
+        if(artisteSQLHelper == null){
+            synchronized (ArtisteSQLHelper.class){
+                if(artisteSQLHelper == null){
+                    artisteSQLHelper = new ArtisteSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return artisteSQLHelper;
+    }
+
+
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public Artiste getArtisteById(int id) {
-        // get readable database as we are not inserting anything
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Artiste.TABLE_NAME,
+        database = this.getReadableDatabase();
+
+        Artiste artiste = null;
+        Cursor cursor = database.query(Artiste.TABLE_NAME,
                 new String[]{ Artiste.COLUMN_ID, Artiste.COLUMN_FIRSTNAME, Artiste.COLUMN_LASTNAME },
                 Artiste.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            // prepare note object
-            Artiste artiste = new Artiste(
+            artiste = new Artiste(
                     cursor.getInt(cursor.getColumnIndex(Artiste.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_FIRSTNAME)),
                     cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_LASTNAME)));
 
-            // close the db connection
             cursor.close();
-
-            return artiste;
         }
-        return null;
+
+        close();
+
+        return artiste;
     }
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public Artiste getArtisteByName(Artiste artiste) {
-        // get readable database as we are not inserting anything
-        SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Artiste.TABLE_NAME,
+        database = this.getReadableDatabase();
+
+        Artiste artiste2 = null;
+        Cursor cursor = database.query(Artiste.TABLE_NAME,
                 new String[]{ Artiste.COLUMN_ID, Artiste.COLUMN_FIRSTNAME, Artiste.COLUMN_LASTNAME },
                 Artiste.COLUMN_FIRSTNAME + "=? and " + Artiste.COLUMN_LASTNAME + "=?",
                 new String[]{artiste.getPrenom(), artiste.getNom()}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            // prepare note object
-            Artiste artiste2 = new Artiste(
+            artiste2 = new Artiste(
                     cursor.getInt(cursor.getColumnIndex(Artiste.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_FIRSTNAME)),
                     cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_LASTNAME)));
 
-            // close the db connection
             cursor.close();
 
-            return artiste2;
         }
-        return null;
+
+        close();
+
+        return artiste2;
     }
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public List<Artiste> getAllArtistes() {
-        List<Artiste> artistes = new ArrayList<>();
+        List<Artiste> artistes = null;
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + Artiste.TABLE_NAME + " ORDER BY " + Artiste.COLUMN_ID;
                // Artiste.COLUMN_LASTNAME + ", " + Artiste.COLUMN_FIRSTNAME + " ASC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
+
+            artistes = new ArrayList<>();
+
             do {
                 Artiste artiste = new Artiste();
                 artiste.setId(cursor.getInt(cursor.getColumnIndex(Artiste.COLUMN_ID)));
@@ -114,10 +136,48 @@ public class ArtisteSQLHelper extends SQLiteOpenHelper{
 
                 artistes.add(artiste);
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
+        close();
 
-        db.close();
+        return artistes;
+    }
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
+    public List<Artiste> getAllArtistesBySpectacleId(int id) {
+        List<Artiste> artistes = null;
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM artiste " +
+                " inner join spectacle_artiste as SA on SA.id_artiste=artiste.id " +
+                " inner join spectacle on spectacle.id=SA.id_spectacle " +
+                "   where id_spectacle=" + id;
+
+
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            artistes = new ArrayList<>();
+
+            do {
+                Artiste artiste = new Artiste();
+                artiste.setId(cursor.getInt(cursor.getColumnIndex(Artiste.COLUMN_ID)));
+                artiste.setPrenom(cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_FIRSTNAME)));
+                artiste.setNom(cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_LASTNAME)));
+
+                artistes.add(artiste);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        close();
 
         return artistes;
     }
@@ -126,13 +186,21 @@ public class ArtisteSQLHelper extends SQLiteOpenHelper{
     //**********************************************************************************************
 
     public int getArtistesCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + Artiste.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        Cursor cursor = database.rawQuery(countQuery, null);
 
+        int count = 0;
+
+        if(cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
 
         return count;
     }
@@ -142,14 +210,17 @@ public class ArtisteSQLHelper extends SQLiteOpenHelper{
 
 
     public int updateArtiste(Artiste artiste) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database= this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Artiste.COLUMN_FIRSTNAME, artiste.getPrenom());
         values.put(Artiste.COLUMN_LASTNAME, artiste.getNom());
 
-        int nbAffectedRows= db.update (Artiste.TABLE_NAME, values, Artiste.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (Artiste.TABLE_NAME, values, Artiste.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(artiste.getId())});
+
+        close();
 
         return nbAffectedRows;
     }
@@ -159,13 +230,16 @@ public class ArtisteSQLHelper extends SQLiteOpenHelper{
 
 
     public long addArtiste(Artiste artiste) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database= this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Artiste.COLUMN_FIRSTNAME, artiste.getPrenom());
         values.put(Artiste.COLUMN_LASTNAME, artiste.getNom());
 
-        long nbAffectedRows= db.insert(Artiste.TABLE_NAME, null, values);
+        long nbAffectedRows= database.insert(Artiste.TABLE_NAME, null, values);
+
+        close();
 
         return nbAffectedRows;
     }
@@ -176,20 +250,43 @@ public class ArtisteSQLHelper extends SQLiteOpenHelper{
     //**********************************************************************************************
 
     public int deleteArtiste(Artiste artiste) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(Artiste.TABLE_NAME, Artiste.COLUMN_ID + " = ?",
+
+        database= this.getWritableDatabase();
+        int result = database.delete(Artiste.TABLE_NAME, Artiste.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(artiste.getId())});
-        db.close();
+
+        close();
 
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
+
 
     @Override
     public void onOpen(SQLiteDatabase db) {

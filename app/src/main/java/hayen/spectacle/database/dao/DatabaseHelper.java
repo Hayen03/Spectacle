@@ -18,14 +18,45 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     private SQLiteDatabase database;
 
-    public DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private static volatile DatabaseHelper databaseHelper;
+
+    private DatabaseHelper(Context context) {
+        super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        File file = context.getDatabasePath(Constant.DATABASE_NAME);
+
+        File path =   file.getAbsoluteFile();
+
+        Log.i("RPI", "file: " + file  + "; db path: " + path);
+    }
+
+    private DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         File file = context.getDatabasePath(name);
 
-      File path =   file.getAbsoluteFile();
+        File path =   file.getAbsoluteFile();
 
-      Log.i("RPI", "file: " + file  + "; db path: " + path);
+        Log.i("RPI", "file: " + file  + "; db path: " + path);
     }
+
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
+
+    public static DatabaseHelper getInstance(Context context){
+
+        if(databaseHelper == null){
+            synchronized (DatabaseHelper.class){
+                if(databaseHelper == null){
+                    databaseHelper = new DatabaseHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return databaseHelper;
+    }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
@@ -41,6 +72,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
     }
+
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
@@ -58,13 +93,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     }
 
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
     @Override
     public synchronized void close() {
 
         try {
-            if(database != null) {
+            if(database.isOpen()) {
                 database.close();
-                Log.i ("RPI", "Closing database: " + database);
+                database = null;
             }
         }catch(SQLException ex){
             Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
@@ -75,6 +113,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
+
 
     private void dropDB(){
 

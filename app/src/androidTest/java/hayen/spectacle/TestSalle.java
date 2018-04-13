@@ -22,10 +22,9 @@ import java.util.List;
 
 
 import hayen.spectacle.database.dao.AdresseSQLHelper;
-import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.SalleSQLHelper;
-import hayen.spectacle.database.entities.Adresse;
-import hayen.spectacle.database.entities.Salle;
+import hayen.spectacle.database.data.Adresse;
+import hayen.spectacle.database.data.Salle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -43,7 +42,7 @@ public class TestSalle {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SalleSQLHelper dbHelper = new SalleSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SalleSQLHelper dbHelper = SalleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -87,7 +86,7 @@ public class TestSalle {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SalleSQLHelper dbHelper = new SalleSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SalleSQLHelper dbHelper = SalleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -112,7 +111,7 @@ public class TestSalle {
         adresse.setProvince("QC");
         adresse.setCodePostal("H4I 2X9");
 
-        AdresseSQLHelper adresseSQLHelper =  new AdresseSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
        SQLiteDatabase database2 = dbHelper.getWritableDatabase();
 
@@ -161,7 +160,7 @@ public class TestSalle {
         Log.i("RPI", "Mettre à jour un salle");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SalleSQLHelper dbHelper = new SalleSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SalleSQLHelper dbHelper = SalleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -208,7 +207,7 @@ public class TestSalle {
         Log.i("RPI", "Effacer un salle");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SalleSQLHelper dbHelper = new SalleSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SalleSQLHelper dbHelper = SalleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

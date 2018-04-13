@@ -4,11 +4,13 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 //import com.ift2905.reservation.database.entities.Siege;
-import hayen.spectacle.database.entities.Siege;
+import hayen.spectacle.database.data.Siege;
 
 
 import java.util.ArrayList;
@@ -30,14 +32,35 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
 //                    Siege.TABLE_NAME_REF_SECTION + "(" + Siege.COLUMN_ID + ") )";
 
 
-    public SiegeSQLHelper(Context context){
+    private static volatile SiegeSQLHelper siegeSQLHelper;
+
+    private SQLiteDatabase database;
+
+    private SiegeSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
     }
 
-    public SiegeSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private SiegeSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
+    public static SiegeSQLHelper getInstance(Context context){
+
+        if(siegeSQLHelper == null){
+            synchronized (SiegeSQLHelper.class){
+                if(siegeSQLHelper == null){
+                    siegeSQLHelper = new SiegeSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return siegeSQLHelper;
+    }
+
 
     //**********************************************************************************************
     //**********************************************************************************************
@@ -45,43 +68,50 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
     public Siege getSiegeById(int id) {
 
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        database = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Siege.TABLE_NAME,
+        Siege siege = null;
+
+        Cursor cursor = database.query(Siege.TABLE_NAME,
                 new String[]{   Siege.COLUMN_ID, Siege.COLUMN_RANGEE, Siege.COLUMN_COLUMN,
                             Siege.COLUMN_SECTION_ID },
                 Siege.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            Siege siege = new Siege(
+            siege = new Siege(
                     cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Siege.COLUMN_RANGEE)),
                     cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_COLUMN)),
                     cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_SECTION_ID)));
 
             cursor.close();
-
-            return siege;
         }
-        return null;
+
+        close();
+
+        return siege;
     }
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public List<Siege> getAllSieges() {
-        List<Siege> sieges = new ArrayList<>();
+
+        database = this.getReadableDatabase();
+
+        List<Siege> sieges = null;
 
         String selectQuery = "SELECT  * FROM " + Siege.TABLE_NAME + " ORDER BY " +
                 Siege.COLUMN_RANGEE + ", " + Siege.COLUMN_COLUMN + " ASC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
+
+            sieges = new ArrayList<>();
+
             do {
                 Siege siege = new Siege();
                 siege.setId(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_ID)));
@@ -90,11 +120,14 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
                 siege.setSectionId(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_SECTION_ID)));
 
                 sieges.add(siege);
+
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
 
-        db.close();
+        close();
 
         return sieges;
     }
@@ -103,13 +136,21 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int getSiegesCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + Siege.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        Cursor cursor = database.rawQuery(countQuery, null);
 
+        int count = 0;
+
+        if(cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
 
         return count;
     }
@@ -119,14 +160,17 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
 
 
     public long addSiege(Siege siege) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Siege.COLUMN_RANGEE, siege.getRangee());
         values.put(Siege.COLUMN_COLUMN, siege.getColonne());
         values.put(Siege.COLUMN_SECTION_ID, siege.getSectionId());
 
-        long nbAffectedRows= db.insert (Siege.TABLE_NAME, null, values);
+        long nbAffectedRows= database.insert (Siege.TABLE_NAME, null, values);
+
+        close();
 
         return nbAffectedRows;
     }
@@ -136,15 +180,18 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
 
 
     public int updateSiege(Siege siege) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database= this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Siege.COLUMN_RANGEE, siege.getRangee());
         values.put(Siege.COLUMN_COLUMN, siege.getColonne());
         values.put(Siege.COLUMN_SECTION_ID, siege.getSectionId());
 
-        int nbAffectedRows= db.update (Siege.TABLE_NAME, values, Siege.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (Siege.TABLE_NAME, values, Siege.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(siege.getId())});
+
+        close();
 
         return nbAffectedRows;
     }
@@ -153,20 +200,43 @@ public class SiegeSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int deleteSiege(Siege siege) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(Siege.TABLE_NAME, Siege.COLUMN_ID + " = ?",
+
+        database = this.getWritableDatabase();
+        int result = database.delete(Siege.TABLE_NAME, Siege.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(siege.getId())});
-        db.close();
+
+        close();
 
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
 
     @Override
     public void onOpen(SQLiteDatabase db) {

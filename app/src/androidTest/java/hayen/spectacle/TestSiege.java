@@ -17,9 +17,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SiegeSQLHelper;
 //import com.ift2905.reservation.database.entities.Siege;
 
-import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.SiegeSQLHelper;
-import hayen.spectacle.database.entities.Siege;
+import hayen.spectacle.database.data.Siege;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,7 +35,7 @@ public class TestSiege {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SiegeSQLHelper dbHelper = new SiegeSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SiegeSQLHelper dbHelper = SiegeSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
@@ -80,7 +79,7 @@ public class TestSiege {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SiegeSQLHelper dbHelper = new SiegeSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SiegeSQLHelper dbHelper = SiegeSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -136,7 +135,7 @@ public class TestSiege {
         Log.i("RPI", "Mettre à jour un Siege");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SiegeSQLHelper dbHelper = new SiegeSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SiegeSQLHelper dbHelper = SiegeSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -182,7 +181,7 @@ public class TestSiege {
         Log.i("RPI", "Effacer un Siege");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SiegeSQLHelper dbHelper = new SiegeSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        SiegeSQLHelper dbHelper = SiegeSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

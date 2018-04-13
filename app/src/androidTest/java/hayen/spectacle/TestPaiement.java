@@ -18,9 +18,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.PaiementSQLHelper;
 //import com.ift2905.reservation.database.entities.Paiement;
 
-import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.PaiementSQLHelper;
-import hayen.spectacle.database.entities.Paiement;
+import hayen.spectacle.database.data.Paiement;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -38,7 +37,7 @@ public class TestPaiement {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        PaiementSQLHelper dbHelper = new PaiementSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        PaiementSQLHelper dbHelper = PaiementSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
@@ -82,7 +81,7 @@ public class TestPaiement {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        PaiementSQLHelper dbHelper = new PaiementSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        PaiementSQLHelper dbHelper = PaiementSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -138,7 +137,7 @@ public class TestPaiement {
         Log.i("RPI", "Mettre à jour d'un Paiement");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        PaiementSQLHelper dbHelper = new PaiementSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        PaiementSQLHelper dbHelper = PaiementSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -204,7 +203,7 @@ public class TestPaiement {
         Log.i("RPI", "Effacer un Paiement");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        PaiementSQLHelper dbHelper = new PaiementSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        PaiementSQLHelper dbHelper = PaiementSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

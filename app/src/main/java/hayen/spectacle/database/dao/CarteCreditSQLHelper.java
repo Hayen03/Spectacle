@@ -4,12 +4,13 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 //import com.ift2905.reservation.database.entities.CarteCredit;
-import hayen.spectacle.database.entities.CarteCredit;
+import hayen.spectacle.database.data.CarteCredit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,46 +27,55 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
 //                    " UNIQUE(nom_carte, numero), FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id))";
 
 
-    public CarteCreditSQLHelper(Context context){
+    private static volatile CarteCreditSQLHelper carteCreditSQLHelper;
+
+    private SQLiteDatabase database;
+
+    private CarteCreditSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
     }
 
-    public CarteCreditSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private CarteCreditSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
+
+
+    public static CarteCreditSQLHelper getInstance(Context context){
+
+        if(carteCreditSQLHelper == null){
+            synchronized (CarteCreditSQLHelper.class){
+                if(carteCreditSQLHelper == null){
+                    carteCreditSQLHelper = new CarteCreditSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return carteCreditSQLHelper;
+    }
+
+
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public CarteCredit getCarteByUserId(int userId) {
 
+        database = this.getReadableDatabase();
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        CarteCredit carteCredit = null;
 
-        Cursor cursor = db.query(CarteCredit.TABLE_NAME,
+        Cursor cursor = database.query(CarteCredit.TABLE_NAME,
                 new String[]{   CarteCredit.COLUMN_ID, CarteCredit.COLUMN_UTILISATEUR_ID, CarteCredit.COLUMN_NOM_CARTE, CarteCredit.COLUMN_NOM_UTILISATEUR,
                                 CarteCredit.COLUMN_NUMERO, CarteCredit.COLUMN_DATE_EXPIRATION, CarteCredit.COLUMN_CODE },
                         CarteCredit.COLUMN_UTILISATEUR_ID + "=?",
                 new String[]{String.valueOf(userId)}, null, null, null, null);
 
-     //   Log.i("RPI", "curseur: " + cursor.getCount());
 
         String[] names =  cursor.getColumnNames();
 
-    //    for (int i = 0; i < names.length ; i++) {
-     //       Log.i("RPI", "name : " + names[i]);
-    //    }
+        if (cursor != null && cursor.moveToFirst()) {
 
-
-        if (cursor != null) {
-            cursor.moveToFirst();
-
-        //    Log.i("RPI", "name: "+ cursor.getColumnName(5));
-         //   Log.i("RPI", "column name: "+ cursor.getColumnIndex(CarteCredit.COLUMN_UTILISATEUR_ID));
-
-
-            CarteCredit carteCredit = new CarteCredit(
+            carteCredit = new CarteCredit(
                     cursor.getInt(cursor.getColumnIndex(CarteCredit.COLUMN_ID)),
                     cursor.getInt(cursor.getColumnIndex(CarteCredit.COLUMN_UTILISATEUR_ID)),
                     cursor.getString(cursor.getColumnIndex(CarteCredit.COLUMN_NOM_CARTE)),
@@ -76,11 +86,11 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
                     );
 
             cursor.close();
-
-            return carteCredit;
-
         }
-        return null;
+
+        close();
+
+        return carteCredit;
     }
 
 
@@ -89,15 +99,22 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public List<CarteCredit> getAllCartes() {
-        List<CarteCredit> cartes = new ArrayList<>();
+
+        database = this.getReadableDatabase();
+
+        List<CarteCredit> cartes = null;
 
         String selectQuery = "SELECT  * FROM " + CarteCredit.TABLE_NAME + " ORDER BY " +
                 CarteCredit.COLUMN_ID + " ASC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) {
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            cartes =  new ArrayList<>();
+
             do {
                 CarteCredit carte = new CarteCredit();
                 carte.setId(cursor.getInt(cursor.getColumnIndex(CarteCredit.COLUMN_ID)));
@@ -110,10 +127,11 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
 
                 cartes.add(carte);
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
-
-        db.close();
+        close();
 
         return cartes;
     }
@@ -122,13 +140,20 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int getCartesCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + CarteCredit.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        Cursor cursor = database.rawQuery(countQuery, null);
 
+        int count = 0;
+        if(cursor != null){
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
 
         return count;
     }
@@ -139,7 +164,7 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
 
 
     public long addCarte(CarteCredit carte) {
-        SQLiteDatabase db = this.getWritableDatabase();
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(CarteCredit.COLUMN_NOM_CARTE, carte.getNomCarte());
@@ -149,8 +174,9 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
         values.put(CarteCredit.COLUMN_CODE, carte.getCode());
         values.put(CarteCredit.COLUMN_UTILISATEUR_ID, carte.getUtilisateurId());
 
-        long nbAffectedRows= db.insert (CarteCredit.TABLE_NAME, null, values);
+        long nbAffectedRows= database.insert (CarteCredit.TABLE_NAME, null, values);
 
+        close();
         return nbAffectedRows;
     }
 
@@ -159,7 +185,8 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
 
 
     public int updateCarte(CarteCredit carte) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(CarteCredit.COLUMN_NOM_CARTE, carte.getNomCarte());
@@ -169,9 +196,10 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
         values.put(CarteCredit.COLUMN_CODE, carte.getCode());
         values.put(CarteCredit.COLUMN_UTILISATEUR_ID, carte.getUtilisateurId());
 
-        int nbAffectedRows= db.update (CarteCredit.TABLE_NAME, values, CarteCredit.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (CarteCredit.TABLE_NAME, values, CarteCredit.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(carte.getId())});
 
+        close();
         return nbAffectedRows;
     }
 
@@ -179,19 +207,40 @@ public class CarteCreditSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int deleteCarteCredit(CarteCredit carte) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(CarteCredit.TABLE_NAME, CarteCredit.COLUMN_ID + " = ?",
+
+        database = this.getWritableDatabase();
+        int result = database.delete(CarteCredit.TABLE_NAME, CarteCredit.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(carte.getId())});
-        db.close();
+        close();
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
+
 
     @Override
     public void onOpen(SQLiteDatabase db) {

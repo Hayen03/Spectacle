@@ -5,15 +5,18 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 
 import java.util.ArrayList;
 import java.util.List;
 
 //import com.ift2905.reservation.database.entities.Spectacle;
-import hayen.spectacle.database.entities.Spectacle;
+import hayen.spectacle.database.data.Artiste;
+import hayen.spectacle.database.data.Spectacle;
 
 
 public class SpectacleSQLHelper extends SQLiteOpenHelper {
@@ -30,13 +33,34 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
 //                    Spectacle.TABLE_NAME_REF_GENRE + "(" + Spectacle.COLUMN_ID + ") )";
 
 
-    public SpectacleSQLHelper(Context context){
+    private static volatile SpectacleSQLHelper spectacleSQLHelper;
+
+    private SQLiteDatabase database;
+
+
+    private SpectacleSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
     }
 
-    public SpectacleSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private SpectacleSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+    }
+
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
+    public static SpectacleSQLHelper getInstance(Context context){
+
+        if(spectacleSQLHelper == null){
+            synchronized (SpectacleSQLHelper.class){
+                if(spectacleSQLHelper == null){
+                    spectacleSQLHelper = new SpectacleSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return spectacleSQLHelper;
     }
 
     //**********************************************************************************************
@@ -45,18 +69,19 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
     public Spectacle getSpectacleById(int id) {
 
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        database = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Spectacle.TABLE_NAME,
+        Spectacle spectacle = null;
+
+        Cursor cursor = database.query(Spectacle.TABLE_NAME,
                 new String[]{   Spectacle.COLUMN_ID, Spectacle.COLUMN_TITRE, Spectacle.COLUMN_DATE_SPECTACLE,
                         Spectacle.COLUMN_GENRE_ID, Spectacle.COLUMN_SALLE_ID },
                 Spectacle.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            Spectacle spectacle = new Spectacle(
+            spectacle = new Spectacle(
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)),
                     cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)),
@@ -64,27 +89,32 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
 
             cursor.close();
-
-            return spectacle;
         }
 
-        return null;
+        return spectacle;
+
     }
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public List<Spectacle> getAllSpectacles() {
-        List<Spectacle> spectacles = new ArrayList<>();
+
+        database = this.getReadableDatabase();
+
+        List<Spectacle> spectacles = null;
 
         String selectQuery = "SELECT  * FROM " + Spectacle.TABLE_NAME + " ORDER BY " +
                 Spectacle.COLUMN_ID + " ASC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) {
+        if (cursor != null && cursor.moveToFirst()) {
+
+            spectacles = new ArrayList<>();
+
             do {
+
                 Spectacle spectacle = new Spectacle();
                 spectacle.setId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)));
                 spectacle.setTitre(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)));
@@ -92,13 +122,15 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
                 spectacle.setGenreId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)));
                 spectacle.setSalleId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
 
-
                 spectacles.add(spectacle);
+
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
 
-        db.close();
+        close();
 
         return spectacles;
     }
@@ -106,14 +138,60 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
     //**********************************************************************************************
 
+
+    public List<Artiste> getAllArtistesBySpectacleId(int id) {
+        List<Artiste> artistes = null;
+
+        // Select All Query
+        String selectQuery = "SELECT  * FROM artiste " +
+                " inner join spectacle_artiste as SA on SA.id_artiste=artiste.id " +
+                " inner join spectacle on spectacle.id=SA.id_spectacle " +
+                "   where id_spectacle=" + id;
+
+
+        database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            artistes = new ArrayList<>();
+
+            do {
+                Artiste artiste = new Artiste();
+                artiste.setId(cursor.getInt(cursor.getColumnIndex(Artiste.COLUMN_ID)));
+                artiste.setPrenom(cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_FIRSTNAME)));
+                artiste.setNom(cursor.getString(cursor.getColumnIndex(Artiste.COLUMN_LASTNAME)));
+
+                artistes.add(artiste);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        close();
+
+        return artistes;
+    }
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
     public int getSpectaclesCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + Spectacle.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        Cursor cursor = database.rawQuery(countQuery, null);
 
+        int count = 0;
+
+        if(cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
 
         return count;
     }
@@ -123,7 +201,9 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
 
 
     public long addSpectacle(Spectacle spectacle) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+
+        database= this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Spectacle.COLUMN_TITRE, spectacle.getTitre());
@@ -132,7 +212,9 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
         values.put(Spectacle.COLUMN_SALLE_ID, spectacle.getSalleId());
 
 
-        long nbAffectedRows= db.insert(Spectacle.TABLE_NAME, null, values);
+        long nbAffectedRows= database.insert(Spectacle.TABLE_NAME, null, values);
+
+        close();
 
         return nbAffectedRows;
     }
@@ -142,7 +224,8 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
 
 
     public int updateSpectacle(Spectacle spectacle) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database= this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Spectacle.COLUMN_TITRE, spectacle.getTitre());
@@ -151,8 +234,10 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
         values.put(Spectacle.COLUMN_SALLE_ID, spectacle.getSalleId());
 
 
-        int nbAffectedRows= db.update (Spectacle.TABLE_NAME, values, Spectacle.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (Spectacle.TABLE_NAME, values, Spectacle.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(spectacle.getId())});
+
+        close();
 
         return nbAffectedRows;
     }
@@ -161,20 +246,42 @@ public class SpectacleSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int  deleteSpectacle(Spectacle spectacle) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        int result = db.delete(Spectacle.TABLE_NAME, Spectacle.COLUMN_ID + " = ?",
+
+        database = this.getWritableDatabase();
+
+        int result = database.delete(Spectacle.TABLE_NAME, Spectacle.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(spectacle.getId())});
-        db.close();
+
+        close();
 
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public void onOpen(SQLiteDatabase db) {

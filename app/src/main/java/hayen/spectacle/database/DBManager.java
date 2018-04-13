@@ -13,22 +13,14 @@ import android.util.Log;
 
 import hayen.spectacle.database.dao.Constant;
 import hayen.spectacle.database.dao.DatabaseHelper;
-import hayen.spectacle.database.entities.Artiste;
-import hayen.spectacle.database.entities.CarteCredit;
-import hayen.spectacle.database.entities.Genre;
-import hayen.spectacle.database.entities.Paiement;
-import hayen.spectacle.database.entities.Reservation;
-import hayen.spectacle.database.entities.Salle;
-import hayen.spectacle.database.entities.Section;
-import hayen.spectacle.database.entities.Siege;
-import hayen.spectacle.database.entities.Spectacle;
+import hayen.spectacle.database.dao.UtilisateurSQLHelper;
+import hayen.spectacle.database.data.Utilisateur;
 
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.Locale;
 
 
@@ -39,9 +31,8 @@ import java.util.Locale;
 public class DBManager  {
 
 
-    private static DBManager dbManager;
+    private static volatile DBManager dbManager;
     private ProgressDialog progressDialog;
-
 
     //databse helper
     private SQLiteOpenHelper dbHelper;
@@ -55,23 +46,45 @@ public class DBManager  {
     private static final String dbName = "ReservationDB.db";
     private static final int DB_VERSION = 1;
 
-    public DBManager(){
+    private DBManager(){
         context = null;
     }
 
-    public DBManager(Context context) {
+    private DBManager(Context context) {
         this.context = context;
     }
 
 
-    public static DBManager getInstace(Context context){
+    public static DBManager getInstance(Context context){
         if(dbManager == null){
-            dbManager = new DBManager(context);
+            synchronized (DBManager.class){
+                if(dbManager == null){
+                  dbManager = new DBManager(context);
+             }
+            }
         }
         return dbManager;
     }
 
 
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
+    public Utilisateur login(Context context, String login, String motPasse){
+
+        UtilisateurSQLHelper dbHelper =   UtilisateurSQLHelper.getInstance(context); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+
+        Utilisateur utilisateur =  dbHelper.validateLogin(login, motPasse);
+
+        return utilisateur;
+
+
+    }
+
+
+    //**********************************************************************************************
+    //**********************************************************************************************
 
     public void createDB(){
 
@@ -91,6 +104,7 @@ public class DBManager  {
 
     }
 
+
     //**********************************************************************************************
     //**********************************************************************************************
 
@@ -98,7 +112,7 @@ public class DBManager  {
 
     public DBManager open() throws SQLException {
         Log.i("RPI", "open: " + this.context);
-        dbHelper = new DatabaseHelper(this.context, DBManager.dbName, null, DBManager.DB_VERSION);
+        dbHelper = DatabaseHelper.getInstance(this.context); //(this.context, DBManager.dbName, null, DBManager.DB_VERSION);
         Log.i("RPI", "open: " + this.dbHelper);
         database = dbHelper.getWritableDatabase();
         Log.i("RPI", "open: " + this.database);

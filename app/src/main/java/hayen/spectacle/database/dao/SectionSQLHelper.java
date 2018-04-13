@@ -4,14 +4,15 @@ package hayen.spectacle.database.dao;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 //import com.ift2905.reservation.database.entities.Salle;
 //import com.ift2905.reservation.database.entities.Section;
 
-import hayen.spectacle.database.entities.Salle;
-import hayen.spectacle.database.entities.Section;
+import hayen.spectacle.database.data.Section;
 
 
 import java.util.ArrayList;
@@ -31,14 +32,33 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
 //                    Section.COLUMN_SALLE_ID + " INTEGER, " +
 //                    " FOREIGN KEY (" + Section.COLUMN_SALLE_ID + ") REFERENCES " + Salle.TABLE_NAME + "(" + Salle.COLUMN_ID + "))";
 
+    private static volatile SectionSQLHelper sectionSQLHelper;
 
-    public SectionSQLHelper(Context context){
+    private SQLiteDatabase database;
+
+    private SectionSQLHelper(Context context){
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
     }
 
-    public SectionSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    private SectionSQLHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
+    }
+
+
+    //**********************************************************************************************
+    //**********************************************************************************************
+
+    public static SectionSQLHelper getInstance(Context context){
+
+        if(sectionSQLHelper == null){
+            synchronized (SectionSQLHelper.class){
+                if(sectionSQLHelper == null){
+                    sectionSQLHelper = new SectionSQLHelper(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+                }
+            }
+        }
+        return sectionSQLHelper;
     }
 
 
@@ -48,18 +68,19 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
     public Section getSectionById(int id) {
 
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        database = this.getReadableDatabase();
 
-        Cursor cursor = db.query(Section.TABLE_NAME,
+        Section section = null;
+
+        Cursor cursor = database.query(Section.TABLE_NAME,
                 new String[]{   Section.COLUMN_ID, Section.COLUMN_NAME, Section.COLUMN_CATEGORIE,
                                 Section.COLUMN_NB_SIEGES, Section.COLUMN_SALLE_ID },
                         Section.COLUMN_ID + "=?",
                         new String[]{String.valueOf(id)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            Section section = new Section(
+            section = new Section(
                     cursor.getInt(cursor.getColumnIndex(Section.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
                     cursor.getInt(cursor.getColumnIndex(Section.COLUMN_CATEGORIE)),
@@ -67,10 +88,10 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndex(Section.COLUMN_SALLE_ID)));
 
             cursor.close();
-
-            return section;
         }
-        return null;
+
+        return section;
+
     }
 
 
@@ -79,19 +100,19 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
 
     public Section getSectionBySalleId(int idSalle) {
 
+        database = this.getReadableDatabase();
 
-        SQLiteDatabase db = this.getReadableDatabase();
+        Section section = null;
 
-        Cursor cursor = db.query(Section.TABLE_NAME,
+        Cursor cursor = database.query(Section.TABLE_NAME,
                 new String[]{   Section.COLUMN_ID, Section.COLUMN_NAME, Section.COLUMN_CATEGORIE,
                         Section.COLUMN_NB_SIEGES, Section.COLUMN_SALLE_ID },
                 Section.COLUMN_SALLE_ID + "=?",
                 new String[]{String.valueOf(idSalle)}, null, null, null, null);
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
 
-            Section section = new Section(
+            section = new Section(
                     cursor.getInt(cursor.getColumnIndex(Section.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)),
                     cursor.getInt(cursor.getColumnIndex(Section.COLUMN_CATEGORIE)),
@@ -99,26 +120,36 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
                     cursor.getInt(cursor.getColumnIndex(Section.COLUMN_SALLE_ID)));
 
             cursor.close();
-
-            return section;
         }
-        return null;
+
+        close();
+
+        return section;
+
     }
 
     //**********************************************************************************************
     //**********************************************************************************************
 
     public List<Section> getAllSections() {
-        List<Section> sections = new ArrayList<>();
+
+        database = this.getReadableDatabase();
+
+        List<Section> sections = null;
 
         String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME + " ORDER BY " +
                 Section.COLUMN_ID + " ASC";
 
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery, null);
 
-        if (cursor.moveToFirst()) {
+        Log.i("RPI", "Section count: " + cursor.getCount());
+        if (cursor != null && cursor.moveToFirst()) {
+
+            sections = new ArrayList<>();
+
             do {
+
+
                 Section section = new Section();
                 section.setId(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_ID)));
                 section.setName(cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)));
@@ -128,10 +159,12 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
 
                 sections.add(section);
             } while (cursor.moveToNext());
+
+            cursor.close();
         }
 
 
-        db.close();
+        close();
 
         return sections;
     }
@@ -140,13 +173,21 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
     //**********************************************************************************************
 
     public int getSectionsCount() {
+
+        database = this.getReadableDatabase();
+
         String countQuery = "SELECT  * FROM " + Section.TABLE_NAME;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
 
-        int count = cursor.getCount();
-        cursor.close();
+        Cursor cursor = database.rawQuery(countQuery, null);
 
+        int count = 0;
+
+        if(cursor != null) {
+            count = cursor.getCount();
+            cursor.close();
+        }
+
+        close();
 
         return count;
     }
@@ -156,7 +197,8 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
 
 
     public long addSection(Section section) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Section.COLUMN_NAME, section.getName());
@@ -164,7 +206,9 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
         values.put(Section.COLUMN_NB_SIEGES, section.getNbSieges());
         values.put(Section.COLUMN_SALLE_ID, section.getSalleId());
 
-        long nbAffectedRows= db.insert (Section.TABLE_NAME, null, values);
+        long nbAffectedRows= database.insert (Section.TABLE_NAME, null, values);
+
+        close();
 
         return nbAffectedRows;
     }
@@ -174,7 +218,8 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
 
 
     public int updateSection(Section section) {
-        SQLiteDatabase db = this.getWritableDatabase();
+
+        database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
         values.put(Section.COLUMN_NAME, section.getName());
@@ -182,8 +227,10 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
         values.put(Section.COLUMN_NB_SIEGES, section.getNbSieges());
         values.put(Section.COLUMN_SALLE_ID, section.getSalleId());
 
-        int nbAffectedRows= db.update (Section.TABLE_NAME, values, Section.COLUMN_ID + " = ?",
+        int nbAffectedRows= database.update (Section.TABLE_NAME, values, Section.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(section.getId())});
+
+        close();
 
         return nbAffectedRows;
     }
@@ -195,17 +242,38 @@ public class SectionSQLHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(Section.TABLE_NAME, Section.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(section.getId())});
-        db.close();
+
+
+        close();
 
         return result;
     }
-    //**********************************************************************************************
-    //**********************************************************************************************
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public synchronized void close() {
-        super.close();
+
+        try {
+            if(database.isOpen()) {
+                Log.i ("RPI", "Closing database" );
+                database.close();
+                Log.i ("RPI", "Database closed ?: " + (!database.isOpen()));
+                database = null;
+            }
+        }catch(SQLException ex){
+            Log.i ("RPI", "Error trying to close database: " + ex.getMessage());
+            ex.printStackTrace();
+        }
+        finally{
+            super.close();
+        }
+
     }
+
+    //*******************************************************************************************************
+    //*******************************************************************************************************
 
     @Override
     public void onOpen(SQLiteDatabase db) {

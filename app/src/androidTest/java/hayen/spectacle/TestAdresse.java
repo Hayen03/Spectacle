@@ -18,8 +18,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import hayen.spectacle.database.dao.AdresseSQLHelper;
-import hayen.spectacle.database.dao.Constant;
-import hayen.spectacle.database.entities.Adresse;
+import hayen.spectacle.database.data.Adresse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -36,23 +35,24 @@ public class TestAdresse {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper dbHelper = new AdresseSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+
         //  Log.i("RPI", "open: " + dbHelper);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 
         assertNotNull(database);
 
-        int nbAdresses = dbHelper.getAdressesCount();
+        int nbAdresses = adresseSQLHelper.getAdressesCount();
 
         assert(nbAdresses > 0);
 
-        List<Adresse> adresses = dbHelper.getAllAdresses();
+        List<Adresse> adresses = adresseSQLHelper.getAllAdresses();
 
-        Adresse adresse =  dbHelper.getAdresseById(adresses.get(adresses.size() - 1).getId());
+        Adresse adresse =  adresseSQLHelper.getAdresseById(adresses.get(adresses.size() - 1).getId());
 
         assertNotNull(adresse);
 
-        Adresse adresse2 =  dbHelper.getAdresseById(adresse.getId());
+        Adresse adresse2 =  adresseSQLHelper.getAdresseById(adresse.getId());
 
 
         assertEquals(adresse.getId(), adresse2.getId());
@@ -73,15 +73,15 @@ public class TestAdresse {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper dbHelper = new AdresseSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 
         assertNotNull(database);
 
-        int nbAdresses = dbHelper.getAdressesCount();
+        int nbAdresses = adresseSQLHelper.getAdressesCount();
 
-        List<Adresse> adresses = dbHelper.getAllAdresses();
+        List<Adresse> adresses = adresseSQLHelper.getAllAdresses();
 
         Log.i("RPI", "Liste des adresses avant insertion");
 
@@ -98,15 +98,15 @@ public class TestAdresse {
 
         Log.i("RPI", "Ajout d'une adresse: " + adresse);
 
-        long result = dbHelper.addAdresse(adresse);
+        long result = adresseSQLHelper.addAdresse(adresse);
 
-        int nbAdresses2 = dbHelper.getAdressesCount();
+        int nbAdresses2 = adresseSQLHelper.getAdressesCount();
 
         assertEquals(nbAdresses2, nbAdresses + 1);
 
         Log.i("RPI", "Ajout de l'Adresse : " + result);
 
-        adresses = dbHelper.getAllAdresses();
+        adresses = adresseSQLHelper.getAllAdresses();
 
         Log.i("RPI", "Liste des adresses après insertion");
 
@@ -126,16 +126,16 @@ public class TestAdresse {
         Log.i("RPI", "Effacer une Adresse");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper dbHelper = new AdresseSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 
         assertNotNull(database);
 
 
-        int nbAdresses = dbHelper.getAdressesCount();
+        int nbAdresses = adresseSQLHelper.getAdressesCount();
 
-        List <Adresse> adresses = dbHelper.getAllAdresses();
+        List <Adresse> adresses = adresseSQLHelper.getAllAdresses();
 
         assert(adresses.size() > 0 );
 
@@ -152,20 +152,20 @@ public class TestAdresse {
         Log.i("RPI: ", "nbAdresses: " + nbAdresses);
         int nbAdresses2 = 0;
 
-        Adresse adresse = dbHelper.getAdresseById(index);
+        Adresse adresse = adresseSQLHelper.getAdresseById(index);
 
         if(adresse != null) {
 
-            int result = dbHelper.deleteAdresse(adresse);
+            int result = adresseSQLHelper.deleteAdresse(adresse);
 
-            nbAdresses2 = dbHelper.getAdressesCount();
+            nbAdresses2 = adresseSQLHelper.getAdressesCount();
 
             assertEquals(nbAdresses2, nbAdresses - 1);
 
             Log.i("RPI: ", "nbAdresses après suppression: " + nbAdresses2);
 
             Log.i("RPI", "Liste des adresses après suppression");
-            adresses = dbHelper.getAllAdresses();
+            adresses = adresseSQLHelper.getAllAdresses();
 
             for (Adresse adresse1 : adresses) {
                 Log.i("RPI", "Adresse: " + adresse1);
@@ -182,15 +182,15 @@ public class TestAdresse {
         Log.i("RPI", "Mettre à jour d'une Adresse");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper dbHelper = new AdresseSQLHelper(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
-        SQLiteDatabase database = dbHelper.getWritableDatabase();
+        SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 
         assertNotNull(database);
 
-        int nbAdresses = dbHelper.getAdressesCount();
+        int nbAdresses = adresseSQLHelper.getAdressesCount();
 
-        List <Adresse> adresses = dbHelper.getAllAdresses();
+        List <Adresse> adresses = adresseSQLHelper.getAllAdresses();
 
         assertNotNull(adresses);
 
@@ -208,11 +208,11 @@ public class TestAdresse {
 
 
 
-        dbHelper.updateAdresse(adresse);
+        adresseSQLHelper.updateAdresse(adresse);
 
-        int nbAdresses2 = dbHelper.getAdressesCount();
+        int nbAdresses2 = adresseSQLHelper.getAdressesCount();
 
-        Adresse adresse2 =  dbHelper.getAdresseById(adresse.getId());
+        Adresse adresse2 =  adresseSQLHelper.getAdresseById(adresse.getId());
 
 
         Log.i("RPI", "Adresse après mise à jour: " + adresse);

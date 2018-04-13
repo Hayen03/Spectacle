@@ -1,8 +1,5 @@
 //package com.ift2905.reservation.database.entities;
-package hayen.spectacle.database.entities;
-
-import android.util.Log;
-
+package hayen.spectacle.database.data;
 
 
 public class Section {

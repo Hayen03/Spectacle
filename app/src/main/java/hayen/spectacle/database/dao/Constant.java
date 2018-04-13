@@ -23,6 +23,7 @@ public class Constant {
     public static final String SECTION_TABLE_NAME = "section";
     public static final String SIEGE_TABLE_NAME = "siege";
     public static final String SPECTACLE_TABLE_NAME = "spectacle";
+    public static final String SPECTACLE_ARTISTE_TABLE_NAME = "spectacle_artiste";
     public static final String UTILISATEUR_TABLE_NAME = "utilisateur";
     public static final String SPECTACLE_SIEGE_TABLE_NAME = "spectacle_siege";
     public static final String SPECTACLE_SECTION_TABLE_NAME = "spectacle_section";

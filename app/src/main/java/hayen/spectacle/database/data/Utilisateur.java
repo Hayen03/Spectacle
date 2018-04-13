@@ -1,5 +1,5 @@
 //package com.ift2905.reservation.database.entities;
-package hayen.spectacle.database.entities;
+package hayen.spectacle.database.data;
 
 
 

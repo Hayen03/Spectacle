@@ -1,7 +1,9 @@
 //package com.ift2905.reservation.database.entities;
-package hayen.spectacle.database.entities;
+package hayen.spectacle.database.data;
 
 
+import java.util.ArrayList;
+import java.util.List;
 
 public class Spectacle {
 
@@ -32,12 +34,11 @@ public class Spectacle {
     private String titre;
     private String date;
     private int genreId;
+    private Genre genre;
+    private List<Artiste> artistes;
     private int salleId;
 
-    public Spectacle(){
-
-
-    }
+    public Spectacle(){}
 
     public Spectacle(String titre, String date, int genreId, int salleId){
         this.id = 0;
@@ -54,6 +55,17 @@ public class Spectacle {
         this.genreId = genreId;
         this.salleId =  salleId;
     }
+
+    public Spectacle(String titre, String date, Genre genre, int salleId, List<Artiste> artistes){
+        this.id = 0;
+        this.titre = titre;
+        this.date = date;
+        this.genre = genre;
+        this.artistes =  artistes;
+        this.salleId =  salleId;
+    }
+
+
 
     public int getId() {
         return id;
@@ -93,6 +105,29 @@ public class Spectacle {
 
     public void setSalleId(int salleId) {
         this.salleId = salleId;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    public List<Artiste> getArtistes() {
+        return artistes;
+    }
+
+    public void setArtistes(List<Artiste> artistes) {
+        this.artistes = artistes;
+    }
+
+    public void addArtiste(Artiste artiste){
+        if(artistes == null){
+            artistes =  new ArrayList<>();
+        }
+        artistes.add(artiste);
     }
 
     public String toString(){
