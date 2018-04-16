@@ -17,8 +17,8 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import hayen.spectacle.database.dao.AdresseSQLHelper;
-import hayen.spectacle.database.data.Adresse;
+import hayen.spectacle.data.dao.AdresseSQLHelper;
+import hayen.spectacle.data.data.Adresse;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

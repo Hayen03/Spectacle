@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#efefef"
+        android:orientation="horizontal"
+        android:padding="0dp"
+        android:paddingLeft="5dp">
+
+
+        <TextView
+            android:id="@+id/lineSectionNum"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="#"
+            android:textColor="#006699"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/lineSectionName"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="Nom"
+            android:textColor="#006699"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+        <TextView
+            android:id="@+id/lineSectionPrice"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="Prix"
+            android:textColor="#006699"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+
+        <TextView
+            android:id="@+id/lineSectionNbPlaces"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="5dp"
+            android:text="# places"
+            android:textColor="#006699"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
+
+
+    </LinearLayout>
+</LinearLayout>

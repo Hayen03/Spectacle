@@ -18,8 +18,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.Constant;
 //import com.ift2905.reservation.database.entities.CarteCredit;
 
-import hayen.spectacle.database.dao.CarteCreditSQLHelper;
-import hayen.spectacle.database.data.CarteCredit;
+import hayen.spectacle.data.dao.CarteCreditSQLHelper;
+import hayen.spectacle.data.data.CarteCredit;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -18,8 +18,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.Constant;
 //import com.ift2905.reservation.database.entities.Artiste;
 
-import hayen.spectacle.database.dao.ArtisteSQLHelper;
-import hayen.spectacle.database.data.Artiste;
+import hayen.spectacle.data.dao.ArtisteSQLHelper;
+import hayen.spectacle.data.data.Artiste;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

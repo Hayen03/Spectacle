@@ -18,8 +18,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.PaiementSQLHelper;
 //import com.ift2905.reservation.database.entities.Paiement;
 
-import hayen.spectacle.database.dao.PaiementSQLHelper;
-import hayen.spectacle.database.data.Paiement;
+import hayen.spectacle.data.dao.PaiementSQLHelper;
+import hayen.spectacle.data.data.Paiement;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

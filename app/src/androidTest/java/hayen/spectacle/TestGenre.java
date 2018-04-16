@@ -17,8 +17,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.Constant;
 //import com.ift2905.reservation.database.entities.Genre;
 
-import hayen.spectacle.database.dao.GenreSQLHelper;
-import hayen.spectacle.database.data.Genre;
+import hayen.spectacle.data.dao.GenreSQLHelper;
+import hayen.spectacle.data.data.Genre;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

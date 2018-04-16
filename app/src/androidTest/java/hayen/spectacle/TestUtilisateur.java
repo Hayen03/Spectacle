@@ -20,10 +20,10 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import hayen.spectacle.database.dao.AdresseSQLHelper;
-import hayen.spectacle.database.dao.UtilisateurSQLHelper;
-import hayen.spectacle.database.data.Adresse;
-import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.data.dao.AdresseSQLHelper;
+import hayen.spectacle.data.dao.UtilisateurSQLHelper;
+import hayen.spectacle.data.data.Adresse;
+import hayen.spectacle.data.data.Utilisateur;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

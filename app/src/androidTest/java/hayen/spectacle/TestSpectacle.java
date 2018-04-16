@@ -16,10 +16,10 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SpectacleSQLHelper;
 //import com.ift2905.reservation.database.entities.Spectacle;
 
-import hayen.spectacle.database.dao.ArtisteSQLHelper;
-import hayen.spectacle.database.dao.SpectacleSQLHelper;
-import hayen.spectacle.database.data.Artiste;
-import hayen.spectacle.database.data.Spectacle;
+import hayen.spectacle.data.dao.ArtisteSQLHelper;
+import hayen.spectacle.data.dao.SpectacleSQLHelper;
+import hayen.spectacle.data.data.Artiste;
+import hayen.spectacle.data.data.Spectacle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -191,6 +191,8 @@ public class TestSpectacle {
         spectacle.setSalleId(1);
 
         dbHelper.updateSpectacle(spectacle);
+
+
 
         int nbSpectacles2 = dbHelper.getSpectaclesCount();
 

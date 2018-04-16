@@ -9,24 +9,21 @@ import android.app.FragmentManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.dao.ArtisteSQLHelper;
-import hayen.spectacle.database.dao.SpectacleSQLHelper;
-import hayen.spectacle.database.data.Artiste;
-import hayen.spectacle.database.data.Spectacle;
-import hayen.spectacle.database.data.SpectacleAdapter;
+import hayen.spectacle.data.dao.SpectacleSQLHelper;
+import hayen.spectacle.data.data.Artiste;
+import hayen.spectacle.data.data.Spectacle;
+import hayen.spectacle.data.data.SpectacleAdapter;
 import hayen.spectacle.fragments.CalendrierFragment;
 import hayen.spectacle.fragments.InfoFragment;
 import hayen.spectacle.fragments.ProfilFragment;
@@ -48,7 +45,15 @@ public class CalendrierActivity
     private State fragState = null;
     private Fragment currFrag = null;
 
+    private String[] filmsPoliciersTitres = {
+            "Kill Bill - vol 1",
+            "Kill Bill - vol 2",
+            "Otage",
+            "Da Vinci Code",
+            "36 Quai des Orfèvres",
+            "Mystic River"
 
+    };
 
     ListView listSpectacles;
     SpectacleAdapter spectacleAdapter;
@@ -77,6 +82,9 @@ public class CalendrierActivity
 //        actionBar.setDisplayHomeAsUpEnabled(true);
 //        actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
+    //    final ArrayAdapter<String> adapterList = new ArrayAdapter<>(this, android.R.layout.simple_list_item_activated_1, filmsPoliciersTitres);
+
+
         setContentView(R.layout.activity_calendrier02);
         listSpectacles =  findViewById(R.id.listViewSpectacle);
 
@@ -84,12 +92,14 @@ public class CalendrierActivity
         SpectacleSQLHelper spectacleSQLHelper =  SpectacleSQLHelper.getInstance(getBaseContext());
 
 
-        List<Spectacle>  spectacles =  spectacleSQLHelper.getAllSpectacles();
+        final List<Spectacle>  spectacles =  spectacleSQLHelper.getAllSpectacles();
 
 
 
         if(spectacles != null && spectacles.size() > 0) {
             spectacleAdapter = new SpectacleAdapter(this, R.layout.ligne_spectacle);
+
+
             for (Spectacle spectacle : spectacles) {
                 Log.i("RPI", "spectacle: " + spectacle);
 
@@ -103,6 +113,27 @@ public class CalendrierActivity
         }
 
             listSpectacles.setAdapter(spectacleAdapter);
+
+            listSpectacles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(CalendrierActivity.this, FicheSpectacleActivity.class);
+
+                    Spectacle spectacle =  spectacles.get(i);
+
+                    System.out.println("spectacle: " + spectacle);
+
+                    Log.i("RPI", "CLick!");
+
+                    Log.i("RPI", "Spectacle  id: " + spectacle.getId());
+
+                    Toast toast = Toast.makeText(getApplicationContext(), "spectacle", Toast.LENGTH_LONG);
+                    toast.show();
+
+                    intent.putExtra("id", String.valueOf(spectacle.getId()));
+                    startActivity(intent);
+                }
+            });
 
          //  final  ArrayAdapter<Spectacle> adapterList = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, spectacles);
 

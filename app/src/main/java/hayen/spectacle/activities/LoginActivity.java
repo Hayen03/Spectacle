@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.dao.UtilisateurSQLHelper;
-import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.data.dao.UtilisateurSQLHelper;
+import hayen.spectacle.data.data.Utilisateur;
 
 public class LoginActivity extends AppCompatActivity {
 

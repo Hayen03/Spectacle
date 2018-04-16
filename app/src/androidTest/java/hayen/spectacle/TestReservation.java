@@ -16,8 +16,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.ReservationSQLHelper;
 //import com.ift2905.reservation.database.entities.Reservation;
 
-import hayen.spectacle.database.dao.ReservationSQLHelper;
-import hayen.spectacle.database.data.Reservation;
+import hayen.spectacle.data.dao.ReservationSQLHelper;
+import hayen.spectacle.data.data.Reservation;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

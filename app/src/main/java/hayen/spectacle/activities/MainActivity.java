@@ -11,13 +11,13 @@ import android.util.Log;
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.DBManager;
-import hayen.spectacle.database.dao.ReservationSQLHelper;
-import hayen.spectacle.database.dao.SectionSQLHelper;
-import hayen.spectacle.database.dao.UtilisateurSQLHelper;
-import hayen.spectacle.database.data.Reservation;
-import hayen.spectacle.database.data.Section;
-import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.data.DBManager;
+import hayen.spectacle.data.dao.ReservationSQLHelper;
+import hayen.spectacle.data.dao.SectionSQLHelper;
+import hayen.spectacle.data.dao.UtilisateurSQLHelper;
+import hayen.spectacle.data.data.Reservation;
+import hayen.spectacle.data.data.Section;
+import hayen.spectacle.data.data.Utilisateur;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,12 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
         Log.i("RPI", "Activity main");
 
-       dbManager =  DBManager.getInstance(this);
+        dbManager =  DBManager.getInstance(this);
 
-    //    dbManager.open();
 
-    ////      dbManager.createDB();
-   //        dbManager.close();
+        dbManager.createDB();
+
 
         Utilisateur user = dbManager.login(this, "ArnaudFournier@dayrep.com", "weWoh9zie");
         UtilisateurSQLHelper dbHelper =   UtilisateurSQLHelper.getInstance(this); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
@@ -62,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        List<Section> sections = SectionSQLHelper.getInstance(this).getAllSections();
+        List<Section> sections = SectionSQLHelper.getInstance(this).getSectionsBySalleId(1);
 
         Log.i("RPI", "Nombre de sections: " + sections.size());
 

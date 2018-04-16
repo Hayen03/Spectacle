@@ -20,21 +20,16 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity android:name=".activities.RecupererMdpActivity" />
         <activity android:name=".activities.NouveauMdpActivity" />
         <activity android:name=".activities.InscriptionActivity" />
-        <activity
-            android:name=".activities.CalendrierActivity"
-            android:label="@string/title_activity_calendrier"
-            android:theme="@style/AppTheme.NoActionBar" >
-
-
+        <activity android:name=".activities.CalendrierActivity">
         </activity>
-        <activity android:name=".activities.MainActivity" >
-
-
-        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
+        <activity android:name=".activities.FicheSpectacleActivity"></activity>
+        <activity android:name=".activities.ReservationActivity"></activity>
     </application>
 
 </manifest>

@@ -21,10 +21,10 @@ import java.util.List;
 //import com.ift2905.reservation.database.entities.Salle;
 
 
-import hayen.spectacle.database.dao.AdresseSQLHelper;
-import hayen.spectacle.database.dao.SalleSQLHelper;
-import hayen.spectacle.database.data.Adresse;
-import hayen.spectacle.database.data.Salle;
+import hayen.spectacle.data.dao.AdresseSQLHelper;
+import hayen.spectacle.data.dao.SalleSQLHelper;
+import hayen.spectacle.data.data.Adresse;
+import hayen.spectacle.data.data.Salle;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

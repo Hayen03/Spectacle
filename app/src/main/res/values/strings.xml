@@ -26,5 +26,5 @@
     <string name="textTitre">Titre</string>
     <string name="textDate">Date</string>
     <string name="textArtiste">Artiste</string>
-    <string name="textCalendrier">Calendrier des spectacles à venir</string>
+    <string name="textCalendrier">Calendrier des spectacles</string>
 </resources>

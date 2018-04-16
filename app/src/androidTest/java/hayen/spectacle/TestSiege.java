@@ -17,8 +17,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SiegeSQLHelper;
 //import com.ift2905.reservation.database.entities.Siege;
 
-import hayen.spectacle.database.dao.SiegeSQLHelper;
-import hayen.spectacle.database.data.Siege;
+import hayen.spectacle.data.dao.SiegeSQLHelper;
+import hayen.spectacle.data.data.Siege;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

@@ -17,8 +17,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SectionSQLHelper;
 //import com.ift2905.reservation.database.entities.Section;
 
-import hayen.spectacle.database.dao.SectionSQLHelper;
-import hayen.spectacle.database.data.Section;
+import hayen.spectacle.data.dao.SectionSQLHelper;
+import hayen.spectacle.data.data.Section;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
