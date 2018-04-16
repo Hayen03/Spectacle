@@ -13,7 +13,6 @@ import android.util.Log;
 
 import hayen.spectacle.data.dao.Constant;
 import hayen.spectacle.data.dao.DatabaseHelper;
-import hayen.spectacle.data.dao.UtilisateurSQLHelper;
 import hayen.spectacle.data.data.Utilisateur;
 
 
@@ -73,7 +72,7 @@ public class DBManager  {
 
     public Utilisateur login(Context context, String login, String motPasse){
 
-        UtilisateurSQLHelper dbHelper =   UtilisateurSQLHelper.getInstance(context); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper =   DatabaseHelper.getInstance(context); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
         Utilisateur utilisateur =  dbHelper.validateLogin(login, motPasse);
 

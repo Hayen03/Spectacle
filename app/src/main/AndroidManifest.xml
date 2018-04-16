@@ -25,7 +25,8 @@
         <activity android:name=".activities.RecupererMdpActivity" />
         <activity android:name=".activities.NouveauMdpActivity" />
         <activity android:name=".activities.InscriptionActivity" />
-        <activity android:name=".activities.CalendrierActivity">
+        <activity android:name=".activities.CalendrierActivity"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity android:name=".activities.MainActivity"></activity>
         <activity android:name=".activities.FicheSpectacleActivity"></activity>

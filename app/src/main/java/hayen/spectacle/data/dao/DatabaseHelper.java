@@ -14,17 +14,18 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import hayen.spectacle.database.data.Adresse;
-import hayen.spectacle.database.data.Artiste;
-import hayen.spectacle.database.data.CarteCredit;
-import hayen.spectacle.database.data.Genre;
-import hayen.spectacle.database.data.Paiement;
-import hayen.spectacle.database.data.Reservation;
-import hayen.spectacle.database.data.Salle;
-import hayen.spectacle.database.data.Section;
-import hayen.spectacle.database.data.Siege;
-import hayen.spectacle.database.data.Spectacle;
-import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.data.data.Adresse;
+import hayen.spectacle.data.data.Artiste;
+import hayen.spectacle.data.data.CarteCredit;
+import hayen.spectacle.data.data.Genre;
+import hayen.spectacle.data.data.Paiement;
+import hayen.spectacle.data.data.Reservation;
+import hayen.spectacle.data.data.Salle;
+import hayen.spectacle.data.data.Section;
+import hayen.spectacle.data.data.Siege;
+import hayen.spectacle.data.data.Spectacle;
+import hayen.spectacle.data.data.SpectacleSection;
+import hayen.spectacle.data.data.Utilisateur;
 
 
 public class DatabaseHelper extends SQLiteOpenHelper{
@@ -1359,6 +1360,44 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return section;
 
     }
+    public List<Section> getSectionsBySalleId(int salleId) {
+
+        database = this.getReadableDatabase();
+
+        List<Section> sections = null;
+
+        String selectQuery = "SELECT  * FROM " + Section.TABLE_NAME +
+                " where "+ Section.COLUMN_SALLE_ID +"=" + salleId;
+
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        Log.i("RPI", "Section count: " + cursor.getCount());
+        if (cursor != null && cursor.moveToFirst()) {
+
+            sections = new ArrayList<>();
+
+            do {
+
+
+                Section section = new Section();
+                section.setId(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_ID)));
+                section.setName(cursor.getString(cursor.getColumnIndex(Section.COLUMN_NAME)));
+                section.setCategorie(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_CATEGORIE)));
+                section.setNbSieges(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_NB_SIEGES)));
+                section.setSalleId(cursor.getInt(cursor.getColumnIndex(Section.COLUMN_SALLE_ID)));
+
+                sections.add(section);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+
+        close();
+
+        return sections;
+    }
     public List<Section> getAllSections() {
 
         database = this.getReadableDatabase();
@@ -1457,6 +1496,86 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return result;
+    }
+    public List<Integer> getFreePlacesBySections(int spectacleId) {
+
+        database = this.getReadableDatabase();
+
+        List<Integer> freeSieges = null;
+
+        // String selectQuery = "SELECT  * FROM " + SpectacleSection.TABLE_NAME +
+        //        " where "+ SpectacleSection.COLUMN_SPECTACLE_ID +"=" + spectacleId;
+        String selectQuery =
+                "select count(*) as nb_libres" +
+
+                        " from siege " +
+                        " inner join spectacle_siege as SPSI on SPSI.id_siege=siege.id " +
+                        " inner join section on section.id=siege.id_section " +
+                        " where SPSI.id_spectacle=1 and SPSI.reserve=0 " +
+                        " group by section.id " +
+                        " order by section.id asc "
+                ;
+
+        ;
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        Log.i("RPI", "Section count: " + cursor.getCount());
+        if (cursor != null && cursor.moveToFirst()) {
+
+            freeSieges= new ArrayList<>();
+
+            do {
+
+
+                int nbSieges = cursor.getInt(cursor.getColumnIndex("nb_libres"));
+                freeSieges.add(nbSieges);
+                Log.i("RPI", "nbSieges: " + nbSieges);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+
+        close();
+
+        return freeSieges;
+    }
+    public List<SpectacleSection> getSectionsBySpectacleId(int spectacleId) {
+
+        database = this.getReadableDatabase();
+
+        List<SpectacleSection> spectacleSections = null;
+
+        String selectQuery = "SELECT  * FROM " + SpectacleSection.TABLE_NAME +
+                " where "+ SpectacleSection.COLUMN_SPECTACLE_ID +"=" + spectacleId;
+
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        Log.i("RPI", "Section count: " + cursor.getCount());
+        if (cursor != null && cursor.moveToFirst()) {
+
+            spectacleSections = new ArrayList<>();
+
+            do {
+
+
+                SpectacleSection spectacleSection = new SpectacleSection();
+                spectacleSection.setSpectacleId(cursor.getInt(cursor.getColumnIndex(SpectacleSection.COLUMN_SPECTACLE_ID)));
+                spectacleSection.setSectionid(cursor.getInt(cursor.getColumnIndex(SpectacleSection.COLUMN_SECTION_ID)));
+                spectacleSection.setPrice(cursor.getFloat(cursor.getColumnIndex(SpectacleSection.COLUMN_PRICE)));
+
+
+                spectacleSections.add(spectacleSection);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+
+        close();
+
+        return spectacleSections;
     }
 
     // Siege
@@ -1582,6 +1701,40 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+    public List<Siege> getAllSiegesBySalle(int salleId) {
+
+        database = this.getReadableDatabase();
+
+        List<Siege> sieges = null;
+
+        String selectQuery = "SELECT  * FROM " + Siege.TABLE_NAME + " ORDER BY " +
+                Siege.COLUMN_RANGEE + ", " + Siege.COLUMN_COLUMN + " ASC";
+
+        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            sieges = new ArrayList<>();
+
+            do {
+                Siege siege = new Siege();
+                siege.setId(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_ID)));
+                siege.setRangee(cursor.getString(cursor.getColumnIndex(Siege.COLUMN_RANGEE)));
+                siege.setColonne(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_COLUMN)));
+                siege.setSectionId(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_SECTION_ID)));
+
+                sieges.add(siege);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+
+        close();
+
+        return sieges;
+    }
 
     // SPECTACLE
     public Spectacle getSpectacleById(int id) {
@@ -1603,6 +1756,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)),
                     cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)),
                     cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)),
+                    cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)),
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)),
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
 

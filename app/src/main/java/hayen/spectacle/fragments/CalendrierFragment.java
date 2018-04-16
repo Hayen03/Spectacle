@@ -1,6 +1,7 @@
 package hayen.spectacle.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -8,15 +9,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.dao.DatabaseHelper;
-import hayen.spectacle.database.data.Artiste;
-import hayen.spectacle.database.data.Spectacle;
-import hayen.spectacle.database.data.SpectacleAdapter;
+import hayen.spectacle.activities.CalendrierActivity;
+import hayen.spectacle.activities.FicheSpectacleActivity;
+import hayen.spectacle.data.dao.DatabaseHelper;
+import hayen.spectacle.data.data.Artiste;
+import hayen.spectacle.data.data.Spectacle;
+import hayen.spectacle.data.data.SpectacleAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -70,7 +75,7 @@ public class CalendrierFragment extends Fragment {
         listSpectacles = view.findViewById(R.id.listViewSpectacle);
 
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity().getBaseContext());
-        List<Spectacle> spectacles = dbHelper.getAllSpectacles();
+        final List<Spectacle> spectacles = dbHelper.getAllSpectacles();
 
         if(spectacles != null && spectacles.size() > 0) {
             spectacleAdapter = new SpectacleAdapter(this.getActivity(), R.layout.ligne_spectacle);
@@ -88,26 +93,10 @@ public class CalendrierFragment extends Fragment {
 
         listSpectacles.setAdapter(spectacleAdapter);
 
+        
+
         // Inflate the layout for this fragment
         return view;
-
-
-        //  final  ArrayAdapter<Spectacle> adapterList = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, spectacles);
-
-
-
-        //     ListView listViewSpectacle = (ListView) findViewById(R.id.listViewSpectacle);
-//
-        //         listViewSpectacle.setAdapter(adapterList);
-
-        //         listViewSpectacle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                    Log.i("ENI", "Position " + String.valueOf(position));
-//                    String titre = adapterList.getItem(position).getTitre();
-//                    Log.i("ENI", "Titre : " + titre);
-//                }
-//            });        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

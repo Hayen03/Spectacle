@@ -13,8 +13,8 @@ import android.widget.EditText;
 
 import hayen.spectacle.R;
 import hayen.spectacle.activities.CalendrierActivity;
-import hayen.spectacle.database.dao.DatabaseHelper;
-import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.data.dao.DatabaseHelper;
+import hayen.spectacle.data.data.Utilisateur;
 import hayen.spectacle.util.Constant;
 import hayen.spectacle.util.Util;
 

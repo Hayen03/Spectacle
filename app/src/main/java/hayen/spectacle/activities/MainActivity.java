@@ -12,9 +12,7 @@ import java.util.List;
 
 import hayen.spectacle.R;
 import hayen.spectacle.data.DBManager;
-import hayen.spectacle.data.dao.ReservationSQLHelper;
-import hayen.spectacle.data.dao.SectionSQLHelper;
-import hayen.spectacle.data.dao.UtilisateurSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Reservation;
 import hayen.spectacle.data.data.Section;
 import hayen.spectacle.data.data.Utilisateur;
@@ -40,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         Utilisateur user = dbManager.login(this, "ArnaudFournier@dayrep.com", "weWoh9zie");
-        UtilisateurSQLHelper dbHelper =   UtilisateurSQLHelper.getInstance(this); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper =   DatabaseHelper.getInstance(this); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
 
         String courriel = "ArnaudFournier@dayrep.com";
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        List<Section> sections = SectionSQLHelper.getInstance(this).getSectionsBySalleId(1);
+        List<Section> sections = DatabaseHelper.getInstance(this).getSectionsBySalleId(1);
 
         Log.i("RPI", "Nombre de sections: " + sections.size());
 
@@ -70,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        List<Reservation> reservations = ReservationSQLHelper.getInstance(this).getAllReservations();
+        List<Reservation> reservations = DatabaseHelper.getInstance(this).getAllReservations();
 
         for (Reservation reservation: reservations) {
             Log.i("RPI", "reservation: " + reservation);

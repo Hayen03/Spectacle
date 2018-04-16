@@ -11,7 +11,7 @@ import android.widget.Toast;
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.data.dao.SectionSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Section;
 import hayen.spectacle.data.data.SectionAdapter;
 import hayen.spectacle.data.data.SpectacleSection;
@@ -51,17 +51,17 @@ public class ReservationActivity extends AppCompatActivity {
 
 
 
-        SectionSQLHelper sectionSQLHelper =  SectionSQLHelper.getInstance(this);
+        DatabaseHelper dbHelper =  DatabaseHelper.getInstance(this);
 
 
-        List<Section> sections = sectionSQLHelper.getSectionsBySalleId(1);
+        List<Section> sections = dbHelper.getSectionsBySalleId(1);
 
         for (Section section: sections) {
             Log.i("RPI", "section: " + section);
         }
 
 
-        List<SpectacleSection> spectacleSections =  sectionSQLHelper.getSectionsBySpectacleId(Integer.parseInt(id));
+        List<SpectacleSection> spectacleSections =  dbHelper.getSectionsBySpectacleId(Integer.parseInt(id));
         for (SpectacleSection spectacleSection: spectacleSections) {
             Log.i("RPI", "spectacleSection" + spectacleSection);
         }

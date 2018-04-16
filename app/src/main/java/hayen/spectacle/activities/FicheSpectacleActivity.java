@@ -16,9 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.data.dao.GenreSQLHelper;
-import hayen.spectacle.data.dao.SalleSQLHelper;
-import hayen.spectacle.data.dao.SpectacleSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Artiste;
 import hayen.spectacle.data.data.Genre;
 import hayen.spectacle.data.data.Salle;
@@ -47,14 +45,12 @@ public class FicheSpectacleActivity extends AppCompatActivity {
         toast.show();
 
 
-        SpectacleSQLHelper spectacleSQLHelper =  SpectacleSQLHelper.getInstance(this);
-        final Spectacle spectacle = spectacleSQLHelper.getSpectacleById(Integer.valueOf(id));
+        DatabaseHelper dbHelper =  DatabaseHelper.getInstance(this);
+        final Spectacle spectacle = dbHelper.getSpectacleById(Integer.valueOf(id));
 
-        GenreSQLHelper genreSQLHelper = GenreSQLHelper.getInstance(this);
-        Genre genre =  genreSQLHelper.getGenreById(spectacle.getGenreId());
+        Genre genre =  dbHelper.getGenreById(spectacle.getGenreId());
 
-        SalleSQLHelper salleSQLHelper =  SalleSQLHelper.getInstance(this);
-        Salle salle =  salleSQLHelper.getSalleById(spectacle.getSalleId());
+        Salle salle =  dbHelper.getSalleById(spectacle.getSalleId());
 
 
 
@@ -98,7 +94,7 @@ public class FicheSpectacleActivity extends AppCompatActivity {
         textViewDuree =  findViewById(R.id.ficheTxtDuree);
         textViewDuree.setText(spectacle.getDuree() + " min.");
 
-        final List<Artiste> artistes =  spectacleSQLHelper.getAllArtistesBySpectacleId(spectacle.getId());
+        final List<Artiste> artistes =  dbHelper.getAllArtistesBySpectacleId(spectacle.getId());
 
         for (Artiste artiste: artistes) {
             Log.i("RPI", "artiste: " + artiste);
@@ -113,38 +109,38 @@ public class FicheSpectacleActivity extends AppCompatActivity {
         if(artistes != null && size > 0){
 
             TextView textArtisteTitle =  findViewById(R.id.ficheTxtArtisteTitle);
-            textArtisteTitle.setVisibility(1);
+            textArtisteTitle.setVisibility(View.VISIBLE);
 
             TextView txtArtiste01 =  findViewById(R.id.ficheTxtViewArtiste01);
             txtArtiste01.setText(artistes.get(0).getFullName());
-            txtArtiste01.setVisibility(1);
+            txtArtiste01.setVisibility(View.VISIBLE);
 
 
             if(size > 1){
                 TextView txtArtiste02 =  findViewById(R.id.ficheTxtViewArtiste02);
                 txtArtiste02.setText(artistes.get(1).getFullName());
-                txtArtiste02.setVisibility(1);
+                txtArtiste02.setVisibility(View.VISIBLE);
             }
 
             if(size > 2){
                 TextView txtArtiste03 =  findViewById(R.id.ficheTxtViewArtiste03);
                 txtArtiste03.setText(artistes.get(2).getFullName());
-                txtArtiste03.setVisibility(1);
+                txtArtiste03.setVisibility(View.VISIBLE);
             }
             if(size > 3){
                 TextView txtArtiste04 =  findViewById(R.id.ficheTxtViewArtiste04);
                 txtArtiste04.setText(artistes.get(3).getFullName());
-                txtArtiste04.setVisibility(1);
+                txtArtiste04.setVisibility(View.VISIBLE);
             }
             if(size > 4){
                 TextView txtArtiste05 =  findViewById(R.id.ficheTxtViewArtiste05);
                 txtArtiste05.setText(artistes.get(4).getFullName());
-                txtArtiste05.setVisibility(1);
+                txtArtiste05.setVisibility(View.VISIBLE);
             }
             if(size > 5){
                 TextView txtArtiste06 =  findViewById(R.id.ficheTxtViewArtiste06);
                 txtArtiste06.setText(artistes.get(5).getFullName());
-                txtArtiste06.setVisibility(1);
+                txtArtiste06.setVisibility(View.VISIBLE);
             }
 
 

@@ -17,7 +17,7 @@ import java.util.Date;
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.data.dao.SectionSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 
 /**
  * Created by daristote on 18-04-13.
@@ -46,10 +46,10 @@ public class SectionAdapter extends ArrayAdapter {
         SpectacleSection spectacleSection = (SpectacleSection)getItem(position);
         Log.i("RPI", "spectacleSection: " + spectacleSection);
 
-        SectionSQLHelper sectionSQLHelper =  SectionSQLHelper.getInstance(getContext());
-        List<Section> sections = sectionSQLHelper.getSectionsBySalleId(1);
+        DatabaseHelper dbHelper =  DatabaseHelper.getInstance(getContext());
+        List<Section> sections = dbHelper.getSectionsBySalleId(1);
 
-        List<Integer> nbPlacesLibres = sectionSQLHelper.getFreePlacesBySections(spectacleSection.getSpectacleId());
+        List<Integer> nbPlacesLibres = dbHelper.getFreePlacesBySections(spectacleSection.getSpectacleId());
 
 
         for (Integer nb: nbPlacesLibres) {

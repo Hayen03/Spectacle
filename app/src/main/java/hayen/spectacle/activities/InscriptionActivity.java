@@ -13,9 +13,9 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.dao.DatabaseHelper;
-import hayen.spectacle.database.data.Adresse;
-import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.data.dao.DatabaseHelper;
+import hayen.spectacle.data.data.Adresse;
+import hayen.spectacle.data.data.Utilisateur;
 import hayen.spectacle.util.Constant;
 import hayen.spectacle.util.Util;
 
