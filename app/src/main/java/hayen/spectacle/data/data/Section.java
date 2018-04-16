@@ -15,14 +15,14 @@ public class Section {
 
 
 
-//    public static final String CREATE_TABLE_SECTION =
-//            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME +
-//                    " ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    COLUMN_NAME + " VARCHAR(30), " +
-//                    COLUMN_CATEGORIE + " INTEGER, " +
-//                    COLUMN_NB_SIEGES + " INTEGER DEFAULT 0, " +
-//                    COLUMN_SALLE_ID + " INTEGER, " +
-//                    " FOREIGN KEY ("+COLUMN_SALLE_ID+") REFERENCES "+TABLE_NAME_REF_SALLE+"("+COLUMN_ID+"))";
+    public static final String CREATE_TABLE_SECTION =
+            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME +
+                    " ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NAME + " VARCHAR(30), " +
+                    COLUMN_CATEGORIE + " INTEGER, " +
+                    COLUMN_NB_SIEGES + " INTEGER DEFAULT 0, " +
+                    COLUMN_SALLE_ID + " INTEGER, " +
+                    " FOREIGN KEY ("+COLUMN_SALLE_ID+") REFERENCES "+Salle.TABLE_NAME+"("+COLUMN_ID+"))";
 
 
     private int id;

@@ -13,11 +13,11 @@ public class Artiste {
     public static final String COLUMN_FIRSTNAME = "prenom";
     public static final String COLUMN_LASTNAME = "nom";
 
-//    public static final String CREATE_TABLE_ARTISTE =
-//            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-//            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//            COLUMN_FIRSTNAME + " VARCHAR(30) NOT NULL, " +
-//            COLUMN_LASTNAME + " VARCHAR(30))";
+    public static final String CREATE_TABLE_ARTISTE =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_FIRSTNAME + " VARCHAR(30) NOT NULL, " +
+            COLUMN_LASTNAME + " VARCHAR(30))";
 
 
     private int id;

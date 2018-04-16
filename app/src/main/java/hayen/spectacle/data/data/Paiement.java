@@ -14,9 +14,9 @@ public class Paiement {
 
     public static final String COLUMN_RESERVATION_ID = "id_reservation";
 
-//    public static final String CREATE_TABLE_PAIEMENT =
-//                "CREATE TABLE IF NOT EXISTS paiement (id INTEGER PRIMARY KEY AUTOINCREMENT, montant FLOAT DEFAULT 0.0, reservation_id INTEGER, " +
-//                        " date_paiement DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (reservation_id) REFERENCES reservation(id))";
+    public static final String CREATE_TABLE_PAIEMENT =
+                "CREATE TABLE IF NOT EXISTS paiement (id INTEGER PRIMARY KEY AUTOINCREMENT, montant FLOAT DEFAULT 0.0, reservation_id INTEGER, " +
+                        " date_paiement DATETIME DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (reservation_id) REFERENCES reservation(id))";
 
 
     private int id;

@@ -15,14 +15,14 @@ public class Reservation {
     public static final String COLUMN_USER_ID = "id_utilisateur";
     public static final String COLUMN_SPECTACLE_ID = "id_spectacle";
 
-//    public static final String CREATE_TABLE_RESERVATION =
-//            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-//                    " ("+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    COLUMN_NUMERO_CONFIRMATION  + "VARCHAR(20) UNIQUE NOT NULL, " +
-//                    COLUMN_DATE_RESERVATION +" DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-//                    COLUMN_USER_ID + " INTEGER NOT NULL, spectacle_id INTEGER NOT NULL, " +
-//                    " FOREIGN KEY (" +COLUMN_USER_ID+ ") REFERENCES utilisateur(id), " +
-//                    " FOREIGN KEY (" +COLUMN_SPECTACLE_ID + ") REFERENCES spectacle(id))";
+    public static final String CREATE_TABLE_RESERVATION =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                    " ("+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_NUMERO_CONFIRMATION  + "VARCHAR(20) UNIQUE NOT NULL, " +
+                    COLUMN_DATE_RESERVATION +" DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    COLUMN_USER_ID + " INTEGER NOT NULL, spectacle_id INTEGER NOT NULL, " +
+                    " FOREIGN KEY (" +COLUMN_USER_ID+ ") REFERENCES utilisateur(id), " +
+                    " FOREIGN KEY (" +COLUMN_SPECTACLE_ID + ") REFERENCES spectacle(id))";
 
 
 

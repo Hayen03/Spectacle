@@ -9,10 +9,10 @@ public class Genre {
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_NAME = "nom";
 
-//    public static final String CREATE_TABLE_GENRE =
-//            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+
-//            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//            COLUMN_NAME + " VARCHAR(30) NOT NULL)";
+    public static final String CREATE_TABLE_GENRE =
+            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+
+            " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_NAME + " VARCHAR(30) NOT NULL)";
 
 
     private int id;

@@ -108,25 +108,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
-            <EditText
-                android:id="@+id/provinceEditText"
+            <Spinner
+                android:id="@+id/provinceSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="Province"
-                android:inputType="textShortMessage|textPersonName|textPostalAddress" />
+                android:layout_height="wrap_content" />
 
             <Space
                 android:layout_width="match_parent"
                 android:layout_height="16dp" />
 
             <EditText
-                android:id="@+id/paysEditText"
+                android:id="@+id/codePostalEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Pays"
-                android:inputType="textShortMessage|textPersonName|textPostalAddress" />
+                android:hint="Code postal"
+                android:inputType="textShortMessage|textPostalAddress" />
 
             <Space
                 android:layout_width="match_parent"

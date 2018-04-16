@@ -17,10 +17,10 @@ public class Salle {
     public static final String COLUMN_DESCRIPTION = "description";
 
 
-//    public static final String CREATE_TABLE_SALLE =
-//
-//                "CREATE TABLE IF NOT EXISTS salle (id INTEGER PRIMARY KEY AUTOINCREMENT, nom VARCHAR(30), telephone VARCHAR(20), fax VARCHAR(30), " +
-//                        " courriel VARCHAR(30), description TEXT, adresse_id INTEGER, FOREIGN KEY (adresse_id) REFERENCES adresse(id)) ";
+    public static final String CREATE_TABLE_SALLE =
+
+                "CREATE TABLE IF NOT EXISTS salle (id INTEGER PRIMARY KEY AUTOINCREMENT, nom VARCHAR(30), telephone VARCHAR(20), fax VARCHAR(30), " +
+                        " courriel VARCHAR(30), description TEXT, adresse_id INTEGER, FOREIGN KEY (adresse_id) REFERENCES adresse(id)) ";
 
 
     private int id;
