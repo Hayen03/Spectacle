@@ -1,5 +1,6 @@
 package hayen.spectacle.activities;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,7 +17,9 @@ import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 
 import hayen.spectacle.R;
+import hayen.spectacle.database.data.Utilisateur;
 import hayen.spectacle.fragments.CalendrierFragment;
+import hayen.spectacle.fragments.ChangerMdpFragment;
 import hayen.spectacle.fragments.InfoFragment;
 import hayen.spectacle.fragments.ProfilFragment;
 import hayen.spectacle.fragments.RechercheFragment;
@@ -29,12 +32,14 @@ public class CalendrierActivity
                     ProfilFragment.OnFragmentInteractionListener,
                     RechercheFragment.OnFragmentInteractionListener,
                     ReservationFragment.OnFragmentInteractionListener,
-                    NavigationView.OnNavigationItemSelectedListener
+                    NavigationView.OnNavigationItemSelectedListener,
+                    ChangerMdpFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout drawer;
 
     private State fragState = null;
+    private boolean override = false;
     private Fragment currFrag = null;
 
     @Override
@@ -107,20 +112,9 @@ public class CalendrierActivity
     }
 
     private Fragment loadFragment(State frag){
-        if (fragState != frag) {
-            Fragment fragment = null;
-            Class fragmentClass = null;
-            fragmentClass = frag.fragClass;
-            try {
-                fragment = (Fragment) fragmentClass.newInstance();
-                nothing();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-            FragmentManager fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.fragcontent, fragment).commit();
-            return fragment;
+        if (fragState != frag || override) {
+            fragState = frag;
+            return replaceFrag(frag.fragClass);
         }
         return currFrag;
     }
@@ -139,4 +133,46 @@ public class CalendrierActivity
     }
 
     void nothing(){}
+
+    public void restore(){
+        if (override) {
+            if (fragState != null)
+                loadFragment(fragState);
+            else
+                loadFragment(State.calendrier);
+            override = false;
+        }
+    }
+    public Fragment overrideFragment(Class fragClass){
+        if (!Fragment.class.isAssignableFrom(fragClass)){
+            throw new IllegalArgumentException("fragClass doit etre une implementation de Fragment");
+        }
+
+        override = true;
+        return replaceFrag(fragClass, true);
+    }
+    private Fragment replaceFrag(Class fragClass, boolean backstack){
+        Fragment fragment = null;
+        try {
+            fragment = (Fragment) fragClass.newInstance();
+            nothing();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (backstack)
+            transaction.addToBackStack(null);
+        transaction.replace(R.id.fragcontent, fragment).commit();
+        return fragment;
+    }
+    private Fragment replaceFrag(Class fragClass){
+        return replaceFrag(fragClass, false);
+    }
+
+    public Utilisateur getCurrentUser(){
+        return Utilisateur.bidon;
+    }
 }

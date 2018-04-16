@@ -4,6 +4,7 @@ package hayen.spectacle.database.data;
 
 
 public class Adresse {
+    public static final Adresse bidon = new Adresse(-1, 1234, "rue Bidon", "Bidonville", "QC", "A1B 2C3", 0, 0);
 
     public static final String TABLE_NAME = "adresse";
 
@@ -15,15 +16,6 @@ public class Adresse {
     public static final String COLUMN_CODE_POSTAL = "code_postal";
     public static final String COLUMN_LONGITUDE = "longitude";
     public static final String COLUMN_LATITUDE = "latitude";
-
-
-
-    public static final String CREATE_TABLE_ADRESSE =
-            "CREATE TABLE IF NOT EXISTS adresse " +
-                    " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    " numero INTEGER NOT NULL, rue VARCHAR(60) NOT NULL, " +
-                    " ville VARCHAR(60) NOT NULL, province VARCHAR(2) NOT NULL, " +
-                    " code_postal VARCHAR(10) NOT NULL, longitude LONG DEFAULT 0, latitude LONG DEFAULT 0)";
 
 
     private int id;

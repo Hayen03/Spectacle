@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import hayen.spectacle.R;
@@ -23,6 +25,12 @@ public class InscriptionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inscription);
+
+        Spinner provinces = (Spinner) findViewById(R.id.provinceSpinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.provinces_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        provinces.setAdapter(adapter);
     }
 
     public void inscrit(View view) {
@@ -34,8 +42,9 @@ public class InscriptionActivity extends AppCompatActivity {
         String confirmMdp = ((EditText) findViewById(R.id.confirmMdpEditText)).getText().toString();
         String adresse = ((EditText) findViewById(R.id.adresseEditText)).getText().toString();
         String ville = ((EditText) findViewById(R.id.villeEditText)).getText().toString();
-        String province = ((EditText) findViewById(R.id.provinceEditText)).getText().toString();
-        String pays = ((EditText) findViewById(R.id.paysEditText)).getText().toString();
+//        String province = ((EditText) findViewById(R.id.provinceEditText)).getText().toString();
+        String province = (String) ((Spinner) findViewById(R.id.provinceSpinner)).getSelectedItem();
+        String cp = ((EditText) findViewById(R.id.codePostalEditText)).getText().toString();
         String phone = ((EditText) findViewById(R.id.telephoneEditText)).getText().toString();
 
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(getBaseContext());
@@ -70,8 +79,14 @@ public class InscriptionActivity extends AppCompatActivity {
             return;
         }
 
+        // 5-6. S'assurer que le code postal est valide
+        if (!cp.matches("[A-Z]\\d[A-Z] \\d[A-Z]\\d")){
+            alertInsc("Veuillez remplir un code postal valide");
+            return;
+        }
+
         // 6. s'assurer qu'aucun champ ne soit vide
-        for (String str : new String[]{prenom, nom, adresse, ville, province, pays}){
+        for (String str : new String[]{prenom, nom, adresse, ville, province}){
             if (str.equals("")){
                 alertInsc("Veuillez remplir tout les champs");
                 return;
@@ -95,7 +110,7 @@ public class InscriptionActivity extends AppCompatActivity {
         catch (ArrayIndexOutOfBoundsException e){
             Log.i("Insc", "Nom de rue manquant, utilise le nom par defaut de rien pentoute");
         }
-        Adresse adr = new Adresse(0, num, rue, ville, province, /*pas d'entree pour le code postal*/ "", 0, 0);
+        Adresse adr = new Adresse(0, num, rue, ville, province, cp, 0, 0);
         long user_id = -1;
         if (Constant.fightLaDB) {
             long adr_id = dbHelper.addAdresse(adr);

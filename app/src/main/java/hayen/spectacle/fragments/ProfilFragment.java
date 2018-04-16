@@ -7,8 +7,15 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import hayen.spectacle.R;
+import hayen.spectacle.activities.CalendrierActivity;
+import hayen.spectacle.database.dao.DatabaseHelper;
+import hayen.spectacle.database.data.Adresse;
+import hayen.spectacle.database.data.Utilisateur;
+import hayen.spectacle.util.Constant;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,12 +28,10 @@ import hayen.spectacle.R;
 public class ProfilFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_USER_ID = "user_id";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private int user_id = -1;
 
     private OnFragmentInteractionListener mListener;
 
@@ -38,16 +43,14 @@ public class ProfilFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param user_id l'id de l'utilisateur a afficher.
      * @return A new instance of fragment ProfilFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProfilFragment newInstance(String param1, String param2) {
+    public static ProfilFragment newInstance(int user_id) {
         ProfilFragment fragment = new ProfilFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putInt(ARG_USER_ID, user_id);
         fragment.setArguments(args);
         return fragment;
     }
@@ -56,16 +59,59 @@ public class ProfilFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            user_id = getArguments().getInt(ARG_USER_ID);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profil, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_profil, container, false);
+
+        // 1. trouver l'utilisateur et l'adresse
+        Utilisateur user = Utilisateur.bidon;
+        Adresse adresse = Adresse.bidon;
+        if (Constant.fightLaDB && user_id != -1){
+            DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
+            Utilisateur user2 = dbHelper.getUtilisateurById(user_id);
+            if (user2 != null) {
+                user = user2;
+                Adresse adr2 = dbHelper.getAdresseById(user.getAdresseId());
+                if (adr2 != null)
+                    adresse = adr2;
+            }
+        }
+
+        // 2. afficher les informations
+        TextView    nomTV = view.findViewById(R.id.nomTextView),
+                    emailTV = view.findViewById(R.id.emailTextView),
+                    phoneTV = view.findViewById(R.id.phoneTextView),
+                    adresseTV = view.findViewById(R.id.adresseTextView),
+                    villeTV = view.findViewById(R.id.villeTextView),
+                    provinceTV = view.findViewById(R.id.provinceTextView),
+                    codeTV = view.findViewById(R.id.codeTextView);
+        nomTV.setText(String.format("%s, %s", user.getNom(), user.getPrenom()));
+        emailTV.setText(String.format("Email: %s", user.getCourriel()));
+        phoneTV.setText(String.format("Téléphone: %s", user.getTelephone()));
+        adresseTV.setText(String.format("Adresse: %d, %s", adresse.getNumero(), adresse.getRue()));
+        villeTV.setText(String.format("Ville: %s", adresse.getVille()));
+        provinceTV.setText(String.format("Province: %s", adresse.getProvince()));
+        codeTV.setText(String.format("Code postal: %s", adresse.getCodePostal()));
+
+        // 3. ajouter les listeners au boutons
+        ((Button) view.findViewById(R.id.modifierInfoButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modifierInfo(v);
+            }
+        });
+        ((Button) view.findViewById(R.id.modifierMdpButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modifierMdp(v);
+            }
+        });
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -105,5 +151,13 @@ public class ProfilFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void modifierInfo(View view){
+
+    }
+
+    public void modifierMdp(View view){
+        ((CalendrierActivity) getActivity()).overrideFragment(ChangerMdpFragment.class);
     }
 }

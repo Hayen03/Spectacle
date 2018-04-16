@@ -27,4 +27,20 @@
     <string name="textDate">Date</string>
     <string name="textArtiste">Artiste</string>
     <string name="textCalendrier">Calendrier des spectacles à venir</string>
+
+    <string-array name="provinces_array">
+        <item>AL</item>
+        <item>BC</item>
+        <item>MB</item>
+        <item>NB</item>
+        <item>NL</item>
+        <item>NS</item>
+        <item>NT</item>
+        <item>NU</item>
+        <item>ON</item>
+        <item>PE</item>
+        <item>QC</item>
+        <item>SK</item>
+        <item>YT</item>
+    </string-array>
 </resources>
