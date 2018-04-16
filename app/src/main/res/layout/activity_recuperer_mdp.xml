@@ -10,12 +10,14 @@
         android:id="@+id/sendRecupMdpButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:onClick="send"
         android:text="Envoyer"
-        app:layout_constraintEnd_toEndOf="@+id/emailRecupMdpEditText"
-        app:layout_constraintStart_toStartOf="@+id/emailRecupMdpEditText"
-        app:layout_constraintTop_toBottomOf="@+id/emailRecupMdpEditText" />
+        app:layout_constraintEnd_toEndOf="@+id/emailEditText"
+        app:layout_constraintStart_toStartOf="@+id/emailEditText"
+        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
     <TextView
         android:id="@+id/instructionsRecupMdpTextView"
@@ -33,11 +35,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/emailRecupMdpEditText"
-        android:layout_width="wrap_content"
+        android:id="@+id/emailEditText"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
         android:layout_marginTop="64dp"
         android:ems="10"
         android:hint="Adresse couriel"
