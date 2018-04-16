@@ -17,7 +17,6 @@ import java.util.List;
 
 import hayen.spectacle.R;
 import hayen.spectacle.activities.CalendrierActivity;
-import hayen.spectacle.activities.FicheSpectacleActivity;
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Artiste;
 import hayen.spectacle.data.data.Spectacle;

@@ -73,7 +73,7 @@ public class ReserverFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.activity_reservation, container, false);
+        View view = inflater.inflate(R.layout.fragment_reserver, container, false);
 
         // 1. trouver et initialiser les champs
         textViewTitre = view.findViewById(R.id.reservationSpecTitre);

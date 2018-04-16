@@ -118,6 +118,7 @@ public class CalendrierActivity
     }
 
     private Fragment loadFragment(State frag){
+        clearBackStack();
         if (fragState != frag || override) {
             fragState = frag;
             return replaceFrag(frag.fragClass);
@@ -183,6 +184,12 @@ public class CalendrierActivity
     }
     private Fragment replaceFrag(Class fragClass){
         return replaceFrag(fragClass, false);
+    }
+    private void clearBackStack(){
+        FragmentManager fm = getFragmentManager();
+        for(int i = 0; i < fm.getBackStackEntryCount(); ++i) {
+            fm.popBackStack();
+        }
     }
 
     public Utilisateur getCurrentUser(){

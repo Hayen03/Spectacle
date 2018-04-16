@@ -106,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void login(View view){
         Intent intent = new Intent(this, CalendrierActivity.class);
+        intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
         startActivity(intent);
     }
 
