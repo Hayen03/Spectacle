@@ -26,6 +26,7 @@ import hayen.spectacle.fragments.ModifierInfoFragment;
 import hayen.spectacle.fragments.ProfilFragment;
 import hayen.spectacle.fragments.RechercheFragment;
 import hayen.spectacle.fragments.ReservationFragment;
+import hayen.spectacle.fragments.ReserverFragment;
 
 public class CalendrierActivity
         extends     AppCompatActivity
@@ -37,7 +38,8 @@ public class CalendrierActivity
                     NavigationView.OnNavigationItemSelectedListener,
                     ChangerMdpFragment.OnFragmentInteractionListener,
                     FicheFragment.OnFragmentInteractionListener,
-                    ModifierInfoFragment.OnFragmentInteractionListener
+                    ModifierInfoFragment.OnFragmentInteractionListener,
+                    ReserverFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout drawer;

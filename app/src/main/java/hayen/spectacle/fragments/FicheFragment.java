@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 import hayen.spectacle.R;
+import hayen.spectacle.activities.CalendrierActivity;
 import hayen.spectacle.activities.FicheSpectacleActivity;
 import hayen.spectacle.activities.ReservationActivity;
 import hayen.spectacle.data.dao.DatabaseHelper;
@@ -185,14 +186,8 @@ public class FicheFragment extends Fragment {
             public void onClick(View view) {
                 Log.i("RPI", "clic: " + spectacle.getId());
 
-                /*
-                Intent intent = new Intent(FicheSpectacleActivity.this, ReservationActivity.class);
-                intent.putExtra("id", String.valueOf(spectacle.getId()));
-                intent.putExtra("titre", spectacle.getTitre());
-                intent.putExtra("date", formatedDate);
-
-                startActivity(intent);
-                */
+                Fragment frag = ReserverFragment.newInstance(spectacle);
+                ((CalendrierActivity)getActivity()).overrideFragment(frag);
             }
         });
 
