@@ -20,17 +20,18 @@ public class Utilisateur {
 
 
 
-//    public static final String CREATE_TABLE_UTILISATEUR =
-//
-//            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME +
-//                    " ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    COLUMN_PRENOM + " VARCHAR(30) NOT NULL, " +
-//                    COLUMN_NOM + " VARCHAR(30) NOT NULL, " +
-//                    COLUMN_LOGIN + " VARCHAR(30) UNIQUE NOT NULL, " +
-//                    COLUMN_MOT_PASSE + " VARCHAR(80) NOT NULL, " +
-//                    COLUMN_COURRIEL  + " VARCHAR(40) UNIQUE NOT NULL, " +
-//                    COLUMN_ADRESSE_ID + " INTEGER DEFAULT NULL, " +
-//                    "FOREIGN KEY ("+COLUMN_ADRESSE_ID+") REFERENCES "+TABLE_NAME_REF_ADRESSE+"("+COLUMN_ID+"))";
+    public static final String CREATE_TABLE_UTILISATEUR =
+
+            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_PRENOM + " VARCHAR(30) NOT NULL, " +
+                    COLUMN_NOM + " VARCHAR(30) NOT NULL, " +
+                    COLUMN_LOGIN + " VARCHAR(30) UNIQUE NOT NULL, " +
+                    COLUMN_MOT_PASSE + " VARCHAR(80) NOT NULL, " +
+                    COLUMN_COURRIEL  + " VARCHAR(40) UNIQUE NOT NULL, " +
+                    COLUMN_ADRESSE_ID + " INTEGER DEFAULT NULL, " +
+                    COLUMN_TELEPHONE + " VARCHAR(10) NOT NULL, " +
+                    "FOREIGN KEY ("+COLUMN_ADRESSE_ID+") REFERENCES "+TABLE_NAME_REF_ADRESSE+"("+COLUMN_ID+"))";
 
     private int id;
     private String prenom;

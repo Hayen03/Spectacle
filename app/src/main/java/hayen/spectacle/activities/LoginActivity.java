@@ -1,5 +1,7 @@
 package hayen.spectacle.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,7 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.dao.UtilisateurSQLHelper;
+import hayen.spectacle.database.dao.DatabaseHelper;
 import hayen.spectacle.database.data.Utilisateur;
 
 public class LoginActivity extends AppCompatActivity {
@@ -23,7 +25,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
 
         loginButton =  findViewById(R.id.loginButton);
         email = (EditText) findViewById(R.id.usernameEditText);
@@ -49,9 +50,41 @@ public class LoginActivity extends AppCompatActivity {
 
 
 
-                UtilisateurSQLHelper dbHelper =   UtilisateurSQLHelper.getInstance(getBaseContext());
+                DatabaseHelper dbHelper =   DatabaseHelper.getInstance(getBaseContext());
              //   Utilisateur utilisateur =  dbHelper.validateLogin(email.getText().toString(), password.getText().toString());
-                  Utilisateur utilisateur =  dbHelper.validateLogin(courriel, motPasse);
+                // petite securite
+                Utilisateur utilisateur = null;
+                try {
+                    utilisateur = dbHelper.validateLogin(courriel, motPasse);
+                }
+                catch (android.database.sqlite.SQLiteException e){
+                    Log.e("LOGIN", "erreur lors de la recherche du compte", e);
+                    // demander si l'utilisateur veut continuer hors ligne
+                    AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                    builder.setTitle("Continuer hors-ligne?")
+                        .setMessage("Une erreur est arrivée lors du login, voulez-vous continuez hors-ligne? Certaines fonctionnalités ne seront pas présentes.");
+
+                    // si l'utilisateur veut continuer hors ligne
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(getBaseContext(), CalendrierActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    // si l'utilisateur ne veut pas
+                    builder.setNegativeButton("Non", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // on va laisser l'add. couriel intacte, mais supprimer le mdp avant de retourner a l'ecran login
+                            password.setText("");
+                        }
+                    });
+
+                    builder.create().show();
+                    return;
+                }
 
                 Log.i("RPI", "utilisateur: " + utilisateur);
                 if(utilisateur != null){

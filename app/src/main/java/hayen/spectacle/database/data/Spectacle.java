@@ -20,13 +20,13 @@ public class Spectacle {
 
 
 
-//    public static final String CREATE_TABLE_SPECTACLE =
-//            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME +
-//                    " ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    COLUMN_TITRE + " VARCHAR(40), " +
-//                    COLUMN_DATE_SPECTACLE + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-//                    COLUMN_GENRE_ID + " INTEGER, " +
-//                    " FOREIGN KEY ("+COLUMN_GENRE_ID+") REFERENCES "+TABLE_NAME_REF_GENRE+"("+COLUMN_ID+"))";
+    public static final String CREATE_TABLE_SPECTACLE =
+            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" +
+                    COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_TITRE + " VARCHAR(40), " +
+                    COLUMN_DATE_SPECTACLE + " DATETIME DEFAULT CURRENT_TIMESTAMP, " +
+                    COLUMN_GENRE_ID + " INTEGER, " +
+                    " FOREIGN KEY ("+COLUMN_GENRE_ID+") REFERENCES "+TABLE_NAME_REF_GENRE+"("+COLUMN_ID+"))";
 
 
 

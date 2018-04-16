@@ -17,13 +17,13 @@ public class Adresse {
     public static final String COLUMN_LATITUDE = "latitude";
 
 
-//
-//    public static final String CREATE_TABLE_ADRESSE =
-//            "CREATE TABLE IF NOT EXISTS adresse " +
-//                    " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    " numero INTEGER NOT NULL, rue VARCHAR(60) NOT NULL, " +
-//                    " ville VARCHAR(60) NOT NULL, province VARCHAR(2) NOT NULL, " +
-//                    " code_postal VARCHAR(10) NOT NULL, longitude LONG DEFAULT 0, latitude LONG DEFAULT 0)";
+
+    public static final String CREATE_TABLE_ADRESSE =
+            "CREATE TABLE IF NOT EXISTS adresse " +
+                    " (id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    " numero INTEGER NOT NULL, rue VARCHAR(60) NOT NULL, " +
+                    " ville VARCHAR(60) NOT NULL, province VARCHAR(2) NOT NULL, " +
+                    " code_postal VARCHAR(10) NOT NULL, longitude LONG DEFAULT 0, latitude LONG DEFAULT 0)";
 
 
     private int id;

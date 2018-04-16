@@ -22,8 +22,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import hayen.spectacle.R;
-import hayen.spectacle.database.dao.ArtisteSQLHelper;
-import hayen.spectacle.database.dao.SpectacleSQLHelper;
+import hayen.spectacle.database.dao.DatabaseHelper;
 import hayen.spectacle.database.data.Artiste;
 import hayen.spectacle.database.data.Spectacle;
 import hayen.spectacle.database.data.SpectacleAdapter;
@@ -81,10 +80,10 @@ public class CalendrierActivity
         listSpectacles =  findViewById(R.id.listViewSpectacle);
 
 
-        SpectacleSQLHelper spectacleSQLHelper =  SpectacleSQLHelper.getInstance(getBaseContext());
+        DatabaseHelper dbHelper =  DatabaseHelper.getInstance(getBaseContext());
 
 
-        List<Spectacle>  spectacles =  spectacleSQLHelper.getAllSpectacles();
+        List<Spectacle>  spectacles =  dbHelper.getAllSpectacles();
 
 
 
@@ -93,7 +92,7 @@ public class CalendrierActivity
             for (Spectacle spectacle : spectacles) {
                 Log.i("RPI", "spectacle: " + spectacle);
 
-                List<Artiste> artistes =  spectacleSQLHelper.getAllArtistesBySpectacleId(spectacle.getId());
+                List<Artiste> artistes =  dbHelper.getAllArtistesBySpectacleId(spectacle.getId());
 
                 spectacle.setArtistes(artistes);
 

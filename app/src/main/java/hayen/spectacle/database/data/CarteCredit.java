@@ -17,10 +17,10 @@ public class CarteCredit {
 
 
 
-//    public static final String CREATE_TABLE_CARTE_CREDIT =
-//            "CREATE TABLE IF NOT EXISTS carte_credit (id INTEGER PRIMARY KEY AUTOINCREMENT, nom_carte VARCHAR(20), nom_utilisateur VARCHAR(30), numero VARCHAR(20), " +
-//                   " date_expiration DATETIME DEFAULT CURRENT_TIMESTAMP, code INTEGER, utilisateur_id INTEGER, UNIQUE(nom_carte, numero), FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id))";
-//
+    public static final String CREATE_TABLE_CARTE_CREDIT =
+            "CREATE TABLE IF NOT EXISTS carte_credit (id INTEGER PRIMARY KEY AUTOINCREMENT, nom_carte VARCHAR(20), nom_utilisateur VARCHAR(30), numero VARCHAR(20), " +
+                   " date_expiration DATETIME DEFAULT CURRENT_TIMESTAMP, code INTEGER, utilisateur_id INTEGER, UNIQUE(nom_carte, numero), FOREIGN KEY (utilisateur_id) REFERENCES utilisateur(id))";
+
 
     private int id;
     private String nomCarte;

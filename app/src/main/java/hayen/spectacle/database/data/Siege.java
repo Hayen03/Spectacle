@@ -18,13 +18,13 @@ public class Siege {
     public static final String COLUMN_SECTION_ID = "id_section";
 
 
-//    public static final String CREATE_TABLE_SIEGE=
-//            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+
-//                    " ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
-//                    COLUMN_RANGEE + " VARCHAR(3) NOT NULL, " +
-//                    COLUMN_NUMERO + " INTEGER NOT NULL, " +
-//                    COLUMN_RESERVE + " TINYINT DEFAULT 0, " +
-//                    COLUMN_SECTION_ID + " INTEGER, FOREIGN KEY ("+COLUMN_SECTION_ID+") REFERENCES "+TABLE_NAME_REF_SECTION+"("+COLUMN_ID+"))";
+    public static final String CREATE_TABLE_SIEGE=
+            "CREATE TABLE IF NOT EXISTS "+TABLE_NAME+
+                    " ("+COLUMN_ID+" INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    COLUMN_RANGEE + " VARCHAR(3) NOT NULL, " +
+                    COLUMN_COLUMN + " INTEGER NOT NULL, " +
+                    COLUMN_RESERVE + " TINYINT DEFAULT 0, " +
+                    COLUMN_SECTION_ID + " INTEGER, FOREIGN KEY ("+COLUMN_SECTION_ID+") REFERENCES "+TABLE_NAME_REF_SECTION+"("+COLUMN_ID+"))";
 
 
 
