@@ -1746,7 +1746,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor cursor = database.query(Spectacle.TABLE_NAME,
                 new String[]{   Spectacle.COLUMN_ID, Spectacle.COLUMN_TITRE, Spectacle.COLUMN_DATE_SPECTACLE,
-                        Spectacle.COLUMN_GENRE_ID, Spectacle.COLUMN_SALLE_ID },
+                        Spectacle.COLUMN_GENRE_ID, Spectacle.COLUMN_SALLE_ID, Spectacle.COLUMN_DUREE },
                 Spectacle.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 

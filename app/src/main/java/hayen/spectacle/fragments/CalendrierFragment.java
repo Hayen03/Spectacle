@@ -93,7 +93,22 @@ public class CalendrierFragment extends Fragment {
 
         listSpectacles.setAdapter(spectacleAdapter);
 
-        
+        listSpectacles.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Spectacle spectacle =  spectacles.get(i);
+
+                System.out.println("spectacle: " + spectacle);
+                Log.i("RPI", "CLick!");
+                Log.i("RPI", "Spectacle  id: " + spectacle.getId());
+
+                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "spectacle", Toast.LENGTH_LONG);
+                toast.show();
+
+                Fragment fiche = FicheFragment.newInstance(spectacle.getId());
+                ((CalendrierActivity)getActivity()).overrideFragment(fiche);
+            }
+        });
 
         // Inflate the layout for this fragment
         return view;

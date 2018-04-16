@@ -20,6 +20,7 @@ import hayen.spectacle.R;
 import hayen.spectacle.data.data.Utilisateur;
 import hayen.spectacle.fragments.CalendrierFragment;
 import hayen.spectacle.fragments.ChangerMdpFragment;
+import hayen.spectacle.fragments.FicheFragment;
 import hayen.spectacle.fragments.InfoFragment;
 import hayen.spectacle.fragments.ProfilFragment;
 import hayen.spectacle.fragments.RechercheFragment;
@@ -33,7 +34,8 @@ public class CalendrierActivity
                     RechercheFragment.OnFragmentInteractionListener,
                     ReservationFragment.OnFragmentInteractionListener,
                     NavigationView.OnNavigationItemSelectedListener,
-                    ChangerMdpFragment.OnFragmentInteractionListener
+                    ChangerMdpFragment.OnFragmentInteractionListener,
+                    FicheFragment.OnFragmentInteractionListener
 {
 
     private DrawerLayout drawer;
@@ -151,6 +153,18 @@ public class CalendrierActivity
         override = true;
         return replaceFrag(fragClass, true);
     }
+    public Fragment overrideFragment(Fragment frag){
+        override = true;
+        return replaceFrag(frag, true);
+    }
+    private Fragment replaceFrag(Fragment frag, boolean backstack){
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        if (backstack)
+            transaction.addToBackStack(null);
+        transaction.replace(R.id.fragcontent, frag).commit();
+        return frag;
+    }
     private Fragment replaceFrag(Class fragClass, boolean backstack){
         Fragment fragment = null;
         try {
@@ -161,12 +175,7 @@ public class CalendrierActivity
             return null;
         }
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        if (backstack)
-            transaction.addToBackStack(null);
-        transaction.replace(R.id.fragcontent, fragment).commit();
-        return fragment;
+        return replaceFrag(fragment, backstack);
     }
     private Fragment replaceFrag(Class fragClass){
         return replaceFrag(fragClass, false);
