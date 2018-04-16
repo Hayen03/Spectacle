@@ -92,6 +92,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             Log.i("RPI", "Retrait de la table: " + querie);
         }
 */
+        database = sqLiteDatabase;
         dropDB();
         onCreate(sqLiteDatabase);
 
@@ -125,8 +126,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         Log.i("RPI", "Retrait des tables");
         for (int i = 0; i < DatabaseQueries.DROP_TABLES_QUERIES.length; i++) {
             String querie =  DatabaseQueries.DROP_TABLES_QUERIES[i];
-            database.execSQL(querie);
-            Log.i("RPI", "Retrait de la table: " + querie);
+            if (querie != null) {
+                database.execSQL(querie);
+                Log.i("RPI", "Retrait de la table: " + querie);
+            }
+            else {
+                Log.e("DB", "null querie in dbhelper dropDB()");
+            }
         }
 
 
@@ -2001,15 +2007,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         database = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(utilisateur.COLUMN_PRENOM, utilisateur.getPrenom());
-        values.put(utilisateur.COLUMN_NOM, utilisateur.getNom());
-        values.put(utilisateur.COLUMN_LOGIN, utilisateur.getLogin());
-        values.put(utilisateur.COLUMN_MOT_PASSE, utilisateur.getMotPasse());
-        values.put(utilisateur.COLUMN_COURRIEL, utilisateur.getCourriel());
-        values.put(utilisateur.COLUMN_TELEPHONE, utilisateur.getTelephone());
+        values.put(Utilisateur.COLUMN_PRENOM, utilisateur.getPrenom());
+        values.put(Utilisateur.COLUMN_NOM, utilisateur.getNom());
+        values.put(Utilisateur.COLUMN_LOGIN, utilisateur.getLogin());
+        values.put(Utilisateur.COLUMN_MOT_PASSE, utilisateur.getMotPasse());
+        values.put(Utilisateur.COLUMN_COURRIEL, utilisateur.getCourriel());
+        values.put(Utilisateur.COLUMN_TELEPHONE, utilisateur.getTelephone());
 
         if(utilisateur.getAdresseId() > 0){
-            values.put(utilisateur.COLUMN_ADRESSE_ID, utilisateur.getAdresseId());
+            values.put(Utilisateur.COLUMN_ADRESSE_ID, utilisateur.getAdresseId());
         }
 
         long nbAffectedRows= database.insert(Utilisateur.TABLE_NAME, null, values);
