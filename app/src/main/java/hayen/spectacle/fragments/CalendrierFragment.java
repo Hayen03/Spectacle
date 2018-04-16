@@ -4,11 +4,19 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.List;
 
 import hayen.spectacle.R;
+import hayen.spectacle.database.dao.DatabaseHelper;
+import hayen.spectacle.database.data.Artiste;
+import hayen.spectacle.database.data.Spectacle;
+import hayen.spectacle.database.data.SpectacleAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,14 +29,13 @@ import hayen.spectacle.R;
 public class CalendrierFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    ListView listSpectacles;
+    SpectacleAdapter spectacleAdapter;
 
     public CalendrierFragment() {
         // Required empty public constructor
@@ -46,8 +53,6 @@ public class CalendrierFragment extends Fragment {
     public static CalendrierFragment newInstance(String param1, String param2) {
         CalendrierFragment fragment = new CalendrierFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,17 +60,54 @@ public class CalendrierFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_calendrier, container, false);
+        listSpectacles = view.findViewById(R.id.listViewSpectacle);
+
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity().getBaseContext());
+        List<Spectacle> spectacles = dbHelper.getAllSpectacles();
+
+        if(spectacles != null && spectacles.size() > 0) {
+            spectacleAdapter = new SpectacleAdapter(this.getActivity(), R.layout.ligne_spectacle);
+            for (Spectacle spectacle : spectacles) {
+                Log.i("RPI", "spectacle: " + spectacle);
+
+                List<Artiste> artistes = dbHelper.getAllArtistesBySpectacleId(spectacle.getId());
+
+                spectacle.setArtistes(artistes);
+
+                spectacleAdapter.add(spectacle);
+
+            }
+        }
+
+        listSpectacles.setAdapter(spectacleAdapter);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_calendrier, container, false);
+        return view;
+
+
+        //  final  ArrayAdapter<Spectacle> adapterList = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, spectacles);
+
+
+
+        //     ListView listViewSpectacle = (ListView) findViewById(R.id.listViewSpectacle);
+//
+        //         listViewSpectacle.setAdapter(adapterList);
+
+        //         listViewSpectacle.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                    Log.i("ENI", "Position " + String.valueOf(position));
+//                    String titre = adapterList.getItem(position).getTitre();
+//                    Log.i("ENI", "Titre : " + titre);
+//                }
+//            });        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
