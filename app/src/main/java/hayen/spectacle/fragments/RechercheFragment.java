@@ -1,14 +1,27 @@
 package hayen.spectacle.fragments;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
+import android.widget.ListView;
+import android.widget.SearchView;
+
+import java.util.LinkedList;
+import java.util.List;
 
 import hayen.spectacle.R;
+import hayen.spectacle.adapter.SpectacleAdapter;
+import hayen.spectacle.data.dao.DatabaseHelper;
+import hayen.spectacle.data.dao.DatabaseQueries;
+import hayen.spectacle.data.data.Spectacle;
+import hayen.spectacle.util.Constant;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,57 +31,45 @@ import hayen.spectacle.R;
  * Use the {@link RechercheFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class RechercheFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class RechercheFragment extends Fragment implements SearchView.OnQueryTextListener{
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private SearchView search;
+    private SpectacleAdapter results;
 
     private OnFragmentInteractionListener mListener;
 
-    public RechercheFragment() {
-        // Required empty public constructor
-    }
+    public RechercheFragment() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment RechercheFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static RechercheFragment newInstance(String param1, String param2) {
+    public static RechercheFragment newInstance() {
         RechercheFragment fragment = new RechercheFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_recherche, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_recherche, container, false);
+
+        // trouver les elements de l'UI
+        search = view.findViewById(R.id.searchView);
+        ListView resultView = view.findViewById(R.id.searchResultListView);
+        results = new SpectacleAdapter(getActivity(), R.layout.ligne_spectacle);
+        resultView.setAdapter(results);
+
+        search.setOnQueryTextListener(this);
+
+        return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -90,6 +91,49 @@ public class RechercheFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        // 1. vider la listview des resultats precedent
+        results.clear();
+
+        // 1. Utiliser la db pour chercher les infos necessaires
+//        List<Spectacle> spectacles = new LinkedList<>();
+        if (Constant.fightLaDB) {
+            SQLiteDatabase db = DatabaseHelper.getInstance(getActivity()).getReadableDatabase();
+            String[] args = new String[DatabaseQueries.SEARCH_QUERY_ARG_NUMBER];
+            for (int i = 0; i < DatabaseQueries.SEARCH_QUERY_ARG_NUMBER; i++)
+                args[i] = query;
+            Cursor cursor = db.rawQuery(DatabaseQueries.SEARCH_QUERY, args);
+            if (cursor != null){
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    Spectacle spectacle = new Spectacle(
+                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)),
+                            cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)),
+                            cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)),
+                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)),
+                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)),
+                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
+                    results.add(spectacle);
+                }
+            }
+        }
+        else {
+            for (Spectacle spectacle : Spectacle.bidons){
+                if (spectacle.getTitre().contains(query))
+                    results.add(spectacle);
+            }
+        }
+
+        results.notifyDataSetChanged();
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return true;
     }
 
     /**

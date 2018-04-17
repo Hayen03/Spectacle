@@ -493,7 +493,7 @@ public class DatabaseQueries {
     public static final String RESERVATION_QUERY =
             "select distinct " +
                     "spectacle.titre, " +
-                    "spectacle.date, " +
+                    "spectacle.date_spectacle as date, " +
                     "salle.nom as nom_salle, " +
                     "section.nom as nom_section, " +
                     "siege.rangee, " +
@@ -515,5 +515,24 @@ public class DatabaseQueries {
             RESERVATION_QUERY_COLONNE_SECTION = "nom_section",
             RESERVATION_QUERY_COLONNE_RANGEE = "rangee",
             RESERVATION_QUERY_COLONNE_COLONNE = "colonne";
+
+    public static final String SEARCH_QUERY =
+            "select distinct " +
+                    "spectacle.id, " +
+                    "spectacle.titre, " +
+                    "spectacle.date_spectacle, " +
+                    "spectacle.duree, " +
+                    "spectacle.id_genre, " +
+                    "spectacle.id_salle, " +
+            "from spectacle " +
+                    "join spectacle_artiste on spectacle.id = spectacle_artiste.id_spectacle " +
+                    "join artiste on artiste.id = spectacle_artiste.id_artiste " +
+                    "join salle on spectacle.id_salle = salle.id " +
+            "where spectacle.titre like '%?% " +
+                    "or artiste.prenom like '%?%' " +
+                    "or artiste.nom like '%?%' " +
+                    "or artiste.prenom || ' ' || artiste.nom like '%?%' " +
+                    "or salle.nom like '%?%'";
+    public static final int SEARCH_QUERY_ARG_NUMBER = 5;
 
 }

@@ -28,9 +28,6 @@
         <activity android:name=".activities.CalendrierActivity"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-        <activity android:name=".activities.MainActivity"></activity>
-        <activity android:name=".activities.FicheSpectacleActivity"></activity>
-        <activity android:name=".activities.ReservationActivity"></activity>
     </application>
 
 </manifest>

@@ -2,10 +2,20 @@
 package hayen.spectacle.data.data;
 
 
+import android.widget.GridLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Spectacle {
+
+    public static final Spectacle bidonA = new Spectacle(-1, "Bidon A", "Aujourd'hui", 3, -1, -1)
+            .addArtiste(Artiste.bidonA);
+    public static final Spectacle bidonB = new Spectacle(-1, "Bidon B", "Aujourd'hui", 3, -1, -1)
+            .addArtiste(Artiste.bidonB);
+    public static final Spectacle bidonC = new Spectacle(-1, "Bidon C", "Aujourd'hui", 3, -1, -1)
+            .addArtiste(Artiste.bidonC);
+    public static final Spectacle[] bidons = {bidonA, bidonB, bidonC};
 
     public static final String TABLE_NAME= "spectacle";
     public static final String TABLE_NAME_REF_SALLE = "salle";
@@ -76,71 +86,80 @@ public class Spectacle {
         return id;
     }
 
-    public void setId(int id) {
+    public Spectacle setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getTitre() {
         return titre;
     }
 
-    public void setTitre(String titre) {
+    public Spectacle setTitre(String titre) {
         this.titre = titre;
+        return this;
     }
 
     public String getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public Spectacle setDate(String date) {
         this.date = date;
+        return this;
     }
 
     public int getDuree() {
         return duree;
     }
 
-    public void setDuree(int duree) {
+    public Spectacle setDuree(int duree) {
         this.duree = duree;
+        return this;
     }
 
     public int getGenreId() {
         return genreId;
     }
 
-    public void setGenreId(int genreId) {
+    public Spectacle setGenreId(int genreId) {
         this.genreId = genreId;
+        return this;
     }
 
     public int getSalleId() {
         return salleId;
     }
 
-    public void setSalleId(int salleId) {
+    public Spectacle setSalleId(int salleId) {
         this.salleId = salleId;
+        return this;
     }
 
     public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(Genre genre) {
+    public Spectacle setGenre(Genre genre) {
         this.genre = genre;
+        return this;
     }
 
     public List<Artiste> getArtistes() {
         return artistes;
     }
 
-    public void setArtistes(List<Artiste> artistes) {
+    public Spectacle setArtistes(List<Artiste> artistes) {
         this.artistes = artistes;
+        return this;
     }
 
-    public void addArtiste(Artiste artiste){
+    public Spectacle addArtiste(Artiste artiste){
         if(artistes == null){
             artistes =  new ArrayList<>();
         }
         artistes.add(artiste);
+        return this;
     }
 
     public String toString(){

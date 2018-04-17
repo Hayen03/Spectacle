@@ -21,7 +21,8 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_test">TestActivity</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="search_hint">Recherche titre, artiste, salle</string>
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="textTitre">Titre</string>
     <string name="textDate">Date</string>

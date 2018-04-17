@@ -4,7 +4,9 @@ package hayen.spectacle.data.data;
 
 
 public class Artiste {
-
+    public static final Artiste bidonA = new Artiste(-1, "Jacques", "Poubelle");
+    public static final Artiste bidonB = new Artiste(-1, "Marcel", "Galarneau");
+    public static final Artiste bidonC = new Artiste(-1, "Huguette", "Lancloix");
 
 
     public static final String TABLE_NAME = "artiste";
