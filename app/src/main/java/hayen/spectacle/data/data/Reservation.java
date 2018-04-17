@@ -6,6 +6,7 @@ package hayen.spectacle.data.data;
  */
 
 public class Reservation {
+    public static final Reservation bidon = new Reservation(-1, "0000000", "aujourd'hui", -1);
 
     public static final String TABLE_NAME = "reservation";
 
@@ -15,29 +16,19 @@ public class Reservation {
     public static final String COLUMN_USER_ID = "id_utilisateur";
     public static final String COLUMN_SPECTACLE_ID = "id_spectacle";
 
-    public static final String CREATE_TABLE_RESERVATION =
-            "CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                    " ("+ COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_NUMERO_CONFIRMATION  + "VARCHAR(20) UNIQUE NOT NULL, " +
-                    COLUMN_DATE_RESERVATION +" DATETIME DEFAULT CURRENT_TIMESTAMP, " +
-                    COLUMN_USER_ID + " INTEGER NOT NULL, spectacle_id INTEGER NOT NULL, " +
-                    " FOREIGN KEY (" +COLUMN_USER_ID+ ") REFERENCES utilisateur(id), " +
-                    " FOREIGN KEY (" +COLUMN_SPECTACLE_ID + ") REFERENCES spectacle(id))";
-
-
-
     private int id;
     private String numeroConfirmation;
     private String dateReservation;
     private int userId;
+//    private int spectacleId;
 
     public Reservation(){}
     public Reservation(String numeroConfirmation, String dateReservation, int userId){
-        this.id = id;
+        this.id = 0;
         this.numeroConfirmation =  numeroConfirmation;
         this.dateReservation = dateReservation;
         this.userId = userId;
-
+ //       this.spectacleId = spectacleId;
     }
 
     public Reservation(int id, String numeroConfirmation, String dateReservation, int userId){
@@ -45,7 +36,7 @@ public class Reservation {
         this.numeroConfirmation =  numeroConfirmation;
         this.dateReservation = dateReservation;
         this.userId = userId;
-
+ //       this.spectacleId = spectacleId;
     }
 
     public int getId() {

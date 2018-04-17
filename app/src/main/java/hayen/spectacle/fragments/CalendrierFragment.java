@@ -1,7 +1,6 @@
 package hayen.spectacle.fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.app.Fragment;
@@ -20,7 +19,7 @@ import hayen.spectacle.activities.CalendrierActivity;
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Artiste;
 import hayen.spectacle.data.data.Spectacle;
-import hayen.spectacle.data.data.SpectacleAdapter;
+import hayen.spectacle.adapter.SpectacleAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,33 +30,21 @@ import hayen.spectacle.data.data.SpectacleAdapter;
  * create an instance of this fragment.
  */
 public class CalendrierFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-
-    // TODO: Rename and change types of parameters
 
     private OnFragmentInteractionListener mListener;
 
     ListView listSpectacles;
     SpectacleAdapter spectacleAdapter;
 
-    public CalendrierFragment() {
-        // Required empty public constructor
-    }
+    public CalendrierFragment() {}
 
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
      * @return A new instance of fragment CalendrierFragment.
      */
-    // TODO: Rename and change types and number of parameters
-    public static CalendrierFragment newInstance(String param1, String param2) {
+    public static CalendrierFragment newInstance() {
         CalendrierFragment fragment = new CalendrierFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
         return fragment;
     }
 

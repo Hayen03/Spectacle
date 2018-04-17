@@ -488,5 +488,32 @@ public class DatabaseQueries {
                     "   (6, 1, 108)"
     };
 
+    // Pour les reservations
+    // a prevu etre formatte
+    public static final String RESERVATION_QUERY =
+            "select distinct " +
+                    "spectacle.titre, " +
+                    "spectacle.date, " +
+                    "salle.nom as nom_salle, " +
+                    "section.nom as nom_section, " +
+                    "siege.rangee, " +
+                    "siege.colonne " +
+            "from reservation_spectacle_siege as rss" +
+                    "join spectacle " +
+                        "on rss.id_spectacle = spectacle.id " +
+                    "join siege " +
+                        "on rss.id_siege = siege.id " +
+                    "join section " +
+                        "on siege.id_section = section.id " +
+                    "join salle " +
+                        "on section.id_salle = salle.id " +
+            "where rss.id_reservation = ?";
+    public static final String
+            RESERVATION_QUERY_COLONNE_TITRE = "titre",
+            RESERVATION_QUERY_COLONNE_DATE = "date",
+            RESERVATION_QUERY_COLONNE_SALLE = "nom_salle",
+            RESERVATION_QUERY_COLONNE_SECTION = "nom_section",
+            RESERVATION_QUERY_COLONNE_RANGEE = "rangee",
+            RESERVATION_QUERY_COLONNE_COLONNE = "colonne";
 
 }

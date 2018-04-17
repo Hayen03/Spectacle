@@ -16,7 +16,7 @@ import java.util.List;
 import hayen.spectacle.R;
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Section;
-import hayen.spectacle.data.data.SectionAdapter;
+import hayen.spectacle.adapter.SectionAdapter;
 import hayen.spectacle.data.data.Spectacle;
 import hayen.spectacle.data.data.SpectacleSection;
 

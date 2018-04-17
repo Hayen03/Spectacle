@@ -7,8 +7,19 @@ import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import hayen.spectacle.R;
+import hayen.spectacle.activities.CalendrierActivity;
+import hayen.spectacle.adapter.ReservationAdapter;
+import hayen.spectacle.data.dao.DatabaseHelper;
+import hayen.spectacle.data.data.Reservation;
+import hayen.spectacle.data.data.Utilisateur;
+import hayen.spectacle.util.Constant;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,6 +53,39 @@ public class ReservationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_reservation, container, false);
+
+        // 1. trouver nos reservations
+        ListView reservations = view.findViewById(R.id.reservationsListView);
+        CalendrierActivity activity = (CalendrierActivity) getActivity();
+        Utilisateur user = activity.getCurrentUser();
+        List<Reservation> allReservation;
+        if (Constant.fightLaDB) {
+            allReservation = DatabaseHelper.getInstance(getActivity()).getAllReservations();
+            // 1.2 Filtrer les reservations
+            Iterator<Reservation> it = allReservation.iterator();
+            while (it.hasNext()) {
+                Reservation reservation = it.next();
+                if (reservation.getUserId() != user.getId()) {
+                    it.remove();
+                }
+            }
+        }
+        else {
+            allReservation = new LinkedList<>();
+            allReservation.add(Reservation.bidon);
+            allReservation.add(Reservation.bidon);
+            allReservation.add(Reservation.bidon);
+        }
+
+        // 2. Creer l'adapter
+        ReservationAdapter adapter = new ReservationAdapter(getActivity(), R.layout.ticket_layout);
+        for (Reservation reservation : allReservation){
+            adapter.add(reservation);
+        }
+
+        // 3. set l'adapter
+        reservations.setAdapter(adapter);
+
         return view;
     }
 
