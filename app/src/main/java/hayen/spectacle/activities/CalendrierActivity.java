@@ -19,27 +19,18 @@ import android.support.v7.widget.Toolbar;
 import hayen.spectacle.R;
 import hayen.spectacle.data.data.Utilisateur;
 import hayen.spectacle.fragments.CalendrierFragment;
-import hayen.spectacle.fragments.ChangerMdpFragment;
-import hayen.spectacle.fragments.FicheFragment;
 import hayen.spectacle.fragments.InfoFragment;
-import hayen.spectacle.fragments.ModifierInfoFragment;
+import hayen.spectacle.fragments.OnFragmentInteractionListener;
 import hayen.spectacle.fragments.ProfilFragment;
 import hayen.spectacle.fragments.RechercheFragment;
 import hayen.spectacle.fragments.ReservationFragment;
-import hayen.spectacle.fragments.ReserverFragment;
+import hayen.spectacle.util.Constant;
+import hayen.spectacle.util.Util;
 
 public class CalendrierActivity
         extends     AppCompatActivity
-        implements  CalendrierFragment.OnFragmentInteractionListener,
-                    InfoFragment.OnFragmentInteractionListener,
-                    ProfilFragment.OnFragmentInteractionListener,
-                    RechercheFragment.OnFragmentInteractionListener,
-                    ReservationFragment.OnFragmentInteractionListener,
-                    NavigationView.OnNavigationItemSelectedListener,
-                    ChangerMdpFragment.OnFragmentInteractionListener,
-                    FicheFragment.OnFragmentInteractionListener,
-                    ModifierInfoFragment.OnFragmentInteractionListener,
-                    ReserverFragment.OnFragmentInteractionListener
+        implements  OnFragmentInteractionListener,
+                    NavigationView.OnNavigationItemSelectedListener
 {
 
     private DrawerLayout drawer;
@@ -48,11 +39,14 @@ public class CalendrierActivity
     private boolean override = false;
     private Fragment currFrag = null;
 
+    private Utilisateur user = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendrier);
 
+        // 1. initialiser l'UI
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -71,6 +65,20 @@ public class CalendrierActivity
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
+
+        // 2. chercher l'utilisateur
+        Bundle user_bundle = getIntent().getBundleExtra("user");
+        if (user_bundle != null){
+            user = new Utilisateur();
+            user.setMotPasse(user_bundle.getString(Utilisateur.COLUMN_MOT_PASSE));
+            user.setTelephone(user_bundle.getString(Utilisateur.COLUMN_TELEPHONE));
+            user.setPrenom(user_bundle.getString(Utilisateur.COLUMN_PRENOM));
+            user.setNom(user_bundle.getString(Utilisateur.COLUMN_NOM));
+            user.setLogin(user_bundle.getString(Utilisateur.COLUMN_COURRIEL));
+            user.setCourriel(user_bundle.getString(Utilisateur.COLUMN_COURRIEL));
+            user.setId(user_bundle.getInt(Utilisateur.COLUMN_ID));
+            user.setAdresseId(user_bundle.getInt(Utilisateur.COLUMN_ADRESSE_ID));
+        }
 
     }
 
@@ -193,6 +201,9 @@ public class CalendrierActivity
     }
 
     public Utilisateur getCurrentUser(){
-        return Utilisateur.bidon;
+        if (Constant.fightLaDB)
+            return user;
+        else
+            return Utilisateur.bidon;
     }
 }
