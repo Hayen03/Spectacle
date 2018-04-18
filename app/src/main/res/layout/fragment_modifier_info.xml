@@ -15,7 +15,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:text="Modifier vos informations"
+        android:text="@string/titre_modif_info"
         android:textAlignment="center"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="24sp"
@@ -51,7 +51,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Prénom"
+                android:hint="@string/hint_prenom"
                 android:inputType="textPersonName" />
 
             <Space
@@ -63,7 +63,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Nom de famille"
+                android:hint="@string/hint_nom"
                 android:inputType="textPersonName" />
 
             <Space
@@ -75,7 +75,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Adresse couriel"
+                android:hint="@string/hint_email"
                 android:inputType="textEmailAddress" />
 
             <Space
@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Numéro de téléphone"
+                android:hint="@string/hint_phone"
                 android:inputType="phone" />
 
             <Space
@@ -99,7 +99,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Adresse"
+                android:hint="@string/hint_adresse"
                 android:inputType="textPostalAddress" />
 
             <Space
@@ -111,7 +111,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Ville"
+                android:hint="@string/hint_ville"
                 android:inputType="textPostalAddress" />
 
             <Space
@@ -121,7 +121,8 @@
             <Spinner
                 android:id="@+id/provinceSpinner"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:entries="@array/array_provinces" />
 
             <Space
                 android:layout_width="match_parent"
@@ -132,7 +133,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Code postal"
+                android:hint="@string/hint_code_postal"
                 android:inputType="textPostalAddress" />
 
             <Space
@@ -148,7 +149,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginStart="16dp"
-        android:text="Annuler"
+        android:text="@string/btn_annuler"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -158,7 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginStart="17dp"
-        android:text="Confirmer"
+        android:text="@string/btn_confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/annulerButton"
         app:layout_constraintTop_toTopOf="@+id/annulerButton" />

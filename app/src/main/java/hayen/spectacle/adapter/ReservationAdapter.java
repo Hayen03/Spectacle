@@ -60,10 +60,10 @@ public class ReservationAdapter extends ArrayAdapter<Reservation> {
 
         // 4. formatter et afficher les infos
         titreTV.setText(titre);
-        dateTV.setText(String.format("Date: %s", date));
-        salleTV.setText(String.format("Salle %s\tsection %s", salle, section));
-        siegeTV.setText(String.format("Siege %s%s", rangee, colonne));
-        numTV.setText(String.format("Numéro: %s", num));
+        dateTV.setText(String.format("%s: %s", convertView.getResources().getString(R.string.str_date), date));
+        salleTV.setText(String.format("%s %s\t%s %s", convertView.getResources().getString(R.string.str_salle), salle, convertView.getResources().getString(R.string.str_section), section));
+        siegeTV.setText(String.format("%s %s%s", convertView.getResources().getString(R.string.str_siege), rangee, colonne));
+        numTV.setText(String.format("%s: %s", convertView.getResources().getString(R.string.str_numero), num));
 
         return convertView;
     }

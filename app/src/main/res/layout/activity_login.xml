@@ -7,14 +7,14 @@
     tools:context="hayen.spectacle.activities.LoginActivity">
 
     <EditText
-            android:id="@+id/usernameEditText"
+        android:id="@+id/usernameEditText"
         android:layout_width="256dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="108dp"
         android:ems="10"
-        android:hint="Adresse couriel"
+        android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
@@ -22,17 +22,16 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/passwordEditText2"
+        android:id="@+id/passwordEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:ems="10"
-        android:hint="Mot de passe"
+        android:hint="@string/hint_mdp"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="@+id/usernameEditText"
         app:layout_constraintStart_toStartOf="@+id/usernameEditText"
         app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
-
 
 
     <TextView
@@ -42,7 +41,7 @@
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:text="Connection"
+        android:text="@string/titre_login"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="36sp"
@@ -56,10 +55,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:onClick="login"
-        android:text="Connection"
-        app:layout_constraintEnd_toEndOf="@+id/passwordEditText2"
-        app:layout_constraintStart_toStartOf="@+id/passwordEditText2"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText2" />
+        android:text="@string/btn_connexion"
+        app:layout_constraintEnd_toEndOf="@+id/passwordEditText"
+        app:layout_constraintStart_toStartOf="@+id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
 
     <CheckBox
         android:id="@+id/resterConnCheckBox"
@@ -67,7 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:checked="false"
-        android:text="Rester Connecté"
+        android:text="@string/str_rester_connecte"
         app:layout_constraintEnd_toEndOf="@+id/loginButton"
         app:layout_constraintTop_toBottomOf="@+id/loginButton" />
 
@@ -77,7 +76,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:onClick="inscription"
-        android:text="Créer un compte"
+        android:text="@string/btn_inscription"
         app:layout_constraintEnd_toEndOf="@+id/loginButton"
         app:layout_constraintStart_toStartOf="@+id/loginButton"
         app:layout_constraintTop_toBottomOf="@+id/mdpOublieButton" />
@@ -88,7 +87,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:onClick="mdpOublie"
-        android:text="Mot de passe oublié"
+        android:text="@string/btn_mdp_oublie"
         app:layout_constraintEnd_toEndOf="@+id/loginButton"
         app:layout_constraintStart_toStartOf="@+id/loginButton"
         app:layout_constraintTop_toBottomOf="@+id/resterConnCheckBox" />

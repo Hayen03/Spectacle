@@ -26,7 +26,7 @@ public class RecupererMdpActivity extends AppCompatActivity {
         // 2. tester si un utilisateur existe
         if (Constant.fightLaDB){
             if (DatabaseHelper.getInstance(this).getUtilisateurByLogin(email) == null){
-                Util.alert(this, "Oops", "Il n'existe aucun utilisateur sous cette adresse couriel.", null);
+                Util.alert(this, R.string.err_titre, R.string.err_no_user, null);
                 return;
             }
         }

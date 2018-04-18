@@ -17,5 +17,20 @@ public class Util {
 
         dialog.show();
     }
+    public static void alert(Context context, int title_id, int msg_id, DialogInterface.OnClickListener listener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg_id);
+        builder.setTitle(title_id);
+        builder.setNeutralButton("OK", listener);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    public static void alert(Context context, int msg_id, DialogInterface.OnClickListener listener){
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(msg_id);
+        builder.setNeutralButton("OK", listener);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
 
 }

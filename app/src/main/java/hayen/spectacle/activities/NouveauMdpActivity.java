@@ -39,19 +39,19 @@ public class NouveauMdpActivity extends AppCompatActivity {
 
         // 2. tester le code
         if (!code_str.equals(Constant.codeSecurite)){
-            Util.alert(this, "Oops", "Le code rentré est invalide.", null);
+            Util.alert(this, R.string.err_titre, R.string.err_code_recup, null);
             return;
         }
 
         // 3. verifier que le mot de passe est asser long
         if (mdp_str.length() < 8){
-            Util.alert(this, "Oops", "Le mot de passe doit contenir au moins 8 caractères.", null);
+            Util.alert(this, R.string.err_titre, R.string.err_mdp_court, null);
             return;
         }
 
         // 4. verifier la confirmation du mdp
         if (!mdp_str.equals(confirm_str)){
-            Util.alert(this, "Oops", "Le mot de passe et sa confirmation ne sont pas identique.", null);
+            Util.alert(this, R.string.err_titre, R.string.err_mdp_not_confirm, null);
             return;
         }
 
@@ -60,7 +60,7 @@ public class NouveauMdpActivity extends AppCompatActivity {
             Utilisateur user = null;
             user = DatabaseHelper.getInstance(this).getUtilisateurByLogin(email_str);
             if (user == null){
-                Util.alert(this, "Oops", "L'adresse couriel est incorecte.", null);
+                Util.alert(this, R.string.err_titre, R.string.err_email_invalide, null);
                 return;
             }
             user.setMotPasse(mdp_str);
@@ -68,7 +68,7 @@ public class NouveauMdpActivity extends AppCompatActivity {
         }
 
         // 6. message de succes et retour a l'ecran de login
-        Util.alert(this, null, "Votre mot de passe a été changé avec succès pour ...", new DialogInterface.OnClickListener() {
+        Util.alert(this, R.string.suc_modif_mdp, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 startActivity(new Intent(NouveauMdpActivity.this, LoginActivity.class));

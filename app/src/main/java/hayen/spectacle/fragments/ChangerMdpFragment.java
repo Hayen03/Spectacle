@@ -122,26 +122,17 @@ public class ChangerMdpFragment extends Fragment {
 
         // 3. verifier que le present mdp est valide
         if (!user.getMotPasse().equals(currMdp_str)){
-            Util.alert(activity, "Oops", "Veuillez entrer le bon mot de passe.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}
-            });
+            Util.alert(activity, R.string.err_titre, R.string.err_mdp_invalide, null);
             return;
         }
 
         // 4. verifier que  le nouveau mdp est assez long et qu'il est bien confirme
         if (newMdp_str.length() < 8){
-            Util.alert(activity, "Oops", "Le nouveau mot de passe doit avoir 8 caractère minimum.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}
-            });
+            Util.alert(activity, R.string.err_titre, R.string.err_mdp_court, null);
             return;
         }
         if (!newMdp_str.equals(confirmMdp_str)){
-            Util.alert(activity, "Oops", "Le nouveau mot de passe et sa confirmation ne sont pas identique.", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {}
-            });
+            Util.alert(activity, R.string.err_titre, R.string.err_mdp_not_confirm, null);
             return;
         }
 
@@ -152,10 +143,9 @@ public class ChangerMdpFragment extends Fragment {
         }
 
         // 6. afficher msg de confirmation & retourner a la page d'info
-        Util.alert(activity, null, "Le mot de passe a été changé avec succès", new DialogInterface.OnClickListener() {
+        Util.alert(activity,R.string.suc_modif_mdp, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {}
+            public void onClick(DialogInterface dialog, int which) { activity.restore(); }
         });
-        activity.restore();
     }
 }

@@ -1,35 +1,11 @@
 <resources>
     <string name="app_name">Spectacle</string>
-
-    <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
-    <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">This email address is invalid</string>
-    <string name="error_invalid_password">This password is too short</string>
-    <string name="error_incorrect_password">This password is incorrect</string>
-    <string name="error_field_required">This field is required</string>
-    <string name="permission_rationale">"Contacts permissions are needed for providing email
-        completions."
-    </string>
-    <string name="title_activity_calendrier">CalendrierActivity</string>
-
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
     <string name="action_settings">Settings</string>
-    <string name="title_activity_test">TestActivity</string>
+    <string name="navigation_drawer_open">Drawer Open</string>
+    <string name="navigation_drawer_close">Drawer Closed</string>
 
-    <string name="search_hint">Recherche titre, artiste, salle</string>
-
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="textTitre">Titre</string>
-    <string name="textDate">Date</string>
-    <string name="textArtiste">Artiste</string>
-    <string name="textCalendrier">Calendrier des spectacles</string>
-
-    <string-array name="provinces_array">
+    <!-- Array pour les Spinners -->
+    <string-array name="array_provinces">
         <item>AL</item>
         <item>BC</item>
         <item>MB</item>
@@ -44,4 +20,93 @@
         <item>SK</item>
         <item>YT</item>
     </string-array>
+
+    <!-- Strings pour les infos de l'utilisateur -->
+    <string name="hint_email">Adresse couriel</string>
+    <string name="hint_mdp">Mot de passe</string>
+    <string name="hint_confirm_mdp">Confirmer le mot de passe</string>
+    <string name="hint_mdp_new">Nouveau mot de passe</string>
+    <string name="hint_mdp_old">Ancient mot de passe</string>
+    <string name="hint_adresse">Adresse</string>
+    <string name="hint_ville">Ville</string>
+    <string name="hint_province">Province</string>
+    <string name="hint_code_postal">Code postal</string>
+    <string name="hint_prenom">Prénom</string>
+    <string name="hint_nom">Nom</string>
+    <string name="hint_phone">Numéro de téléphone</string>
+    <string name="hint_code_recup">Code de récupération</string>
+    <string name="hint_search">Recherche titre, artiste, salle</string>
+
+    <!-- Strings pour les erreurs -->
+    <string name="err_titre">Oops</string>
+    <string name="err_mdp_court">Votre mot de passe doit contenir au moins 8 caractères.</string>
+    <string name="err_email_format">Veuillez entrer une adresse couriel valide.</string>
+    <string name="err_code_postal_format">Veuillez entrer un code postal valide.</string>
+    <string name="err_champ_vide">Veuillez remplir tout les champs.</string>
+    <string name="err_user_existe">Il existe déjà un utilisateur avec cette adresse couriel.</string>
+    <string name="err_mdp_not_confirm">Le mot de passe et sa confirmation ne sont pas identique.</string>
+    <string name="err_phone_format">Veuillez remplir un numéro de téléphone valide.</string>
+    <string name="err_general">Une erreur c\'est produite, veuillez réessayer plus tard.</string>
+    <string name="err_adresse_format">Veuillez entrer une adresse valide.</string>
+    <string name="err_connexion">L\'adresse couriel ou le mot de passe est invalide.</string>
+    <string name="err_code_recup">Le code rentré est invalide.</string>
+    <string name="err_email_invalide">L\'adresse couriel est incorecte.</string>
+    <string name="err_no_user">Il n\'existe aucun utilisateur sous cette adresse couriel.</string>
+    <string name="err_mdp_invalide">Le mot de passe entré est invalide.</string>
+    
+    <!-- Strings pour les message de succes -->
+    <string name="suc_inscription">Vous êtes maintenant inscrit à Spectacle.</string>
+    <string name="suc_modif_mdp">Votre mot de passe a été modifié pour ...</string>
+    <string name="suc_modif_info">Vos changements ont été sauvegardés.</string>
+
+    <!-- Strings pour les boutons -->
+    <string name="btn_confirm">Confirmer</string>
+    <string name="btn_annuler">Annuler</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_connexion">Connexion</string>
+    <string name="btn_inscription">Inscription</string>
+    <string name="btn_mdp_oublie">Mot de passe oublié</string>
+    <string name="btn_renvoi_code">Renvoyer le code</string>
+    <string name="btn_envoi_code">Envoyer</string>
+    <string name="btn_changer_mdp">Changer votre mot de passe</string>
+    <string name="btn_reserver">Réserver</string>
+    <string name="btn_modif_info">Modifier vos informations</string>
+
+    <!-- Strings pour les elements du menu -->
+    <string name="menu_profil">Profil</string>
+    <string name="menu_calendrier">Calendrier</string>
+    <string name="menu_recherche">Recherche</string>
+    <string name="menu_reservation">Réservation</string>
+    <string name="menu_info">À propos</string>
+    <string name="menu_deconnexion">Déconnexion</string>
+
+    <!-- Strings pour les titres -->
+    <string name="titre_login">Connexion</string>
+    <string name="titre_changer_mdp">Changer le mot de passe</string>
+    <string name="titre_modif_info">Modifier vos informations</string>
+
+    <!-- Strings divers -->
+    <string name="str_rester_connecte">Rester connecté</string>
+    <string name="str_instruction_new_mdp">Entrer votre adresse couriel pour recevoir un code de récupération</string>
+    <string name="str_date">Date</string>
+    <string name="str_duree">Durée</string>
+    <string name="str_salle">Salle</string>
+    <string name="str_genre">Genre</string>
+    <string name="str_titre">Titre</string>
+    <string name="str_artiste">Artiste</string>
+    <string name="str_prix">Prix</string>
+    <string name="str_nb_place"># Places</string>
+    <string name="str_siege">Siege</string>
+    <string name="str_numero">Numéro</string>
+    <string name="str_section">Section</string>
+    <string name="str_email">Couriel</string>
+    <string name="str_nom">Nom</string>
+    <string name="str_prenom">Prénom</string>
+    <string name="str_ville">Ville</string>
+    <string name="str_adresse">Adresse</string>
+    <string name="str_province">Province</string>
+    <string name="str_code_postal">Code postal</string>
+    <string name="str_phone">Téléphone</string>
+    <string name="str_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et dui iaculis, suscipit arcu at, rhoncus libero. Nullam enim quam, facilisis sed scelerisque at, vestibulum vel mi. Nunc vestibulum tortor ut nisl dictum malesuada. Fusce id ligula at justo finibus efficitur. Aliquam laoreet, leo ut convallis posuere, tellus risus finibus nunc, a ultrices ante sem ac est. Vivamus dictum nisl a velit tempor molestie. Nullam leo risus, sodales vel scelerisque at, fringilla eu arcu. Suspendisse aliquet vestibulum nibh. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut dolor erat, volutpat sit amet sem in, lacinia tincidunt ligula. Proin auctor sapien vitae varius convallis. Morbi a orci sed risus lacinia pellentesque. Vivamus placerat vulputate erat, eget varius nulla pretium vel. Praesent et malesuada orci. In in tellus ac ante commodo efficitur ut quis risus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</string>
+
 </resources>

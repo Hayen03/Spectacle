@@ -71,24 +71,24 @@ public class ProfilFragment extends Fragment {
                     provinceTV = view.findViewById(R.id.provinceTextView),
                     codeTV = view.findViewById(R.id.codeTextView);
         nomTV.setText(String.format("%s, %s", user.getNom(), user.getPrenom()));
-        emailTV.setText(String.format("Email: %s", user.getCourriel()));
-        phoneTV.setText(String.format("Téléphone: %s", user.getTelephone()));
-        adresseTV.setText(String.format("Adresse: %d, %s", adresse.getNumero(), adresse.getRue()));
-        villeTV.setText(String.format("Ville: %s", adresse.getVille()));
-        provinceTV.setText(String.format("Province: %s", adresse.getProvince()));
-        codeTV.setText(String.format("Code postal: %s", adresse.getCodePostal()));
+        emailTV.setText(String.format("%s: %s", view.getResources().getString(R.string.str_email), user.getCourriel()));
+        phoneTV.setText(String.format("%s: %s", view.getResources().getString(R.string.str_phone), user.getTelephone()));
+        adresseTV.setText(String.format("%s: %d, %s", view.getResources().getString(R.string.str_adresse), adresse.getNumero(), adresse.getRue()));
+        villeTV.setText(String.format("%s: %s", view.getResources().getString(R.string.str_ville), adresse.getVille()));
+        provinceTV.setText(String.format("%s: %s", view.getResources().getString(R.string.str_province), adresse.getProvince()));
+        codeTV.setText(String.format("%s: %s", view.getResources().getString(R.string.str_code_postal), adresse.getCodePostal()));
 
         // 3. ajouter les listeners au boutons
         ((Button) view.findViewById(R.id.modifierInfoButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modifierInfo(v);
+                ((CalendrierActivity) getActivity()).overrideFragment(ModifierInfoFragment.class);
             }
         });
         ((Button) view.findViewById(R.id.modifierMdpButton)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                modifierMdp(v);
+                ((CalendrierActivity) getActivity()).overrideFragment(ChangerMdpFragment.class);
             }
         });
 
@@ -119,12 +119,4 @@ public class ProfilFragment extends Fragment {
         mListener = null;
     }
 
-    public void modifierInfo(View view){
-        Log.i("DEBUG", String.format("%s VS %s :=> %b", Fragment.class.getName(), ModifierInfoFragment.class.getName(), Fragment.class.isAssignableFrom(ModifierInfoFragment.class)));
-        ((CalendrierActivity) getActivity()).overrideFragment(ModifierInfoFragment.class);
-    }
-
-    public void modifierMdp(View view){
-        ((CalendrierActivity) getActivity()).overrideFragment(ChangerMdpFragment.class);
-    }
 }

@@ -28,7 +28,7 @@ public class InscriptionActivity extends AppCompatActivity {
 
         Spinner provinces = (Spinner) findViewById(R.id.provinceSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.provinces_array, android.R.layout.simple_spinner_item);
+                R.array.array_provinces, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinces.setAdapter(adapter);
     }
@@ -49,46 +49,50 @@ public class InscriptionActivity extends AppCompatActivity {
 
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(getBaseContext());
 
-        // 2. Verifier que l'email est unique dans le systeme
+        // 2. Verifier que l'email est unique dans le systeme et qu'elle est valide
         Utilisateur user = null;
         if (Constant.fightLaDB){
             user = dbHelper.getUtilisateurByLogin(email);
             if (user != null) {
                 // blabla erreur
-                alertInsc("Il existe déjà un utilisateur avec cette adresse couriel");
+                alertInsc(R.string.err_user_existe);
                 return;
             }
+        }
+        if (!email.matches(Constant.emailRegex)){
+            alertInsc(R.string.err_email_format);
+            return;
         }
 
         // 3. Verifier que la confirmation du mdp est identique au mdp
         if (!confirmMdp.equals(mdp)){
             ((EditText)findViewById(R.id.confirmMdpEditText)).setText("");
-            alertInsc("Le mot de passe et sa confirmation ne sont pas identique");
+            alertInsc(R.string.err_mdp_not_confirm);
             return;
         }
 
         // 4. Verifier que le mdp fait au moins 8 caractere de long
         if (mdp.length() < 8){
-            alertInsc("Le mot de passe doit faire 8 caractère minimum");
+            alertInsc(R.string.err_mdp_court);
             return;
         }
 
         // 5. S'assurer que le num de telephone soit du bon format
-        if (!phone.matches("\\(?\\d{3}\\)?(-| )?\\d{3}(-| )?\\d{4}")){
-            alertInsc("Veuillez remplir un numéro de téléphone valide");
+        if (!phone.matches(Constant.phoneRegex)){
+            alertInsc(R.string.err_phone_format);
             return;
         }
 
         // 5-6. S'assurer que le code postal est valide
-        if (!cp.matches("[A-Z]\\d[A-Z] \\d[A-Z]\\d")){
-            alertInsc("Veuillez remplir un code postal valide");
+        if (!cp.matches(Constant.postalRegex)){
+            alertInsc(R.string.err_code_postal_format);
             return;
         }
 
         // 6. s'assurer qu'aucun champ ne soit vide
         for (String str : new String[]{prenom, nom, adresse, ville, province}){
             if (str.equals("")){
-                alertInsc("Veuillez remplir tout les champs");
+                alertInsc(R.string.err_champ_vide);
                 return;
             }
         }
@@ -116,7 +120,7 @@ public class InscriptionActivity extends AppCompatActivity {
             long adr_id = dbHelper.addAdresse(adr);
             if (adr_id < 0) {
                 // oops
-                alertInsc("Une erreur c'est produite lors de la création de votre compte, veuillez réessayer plus tard.");
+                alertInsc(R.string.err_general);
                 return;
             }
 
@@ -124,21 +128,25 @@ public class InscriptionActivity extends AppCompatActivity {
             user = new Utilisateur(prenom, nom, email, mdp, email, phone, (int) adr_id);
             user_id = dbHelper.addUtilisateur(user);
             if (user_id < 0) {
-                alertInsc("Une erreur c'est produite lors de la création de votre compte, veuillez réessayer plus tard.");
+                alertInsc(R.string.err_general);
                 return;
             }
         }
 
         // 8. YAY tout est beau next
-        Toast.makeText(getBaseContext(), "Compte créé correctement", Toast.LENGTH_SHORT);
-        Intent intent = new Intent(this, CalendrierActivity.class);
-        intent.putExtra("user_id", user_id);
-        startActivity(intent);
+        Util.alert(this, R.string.suc_inscription, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(InscriptionActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
-    private void alertInsc(String msg){
-        Util.alert(InscriptionActivity.this,
-                "Oops",
+    private void alertInsc(int msg){
+        Util.alert(this,
+                R.string.err_titre,
                 msg,
                 new DialogInterface.OnClickListener() {
                     @Override

@@ -73,7 +73,7 @@ public class SpectacleAdapter extends ArrayAdapter {
 
         Log.i("RPI", "artiste: " + artisteView.getText().toString());
 
-        String strArtistes = "Artiste(s) : ";
+        String strArtistes = String.format("%s: ", result.getResources().getString(R.string.str_artiste));
         artisteView.setText(strArtistes);
 
         TextView artisteListView = (TextView) result.findViewById(R.id.ligneSpecListArtistes);

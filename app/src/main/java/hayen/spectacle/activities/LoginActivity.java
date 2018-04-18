@@ -1,7 +1,5 @@
 package hayen.spectacle.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import hayen.spectacle.R;
 import hayen.spectacle.data.dao.DatabaseHelper;
@@ -30,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
         loginButton =  findViewById(R.id.loginButton);
         email = findViewById(R.id.usernameEditText);
-        password =  findViewById(R.id.passwordEditText2);
+        password =  findViewById(R.id.passwordEditText);
 
 
         Log.i("RPI", "courriel 1: " + email.getText().toString());
@@ -52,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 user = DatabaseHelper.getInstance(this).validateLogin(email_str, mdp_str);
             }
             catch (android.database.sqlite.SQLiteException e){
-                Util.alert(this, "Oops", "Il y a eu un probleme avec la base de donnée.", null);
+                Util.alert(this, R.string.err_titre, R.string.err_general, null);
                 password.setText("");
                 return;
             }
@@ -71,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
                 intent.putExtra("user", user_bundle);
             }
             else {
-                Util.alert(this, "Oops", "L'adresse couriel ou le mot de passe est invalide.", null);
+                Util.alert(this, R.string.err_titre, R.string.err_connexion, null);
                 password.setText("");
                 return;
             }

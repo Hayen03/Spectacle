@@ -82,7 +82,7 @@ public class ModifierInfoFragment extends Fragment {
         villeET.setText(adresse.getVille());
         codeET.setText(adresse.getCodePostal());
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,
-                R.array.provinces_array, android.R.layout.simple_spinner_item);
+                R.array.array_provinces, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         provinceSpin.setAdapter(adapter);
         provinceSpin.setSelection(adapter.getPosition(adresse.getProvince()));
@@ -108,25 +108,25 @@ public class ModifierInfoFragment extends Fragment {
                         province_str = provinceSpin.getSelectedItem().toString();
 
                 // 4.2 Verifier les entrees et retourner un message d'erreur si necessaire
-                // 4.2.1 email dans le bon format (regex trouve sur internet http://emailregex.com
-                if (!email_str.matches("(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])")){
-                    Util.alert(activity, "Oops", "L'adresse couriel entrée est incorecte.", null);
+                // 4.2.1 email dans le bon format
+                if (!email_str.matches(Constant.emailRegex)){
+                    Util.alert(activity, R.string.err_titre, R.string.err_email_format, null);
                     return;
                 }
-                // 4.2.2 telephone dans le bon format (regex trouve a https://www.safaribooksonline.com/library/view/regular-expressions-cookbook/9781449327453/ch04s02.html)
-                if (!phone_str.matches("^\\(?([0-9]{3})\\)?[-.●]?([0-9]{3})[-.●]?([0-9]{4})$")){
-                    Util.alert(activity, "Oops", "Le numéro de téléphone entré est invalide.", null);
+                // 4.2.2 telephone dans le bon format
+                if (!phone_str.matches(Constant.phoneRegex)){
+                    Util.alert(activity, R.string.err_titre, R.string.err_phone_format, null);
                     return;
                 }
                 // 4.2.3 code postal dans le bon format
-                if (!code_str.matches("^[A-Z]\\d[A-Z] \\d[A-Z]\\d$")){
-                    Util.alert(activity, "Oops", "Le code postal entré est invalide.", null);
+                if (!code_str.matches(Constant.postalRegex)){
+                    Util.alert(activity, R.string.err_titre, R.string.err_code_postal_format, null);
                     return;
                 }
                 // 4.2.n s'assurer qu'aucun champ soit vide
                 for (String str : new String[]{nom_str, prenom_str, adr_str, ville_str}){
                     if (str.length() == 0){
-                        Util.alert(activity, "Oops", "Veuillez remplir tout les champs.", null);
+                        Util.alert(activity, R.string.err_titre, R.string.err_champ_vide, null);
                         return;
                     }
                 }
@@ -139,7 +139,7 @@ public class ModifierInfoFragment extends Fragment {
                     rue = adr_arr[1];
                 }
                 catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
-                    Util.alert(activity, "Oops", "L'adresse entrée est incomplète.", null);
+                    Util.alert(activity, R.string.err_titre, R.string.err_adresse_format, null);
                     return;
                 }
 
@@ -162,8 +162,12 @@ public class ModifierInfoFragment extends Fragment {
                 }
 
                 // 4.5 retourner au fragment de profil avec un message de succes
-                Util.alert(activity, null, "Vos informations ont été modifiées.", null);
-                activity.restore();
+                Util.alert(activity, R.string.suc_modif_info, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        activity.restore();
+                    }
+                });
             }
         });
 

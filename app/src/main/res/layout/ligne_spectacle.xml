@@ -40,7 +40,7 @@
             android:paddingBottom="15dp"
             android:paddingLeft="15dp"
             android:paddingTop="15dp"
-            android:text="@string/textTitre"
+            android:text="@string/str_titre"
             android:textColor="#006699"
             android:textSize="24sp"
             android:textStyle="bold|italic" />
@@ -51,7 +51,7 @@
             android:layout_height="50dp"
             android:layout_marginLeft="0dp"
             android:paddingLeft="15dp"
-            android:text="@string/textDate"
+            android:text="@string/str_date"
             android:textSize="18sp" />
 
         <LinearLayout
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="0dp"
                 android:paddingLeft="15dp"
-                android:text="@string/textArtiste"
+                android:text="@string/str_artiste"
                 android:textSize="18dp" />
 
             <TextView
