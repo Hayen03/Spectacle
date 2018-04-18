@@ -8,6 +8,7 @@
 
     <Button
         android:id="@+id/sendRecupMdpButton"
+        style="@style/Spectacle.Bouton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
@@ -27,9 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         android:text="@string/str_instruction_new_mdp"
-        android:textAlignment="textStart"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
+        android:textAppearance="@style/Spectacle.Corp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -44,6 +43,7 @@
         android:ems="10"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
+        android:textAppearance="@style/Spectacle.Edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/instructionsRecupMdpTextView" />

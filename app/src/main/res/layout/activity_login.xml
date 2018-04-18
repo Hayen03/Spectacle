@@ -16,6 +16,7 @@
         android:ems="10"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
+        android:textAppearance="@style/Spectacle.Edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +30,7 @@
         android:ems="10"
         android:hint="@string/hint_mdp"
         android:inputType="textPassword"
+        android:textAppearance="@style/Spectacle.Edit"
         app:layout_constraintEnd_toEndOf="@+id/usernameEditText"
         app:layout_constraintStart_toStartOf="@+id/usernameEditText"
         app:layout_constraintTop_toBottomOf="@+id/usernameEditText" />
@@ -42,15 +44,14 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/titre_login"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="36sp"
+        android:textAppearance="@style/Spectacle.Titre"
         app:layout_constraintBottom_toTopOf="@+id/usernameEditText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/loginButton"
+        style="@style/Spectacle.Bouton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -72,6 +73,7 @@
 
     <Button
         android:id="@+id/creerCompteButton"
+        style="@style/Spectacle.Bouton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -83,6 +85,7 @@
 
     <Button
         android:id="@+id/mdpOublieButton"
+        style="@style/Spectacle.Bouton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"

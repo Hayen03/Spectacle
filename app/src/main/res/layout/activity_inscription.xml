@@ -30,7 +30,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_prenom"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -42,7 +43,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_nom"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -54,7 +56,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -66,7 +69,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_mdp"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -78,7 +82,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_confirm_mdp"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -90,7 +95,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_adresse"
-                android:inputType="textPostalAddress" />
+                android:inputType="textPostalAddress"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -102,7 +108,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_ville"
-                android:inputType="textShortMessage" />
+                android:inputType="textShortMessage"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -124,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_code_postal"
-                android:inputType="textShortMessage|textPostalAddress" />
+                android:inputType="textShortMessage|textPostalAddress"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -136,7 +144,8 @@
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_phone"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:textAppearance="@style/Spectacle.Edit" />
 
             <Space
                 android:layout_width="match_parent"
@@ -144,6 +153,7 @@
 
             <Button
                 android:id="@+id/inscriptionButton"
+                style="@style/Spectacle.Bouton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="inscrit"
