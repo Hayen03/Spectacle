@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="hayen.spectacle.activities.RecupererMdpActivity">
+    tools:context="hayen.spectacle.activities.RecupererMdpActivity"
+    android:background="@drawable/clef_de_sol"
+    android:backgroundTint="@color/backgroundColor">
 
     <Button
         android:id="@+id/sendRecupMdpButton"

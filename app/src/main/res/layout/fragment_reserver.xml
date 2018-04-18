@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#efefef"
     android:orientation="vertical">
 
 
@@ -11,9 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_weight="1"
-        android:background="#efefef"
         android:gravity="center"
         android:orientation="horizontal">
+        <!--android:background="#efefef"-->
 
         <ImageView
             android:id="@+id/ReservationImageView"
@@ -26,10 +25,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="#efefef"
             android:orientation="vertical"
             android:padding="5dp"
             android:paddingLeft="5dp">
+            <!--android:background="#efefef"-->
 
 
             <TextView
@@ -78,8 +77,8 @@
                 android:layout_height="100dp"
                 android:layout_marginLeft="0dp"
                 android:layout_weight="1"
-                android:background="#efefef"
                 android:orientation="horizontal">
+                <!--android:background="#efefef"-->
 
                 <TextView
                     android:id="@+id/reservationSpecArtiste"
@@ -111,8 +110,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="0dp"
         android:layout_weight="1"
-        android:background="#efefef"
         android:orientation="horizontal">
+        <!--android:background="#efefef"-->
 
         <TextView
             android:id="@+id/reservationSectionLabelNum"
@@ -159,8 +158,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="5dp"
         android:layout_weight="1"
-        android:background="#efefef"
         android:orientation="vertical">
+        <!--android:background="#efefef"-->
 
         <ListView
             android:id="@+id/listViewSections"
