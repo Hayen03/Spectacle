@@ -1787,6 +1787,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 spectacle.setId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)));
                 spectacle.setTitre(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)));
                 spectacle.setDate(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)));
+                spectacle.setDuree(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)));
                 spectacle.setGenreId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)));
                 spectacle.setSalleId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
 

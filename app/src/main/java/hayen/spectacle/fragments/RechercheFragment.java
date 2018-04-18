@@ -20,6 +20,7 @@ import hayen.spectacle.R;
 import hayen.spectacle.adapter.SpectacleAdapter;
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.dao.DatabaseQueries;
+import hayen.spectacle.data.data.Artiste;
 import hayen.spectacle.data.data.Spectacle;
 import hayen.spectacle.util.Constant;
 
@@ -101,23 +102,31 @@ public class RechercheFragment extends Fragment implements SearchView.OnQueryTex
         // 1. Utiliser la db pour chercher les infos necessaires
 //        List<Spectacle> spectacles = new LinkedList<>();
         if (Constant.fightLaDB) {
-            SQLiteDatabase db = DatabaseHelper.getInstance(getActivity()).getReadableDatabase();
-            String[] args = new String[DatabaseQueries.SEARCH_QUERY_ARG_NUMBER];
-            for (int i = 0; i < DatabaseQueries.SEARCH_QUERY_ARG_NUMBER; i++)
-                args[i] = query;
-            Cursor cursor = db.rawQuery(DatabaseQueries.SEARCH_QUERY, args);
-            if (cursor != null){
-                cursor.moveToFirst();
-                while (!cursor.isAfterLast()) {
-                    Spectacle spectacle = new Spectacle(
-                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)),
-                            cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)),
-                            cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)),
-                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)),
-                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)),
-                            cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
+            DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity());
+            List<Spectacle> spectacles = dbHelper.getAllSpectacles();
+            for (Spectacle spectacle : spectacles) {
+                List<Artiste> artistes = dbHelper.getAllArtistesBySpectacleId(spectacle.getId());
+                spectacle.setArtistes(artistes);
+                if (spectacle.getTitre().contains(query)) {
                     results.add(spectacle);
                 }
+                else {
+                    for (Artiste artiste : artistes){
+                        if (artiste.getNom().contains(query) ||
+                                artiste.getNom().contains(query) ||
+                                artiste.getFullName().contains(query)){
+                            results.add(spectacle);
+                        }
+                }
+            }
+/*            List<Artiste> artistes = dbHelper.getAllArtistes();
+            for (Artiste artiste : artistes){
+                if (artiste.getNom().contains(query) || artiste.getNom().contains(query) || artiste.getFullName().contains(query)){
+                    String sqlquery = "select spectacle.* from spectacle join spectacle_artiste as sa on spectacle.id = sa.id_spectacle join artiste on sa.id_artiste = artiste.id where artiste.id = '" + artiste.getId() + "'";
+                    Cursor cursor = dbHelper.getReadableDatabase().rawQuery(sqlquery, null);
+
+                }
+                */
             }
         }
         else {

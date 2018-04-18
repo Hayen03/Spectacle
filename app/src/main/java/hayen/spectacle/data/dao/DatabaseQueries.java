@@ -523,16 +523,16 @@ public class DatabaseQueries {
                     "spectacle.date_spectacle, " +
                     "spectacle.duree, " +
                     "spectacle.id_genre, " +
-                    "spectacle.id_salle, " +
+                    "spectacle.id_salle " +
             "from spectacle " +
                     "join spectacle_artiste on spectacle.id = spectacle_artiste.id_spectacle " +
                     "join artiste on artiste.id = spectacle_artiste.id_artiste " +
                     "join salle on spectacle.id_salle = salle.id " +
-            "where spectacle.titre like '%?% " +
+            "where spectacle.titre like '%?%' " +
                     "or artiste.prenom like '%?%' " +
                     "or artiste.nom like '%?%' " +
                     "or artiste.prenom || ' ' || artiste.nom like '%?%' " +
                     "or salle.nom like '%?%'";
-    public static final int SEARCH_QUERY_ARG_NUMBER = 5;
+//    public static final int SEARCH_QUERY_ARG_NUMBER = 5;
 
 }

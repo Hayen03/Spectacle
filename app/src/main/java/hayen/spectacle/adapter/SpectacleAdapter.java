@@ -84,14 +84,15 @@ public class SpectacleAdapter extends ArrayAdapter {
 
         String listArtistes = "";
         int i = 0;
-        for (Artiste art : artistes) {
-            listArtistes += art.getFullName() + "\n";
+        if (artistes != null)
+            for (Artiste art : artistes) {
+                listArtistes += art.getFullName() + "\n";
 
-            Log.i("RPI", "artiste: " + listArtistes);
-            if(++i < artistes.size()){
-             //   listArtistes += "; ";
+                Log.i("RPI", "artiste: " + listArtistes);
+                if(++i < artistes.size()){
+                 //   listArtistes += "; ";
+                }
             }
-        }
         artisteListView.setText(listArtistes);
 
     //    ImageView image = (ImageView) result.findViewById(R.id.ligne_specArtiste);
