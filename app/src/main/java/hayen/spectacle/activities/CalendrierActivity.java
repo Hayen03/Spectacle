@@ -13,6 +13,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.support.v7.widget.Toolbar;
 
@@ -46,6 +47,9 @@ public class CalendrierActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendrier);
 
+
+        Log.i("RPI", "------------>> Calendrier Activity");
+
         // 1. initialiser l'UI
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,6 +72,8 @@ public class CalendrierActivity
 
         // 2. chercher l'utilisateur
         Bundle user_bundle = getIntent().getBundleExtra("user");
+
+
         if (user_bundle != null){
             user = new Utilisateur();
             user.setMotPasse(user_bundle.getString(Utilisateur.COLUMN_MOT_PASSE));

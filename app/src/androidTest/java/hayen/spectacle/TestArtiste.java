@@ -18,7 +18,7 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.Constant;
 //import com.ift2905.reservation.database.entities.Artiste;
 
-import hayen.spectacle.data.dao.ArtisteSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Artiste;
 
 import static org.junit.Assert.assertEquals;
@@ -37,7 +37,7 @@ public class TestArtiste {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ArtisteSQLHelper dbHelper = ArtisteSQLHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -70,7 +70,7 @@ public class TestArtiste {
         Log.i("RPI", "Ajout d'un artiste");
 
         Context appContext = InstrumentationRegistry.getTargetContext();
-        ArtisteSQLHelper dbHelper = ArtisteSQLHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -120,7 +120,7 @@ public class TestArtiste {
         Log.i("RPI", "Effacer un artiste");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ArtisteSQLHelper dbHelper = ArtisteSQLHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -173,7 +173,7 @@ public class TestArtiste {
         Log.i("RPI", "Mettre à jour un artiste");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ArtisteSQLHelper dbHelper = ArtisteSQLHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance (appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

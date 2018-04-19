@@ -16,8 +16,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SpectacleSQLHelper;
 //import com.ift2905.reservation.database.entities.Spectacle;
 
-import hayen.spectacle.data.dao.ArtisteSQLHelper;
-import hayen.spectacle.data.dao.SpectacleSQLHelper;
+
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Artiste;
 import hayen.spectacle.data.data.Spectacle;
 
@@ -36,7 +36,7 @@ public class TestSpectacle {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SpectacleSQLHelper dbHelper = SpectacleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
@@ -78,7 +78,7 @@ public class TestSpectacle {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ArtisteSQLHelper dbHelper =  ArtisteSQLHelper.getInstance(appContext);
+        DatabaseHelper dbHelper =  DatabaseHelper.getInstance(appContext);
 
         int spectacleId =  3;
 
@@ -103,7 +103,7 @@ public class TestSpectacle {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SpectacleSQLHelper dbHelper = SpectacleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -160,7 +160,7 @@ public class TestSpectacle {
         Log.i("RPI", "Mettre à jour un Spectacle");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SpectacleSQLHelper dbHelper = SpectacleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -229,7 +229,7 @@ public class TestSpectacle {
         Log.i("RPI", "Effacer un Spectacle");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SpectacleSQLHelper dbHelper = SpectacleSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

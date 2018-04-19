@@ -85,11 +85,11 @@ public class FicheFragment extends Fragment {
         final Spectacle spectacle = dbHelper.getSpectacleById(spectacleId);
 
         Genre genre =  dbHelper.getGenreById(spectacle.getGenreId());
+        spectacle.setGenre(genre);
+        final Salle salle =  dbHelper.getSalleById(spectacle.getSalleId());
 
-        Salle salle =  dbHelper.getSalleById(spectacle.getSalleId());
-
-        Log.i("RPI", "spectacle: " + spectacle);
-        Log.i("RPI", "genre: " + genre);
+        Log.i("RPI", " in FicheFragnent >> spectacle: " + spectacle);
+        Log.i("RPI", ">> genre: " + genre);
 
         TextView textViewTitre = view.findViewById(R.id.ficheTxtSepcTitle);
         textViewTitre.setText(spectacle.getTitre());
@@ -114,6 +114,7 @@ public class FicheFragment extends Fragment {
         textViewDate.setText(formatedDate);
 
         TextView textViewGenre = view.findViewById(R.id.ficheTxtGenre);
+        Log.i("RPI", "salle: " + salle.getNom());
         textViewGenre.setText(genre.getNom());
 
         TextView textViewSalle = view.findViewById(R.id.ficheTxtSalle);
@@ -129,6 +130,8 @@ public class FicheFragment extends Fragment {
         for (Artiste artiste: artistes) {
             Log.i("RPI", "artiste: " + artiste);
         }
+
+        spectacle.setArtistes(artistes);
 
         int size =  artistes.size();
 
@@ -182,8 +185,8 @@ public class FicheFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.i("RPI", "clic: " + spectacle.getId());
-
-                Fragment frag = ReserverFragment.newInstance(spectacle);
+                Log.i("RPI", "clic: " + spectacle.getGenre());
+                Fragment frag = ReserverFragment.newInstance(spectacle, salle);
                 ((CalendrierActivity)getActivity()).overrideFragment(frag);
             }
         });

@@ -25,23 +25,38 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
+
         loginButton =  findViewById(R.id.loginButton);
         email = findViewById(R.id.usernameEditText);
         password =  findViewById(R.id.passwordEditText);
-
-
-        Log.i("RPI", "courriel 1: " + email.getText().toString());
-        Log.i("RPI", "mot de passe 1: " + password.getText().toString());
 
     }
 
     public void login(View view){
         Intent intent = new Intent(this, CalendrierActivity.class);
         intent.setFlags(intent.getFlags() | Intent.FLAG_ACTIVITY_NO_HISTORY);
+
+
         if (Constant.fightLaDB){
+
+
+
             // 1. recuperer les informations
             String email_str = email.getText().toString();
             String mdp_str = password.getText().toString();
+
+            //******************************* FOR DEBUG ONLY **************************
+            Log.i("RPI", "courriel 1: " + email.getText().toString());
+            Log.i("RPI", "mot de passe 1: " + password.getText().toString());
+
+            email_str = "ArnaudFournier@dayrep.com";
+            mdp_str = "weWoh9zie";
+
+            Log.i("RPI", "courriel 2: " + email_str);
+            Log.i("RPI", "mot de passe 2: " + email_str);
+            //******************************* FOR DEBUG ONLY **************************
 
             // 2. recuperer l'utilisateur
             Utilisateur user = null;

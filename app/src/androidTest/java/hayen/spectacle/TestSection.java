@@ -17,7 +17,7 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.SectionSQLHelper;
 //import com.ift2905.reservation.database.entities.Section;
 
-import hayen.spectacle.data.dao.SectionSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Section;
 
 import static org.junit.Assert.assertEquals;
@@ -35,7 +35,7 @@ public class TestSection {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getReadableDatabase();
 
@@ -79,7 +79,7 @@ public class TestSection {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -137,7 +137,7 @@ public class TestSection {
         Log.i("RPI", "**********************************Mettre à jour une Section");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -183,7 +183,7 @@ public class TestSection {
         Log.i("RPI", "**********************************Supprimer un Section");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        SectionSQLHelper dbHelper = SectionSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

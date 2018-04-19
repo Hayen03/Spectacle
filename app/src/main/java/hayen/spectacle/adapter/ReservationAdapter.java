@@ -40,8 +40,16 @@ public class ReservationAdapter extends ArrayAdapter<Reservation> {
                     numTV = convertView.findViewById(R.id.numeroTextView);
 
         // 3. aller chercher les informations pertinentes
-        String titre = "PLACE HOLDER", date = "aujourd'hui", salle = "1", rangee = "J", colonne = "3", num, section = "Terasse";
+        String titre = "PLACE HOLDER",
+                date = "aujourd'hui",
+                salle = "1",
+                rangee = "J",
+                colonne = "3",
+                num,
+                section = "Terasse";
+
         num = reservation.getNumeroConfirmation();
+
         // WE HAVE A DATABASE AND I AM GOING TO USE IT!!!
         if (Constant.fightLaDB){
             DatabaseHelper dbh = DatabaseHelper.getInstance(getContext());

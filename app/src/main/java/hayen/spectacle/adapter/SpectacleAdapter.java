@@ -22,6 +22,7 @@ import hayen.spectacle.data.data.Spectacle;
 
 /**
  * Created by daristote on 18-04-13.
+ * Vue pour les items Spectacle dans Calendrier actitvity
  */
 
 public class SpectacleAdapter extends ArrayAdapter {
@@ -71,7 +72,7 @@ public class SpectacleAdapter extends ArrayAdapter {
 
         TextView artisteView = (TextView) result.findViewById(R.id.ligneSpecArtiste);
 
-        Log.i("RPI", "artiste: " + artisteView.getText().toString());
+      //  Log.i("RPI", ">> artiste (1): " + artisteView.getText().toString());
 
         String strArtistes = String.format("%s: ", result.getResources().getString(R.string.str_artiste));
         artisteView.setText(strArtistes);
@@ -88,10 +89,10 @@ public class SpectacleAdapter extends ArrayAdapter {
             for (Artiste art : artistes) {
                 listArtistes += art.getFullName() + "\n";
 
-                Log.i("RPI", "artiste: " + listArtistes);
-                if(++i < artistes.size()){
-                 //   listArtistes += "; ";
-                }
+      //          Log.i("RPI", ">> artiste (2): " + listArtistes);
+//                if(++i < artistes.size()){
+//                 //   listArtistes += "; ";
+//                }
             }
         artisteListView.setText(listArtistes);
 

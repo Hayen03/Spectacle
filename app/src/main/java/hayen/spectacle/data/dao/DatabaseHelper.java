@@ -34,23 +34,26 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     private SQLiteDatabase database;
 
+    private Context context;
+
     private static volatile DatabaseHelper databaseHelper;
 
     private DatabaseHelper(Context context) {
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
-        File file = context.getDatabasePath(Constant.DATABASE_NAME);
-
-        File path =   file.getAbsoluteFile();
-
-        Log.i("RPI", "file: " + file  + "; db path: " + path);
+        this.context =  context;
+       // database = this.getWritableDatabase();
     }
     private DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
-        File file = context.getDatabasePath(name);
 
-        File path =   file.getAbsoluteFile();
+        this.context =  context;
 
-        Log.i("RPI", "file: " + file  + "; db path: " + path);
+        //delete database
+        //this.context.deleteDatabase(Constant.DATABASE_NAME);
+
+       // database = this.getWritableDatabase();
+
+
     }
     public static DatabaseHelper getInstance(Context context){
 
@@ -67,13 +70,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     //*******************************************************************************************************
     //*******************************************************************************************************
 
+
+
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+
 
         database =  sqLiteDatabase;
 
         //delete tables
-        //dropDB();
+        dropDB();
         //create tables
         createDB();
         //load tables
@@ -94,7 +100,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         }
 */
         database = sqLiteDatabase;
-        dropDB();
+      //  dropDB();
         onCreate(sqLiteDatabase);
 
     }
@@ -122,6 +128,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
     private void dropDB(){
+
 
 
         Log.i("RPI", "Retrait des tables");
@@ -327,6 +334,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     }
 
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
     //************ FONCTIONS DES AUTRES SQL HELPER ************\\
 
     // ADRESSE
@@ -363,6 +375,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return adresse;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public List<Adresse> getAllAdresses() {
         List<Adresse> adresses = null;
 
@@ -400,6 +417,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return adresses;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getAdressesCount() {
 
         database = this.getReadableDatabase();
@@ -417,6 +438,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addAdresse(Adresse adresse) {
 
         database = this.getWritableDatabase();
@@ -438,6 +463,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int updateAdresse(Adresse adresse) {
 
         database = this.getWritableDatabase();
@@ -462,6 +492,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteAdresse(Adresse adresse) {
 
         database= this.getWritableDatabase();
@@ -472,6 +506,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
 
     // ARTISTE
     public Artiste getArtisteById(int id) {
@@ -498,6 +538,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return artiste;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Artiste getArtisteByName(Artiste artiste) {
 
         database = this.getReadableDatabase();
@@ -523,6 +567,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return artiste2;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Artiste> getAllArtistes() {
         List<Artiste> artistes = null;
 
@@ -553,18 +601,29 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return artistes;
     }
-    public List<Artiste> getAllArtistesBySpectacleId(int id) {
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public List<Artiste> getAllArtistesBySpectacleId(int spectacleId) {
+
+        Log.i("RPI", " >> In DBHelper: get artistes for spectacleId : " + spectacleId);
+
         List<Artiste> artistes = null;
 
         // Select All Query
-        String selectQuery = "SELECT  * FROM artiste " +
-                " inner join spectacle_artiste as SA on SA.id_artiste=artiste.id " +
-                " inner join spectacle on spectacle.id=SA.id_spectacle " +
-                "   where id_spectacle=" + id;
+//        String selectQuery = "SELECT  * FROM artiste " +
+//                " inner join spectacle_artiste as SA on SA.id_artiste=artiste.id " +
+//                " inner join spectacle on spectacle.id=SA.id_spectacle " +
+//                "   where id_spectacle=?";
 
+
+        String selectQuery = " select * from artiste where id in (select id_artiste from spectacle_artiste where id_spectacle=?)";
 
         database = this.getReadableDatabase();
-        Cursor cursor = database.rawQuery(selectQuery, null);
+        Cursor cursor = database.rawQuery(selectQuery, new String[]{Integer.toString(spectacleId)});
+
+        Log.i("RPI", " >> In DBHelper: cursor.count : " + cursor.getCount());
 
         if (cursor != null && cursor.moveToFirst()) {
 
@@ -582,10 +641,42 @@ public class DatabaseHelper extends SQLiteOpenHelper{
             cursor.close();
         }
 
+        //******************************************************************************************
+//        Log.i("RPI", " >> In DBHelper: get artistes size : " + artistes.size());
+//
+//        // Select All Query
+//        selectQuery = "SELECT  * FROM spectacle_artiste ";
+//
+//        cursor = database.rawQuery(selectQuery, null);
+//        if (cursor != null && cursor.moveToFirst()) {
+//
+//            List<Integer> liste  = new ArrayList<>();
+//            int i = 0;
+//            do {
+//                liste.add(cursor.getInt(cursor.getColumnIndex("id_spectacle")));
+//                liste.add(cursor.getInt(cursor.getColumnIndex("id_artiste")));
+//                Log.i("RPI", " >> In DBHelper: spectacle_artiste i : " + i);
+//                i++;
+//
+//            } while (cursor.moveToNext());
+//
+//            Log.i("RPI", " >> In DBHelper: spectacle_artiste liste.size : " + liste.size());
+//            for (Integer integer: liste) {
+//                Log.i("RPI", " >> In DBHelper: spectacle_artiste integer : " + integer);
+//            }
+//
+//        }
+
+        //******************************************************************************************
+
         close();
 
         return artistes;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getArtistesCount() {
 
         database = this.getReadableDatabase();
@@ -605,6 +696,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int updateArtiste(Artiste artiste) {
 
         database= this.getWritableDatabase();
@@ -620,6 +716,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public long addArtiste(Artiste artiste) {
 
         database= this.getWritableDatabase();
@@ -634,6 +735,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteArtiste(Artiste artiste) {
 
         database= this.getWritableDatabase();
@@ -644,6 +749,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
 
     // CARTES DE CREDIT
     public CarteCredit getCarteByUserId(int userId) {
@@ -680,6 +791,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return carteCredit;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public List<CarteCredit> getAllCartes() {
 
         database = this.getReadableDatabase();
@@ -717,6 +833,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return cartes;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int getCartesCount() {
 
         database = this.getReadableDatabase();
@@ -735,6 +856,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public long addCarte(CarteCredit carte) {
         database = this.getWritableDatabase();
 
@@ -751,6 +877,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int updateCarte(CarteCredit carte) {
 
         database = this.getWritableDatabase();
@@ -769,6 +900,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteCarteCredit(CarteCredit carte) {
 
         database = this.getWritableDatabase();
@@ -777,6 +912,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
         return result;
     }
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
 
     // Genre
     public Genre getGenreById(int id) {
@@ -806,6 +948,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Genre> getAllGenres() {
 
         List<Genre> genres = null;
@@ -835,6 +981,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return genres;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int getGenresCount() {
 
         database = this.getReadableDatabase();
@@ -853,6 +1004,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public long addGenre(Genre genre) {
 
         database= this.getWritableDatabase();
@@ -867,6 +1023,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int updateGenre(Genre genre) {
 
         database = this.getWritableDatabase();
@@ -881,6 +1042,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int deleteGenre(Genre genre) {
 
         database = this.getWritableDatabase();
@@ -893,7 +1059,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return result;
     }
 
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
     // Paiement
+
     public Paiement getPaiementById(int id) {
 
         Paiement paiement = null;
@@ -922,6 +1095,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return paiement;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Paiement getPaiementByReservationId(int reservationId) {
 
         Paiement paiement = null;
@@ -950,6 +1127,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return paiement;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Paiement> getAllPaiements() {
 
 
@@ -983,6 +1164,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return paiements;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getPaiementsCount() {
 
         database = this.getReadableDatabase();
@@ -1002,6 +1187,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addPaiement(Paiement paiement) {
 
         database = this.getWritableDatabase();
@@ -1017,6 +1206,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updatePaiement(Paiement paiement) {
 
         database = this.getWritableDatabase();
@@ -1034,6 +1227,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deletePaiement(Paiement paiement) {
         database= this.getWritableDatabase();
         int result = database.delete(Paiement.TABLE_NAME, Paiement.COLUMN_ID + " = ?",
@@ -1043,6 +1240,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
 
     // Reservation
     public Reservation getReservationById(int id) {
@@ -1073,6 +1275,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return reservation;
 
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Reservation> getAllReservations() {
 
         List<Reservation> reservations = null;
@@ -1106,6 +1312,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return reservations;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public int getReservationsCount() {
 
         database = this.getReadableDatabase();
@@ -1124,6 +1335,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addReservation(Reservation Reservation) {
 
         database = this.getWritableDatabase();
@@ -1139,6 +1354,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updateReservation(Reservation Reservation) {
         database = this.getWritableDatabase();
 
@@ -1154,6 +1373,28 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public long replaceReservation(Reservation Reservation) {
+        database = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Reservation.COLUMN_NUMERO_CONFIRMATION, Reservation.getNumeroConfirmation());
+        values.put(Reservation.COLUMN_DATE_RESERVATION, Reservation.getDateReservation());
+        values.put(Reservation.COLUMN_USER_ID, Reservation.getUserId());
+
+        long nbAffectedRows= database.replace (Reservation.TABLE_NAME, null,  values);
+
+        close();
+
+        return nbAffectedRows;
+    }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteReservation(Reservation reservation) {
         //TODO: delete entry from reservation_siege table before
 
@@ -1165,6 +1406,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
+
 
     // Salle
     public Salle getSalleById(int id) {
@@ -1199,6 +1447,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return salle;
 
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public List<Salle> getAllSalles() {
 
         database = this.getReadableDatabase();
@@ -1236,6 +1489,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return salles;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getSallesCount() {
 
         database= this.getReadableDatabase();
@@ -1255,6 +1512,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addSalle(Salle salle) {
 
         database= this.getWritableDatabase();
@@ -1273,6 +1534,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updateSalle(Salle salle) {
 
         database= this.getWritableDatabase();
@@ -1292,6 +1557,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteSalle(Salle salle) {
         database = this.getWritableDatabase();
         int result = database.delete(Salle.TABLE_NAME, Salle.COLUMN_ID + " = ?",
@@ -1302,7 +1571,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return result;
     }
 
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
     // Section
+
     public Section getSectionById(int id) {
 
 
@@ -1331,6 +1606,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return section;
 
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Section getSectionBySalleId(int idSalle) {
 
         database = this.getReadableDatabase();
@@ -1360,6 +1639,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return section;
 
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Section> getSectionsBySalleId(int salleId) {
 
         database = this.getReadableDatabase();
@@ -1398,6 +1681,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return sections;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Section> getAllSections() {
 
         database = this.getReadableDatabase();
@@ -1435,6 +1722,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return sections;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getSectionsCount() {
 
         database = this.getReadableDatabase();
@@ -1454,6 +1745,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addSection(Section section) {
 
         database = this.getWritableDatabase();
@@ -1470,6 +1765,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updateSection(Section section) {
 
         database = this.getWritableDatabase();
@@ -1487,6 +1786,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteSection(Section section) {
         SQLiteDatabase db = this.getWritableDatabase();
         int result = db.delete(Section.TABLE_NAME, Section.COLUMN_ID + " = ?",
@@ -1497,6 +1800,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Integer> getFreePlacesBySections(int spectacleId) {
 
         database = this.getReadableDatabase();
@@ -1511,13 +1818,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                         " from siege " +
                         " inner join spectacle_siege as SPSI on SPSI.id_siege=siege.id " +
                         " inner join section on section.id=siege.id_section " +
-                        " where SPSI.id_spectacle=1 and SPSI.reserve=0 " +
+                        " where SPSI.id_spectacle=? and SPSI.reserve=0 " +
                         " group by section.id " +
                         " order by section.id asc "
                 ;
 
         ;
-        Cursor cursor = database.rawQuery(selectQuery, null);
+
+        Cursor cursor = database.rawQuery(selectQuery, new String[]{Integer.toString(spectacleId)});
 
         Log.i("RPI", "Section count: " + cursor.getCount());
         if (cursor != null && cursor.moveToFirst()) {
@@ -1540,6 +1848,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return freeSieges;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<SpectacleSection> getSectionsBySpectacleId(int spectacleId) {
 
         database = this.getReadableDatabase();
@@ -1578,7 +1890,13 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return spectacleSections;
     }
 
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
     // Siege
+
     public Siege getSiegeById(int id) {
 
 
@@ -1607,6 +1925,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return siege;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
     public List<Siege> getAllSieges() {
 
         database = this.getReadableDatabase();
@@ -1641,6 +1964,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return sieges;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getSiegesCount() {
 
         database = this.getReadableDatabase();
@@ -1660,6 +1987,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addSiege(Siege siege) {
 
         database = this.getWritableDatabase();
@@ -1675,6 +2006,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updateSiege(Siege siege) {
 
         database= this.getWritableDatabase();
@@ -1691,6 +2027,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteSiege(Siege siege) {
 
         database = this.getWritableDatabase();
@@ -1701,6 +2042,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Siege> getAllSiegesBySalle(int salleId) {
 
         database = this.getReadableDatabase();
@@ -1736,7 +2082,15 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return sieges;
     }
 
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+
     // SPECTACLE
+
     public Spectacle getSpectacleById(int id) {
 
 
@@ -1766,6 +2120,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return spectacle;
 
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Spectacle> getAllSpectacles() {
 
         database = this.getReadableDatabase();
@@ -1803,6 +2161,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return spectacles;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getSpectaclesCount() {
 
         database = this.getReadableDatabase();
@@ -1822,6 +2184,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return count;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addSpectacle(Spectacle spectacle) {
 
 
@@ -1840,6 +2206,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updateSpectacle(Spectacle spectacle) {
 
         database= this.getWritableDatabase();
@@ -1858,6 +2228,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int  deleteSpectacle(Spectacle spectacle) {
 
         database = this.getWritableDatabase();
@@ -1869,6 +2243,11 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return result;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
+    //************************************************************************************************
 
     // UTILISATEUR
     public Utilisateur getUtilisateurById(int id) {
@@ -1902,6 +2281,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return utilisateur;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Utilisateur getUtilisateurByName(String firstname, String lastnname) {
 
         Utilisateur utilisateur2 = null;
@@ -1934,6 +2317,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return utilisateur2;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Utilisateur getUtilisateurByName(Utilisateur utilisateur) {
 
         Utilisateur utilisateur2 = null;
@@ -1966,6 +2353,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return utilisateur2;
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Utilisateur getUtilisateurByLogin(String login) {
 
         Utilisateur utilisateur2 = null;
@@ -1996,7 +2387,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return utilisateur2;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Utilisateur getUtilisateurByLogin(Utilisateur utilisateur) {
 
         Utilisateur utilisateur2 = null;
@@ -2028,7 +2424,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return utilisateur2;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Utilisateur validateLogin(Utilisateur utilisateur) {
 
         Utilisateur utilisateur2 = null;
@@ -2059,7 +2460,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return utilisateur2;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public Utilisateur validateLogin(String login, String motPasse) {
 
 
@@ -2103,7 +2509,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return utilisateur2;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public List<Utilisateur> getAllUtilisateurs() {
 
         List<Utilisateur> utilisateurs = null;
@@ -2139,7 +2550,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return utilisateurs;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int getUtilisateursCount() {
 
         database= this.getReadableDatabase();
@@ -2156,7 +2572,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return count;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public long addUtilisateur(Utilisateur utilisateur) {
 
         database = this.getWritableDatabase();
@@ -2178,7 +2599,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return nbAffectedRows;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int updateUtilisateur(Utilisateur utilisateur) {
 
         database= this.getWritableDatabase();
@@ -2198,7 +2624,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         close();
 
         return nbAffectedRows;
+
     }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
     public int deleteUtilisateur(Utilisateur utilisateur) {
 
         database = this.getWritableDatabase();
@@ -2212,3 +2643,10 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     }
 
 }
+
+
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
+//************************************************************************************************
+

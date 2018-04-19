@@ -508,6 +508,7 @@ public class DatabaseQueries {
                     "join salle " +
                         "on section.id_salle = salle.id " +
             "where rss.id_reservation = ?";
+
     public static final String
             RESERVATION_QUERY_COLONNE_TITRE = "titre",
             RESERVATION_QUERY_COLONNE_DATE = "date",

@@ -17,7 +17,8 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import hayen.spectacle.data.dao.AdresseSQLHelper;
+
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Adresse;
 
 import static org.junit.Assert.assertEquals;
@@ -35,24 +36,24 @@ public class TestAdresse {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbSQLHelper =  DatabaseHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
 
         //  Log.i("RPI", "open: " + dbHelper);
-        SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
+        SQLiteDatabase database = dbSQLHelper.getWritableDatabase();
 
         assertNotNull(database);
 
-        int nbAdresses = adresseSQLHelper.getAdressesCount();
+        int nbAdresses = dbSQLHelper.getAdressesCount();
 
         assert(nbAdresses > 0);
 
-        List<Adresse> adresses = adresseSQLHelper.getAllAdresses();
+        List<Adresse> adresses = dbSQLHelper.getAllAdresses();
 
-        Adresse adresse =  adresseSQLHelper.getAdresseById(adresses.get(adresses.size() - 1).getId());
+        Adresse adresse =  dbSQLHelper.getAdresseById(adresses.get(adresses.size() - 1).getId());
 
         assertNotNull(adresse);
 
-        Adresse adresse2 =  adresseSQLHelper.getAdresseById(adresse.getId());
+        Adresse adresse2 =  dbSQLHelper.getAdresseById(adresse.getId());
 
 
         assertEquals(adresse.getId(), adresse2.getId());
@@ -73,7 +74,7 @@ public class TestAdresse {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper adresseSQLHelper =  DatabaseHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 
@@ -126,7 +127,7 @@ public class TestAdresse {
         Log.i("RPI", "Effacer une Adresse");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper adresseSQLHelper =  DatabaseHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 
@@ -182,7 +183,7 @@ public class TestAdresse {
         Log.i("RPI", "Mettre à jour d'une Adresse");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper adresseSQLHelper =  DatabaseHelper.getInstance(appContext) ;//(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = adresseSQLHelper.getWritableDatabase();
 

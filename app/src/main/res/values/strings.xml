@@ -42,7 +42,7 @@
     <string name="err_mdp_court">Votre mot de passe doit contenir au moins 8 caractères.</string>
     <string name="err_email_format">Veuillez entrer une adresse couriel valide.</string>
     <string name="err_code_postal_format">Veuillez entrer un code postal valide.</string>
-    <string name="err_champ_vide">Veuillez remplir tout les champs.</string>
+    <string name="err_champ_vide">Veuillez remplir tous les champs.</string>
     <string name="err_user_existe">Il existe déjà un utilisateur avec cette adresse couriel.</string>
     <string name="err_mdp_not_confirm">Le mot de passe et sa confirmation ne sont pas identique.</string>
     <string name="err_phone_format">Veuillez remplir un numéro de téléphone valide.</string>
@@ -58,6 +58,7 @@
     <string name="suc_inscription">Vous êtes maintenant inscrit à Spectacle.</string>
     <string name="suc_modif_mdp">Votre mot de passe a été modifié pour ...</string>
     <string name="suc_modif_info">Vos changements ont été sauvegardés.</string>
+    <string name="suc_reservation">Votre réservation a été enregistrée avec succès.\nVotre numéro de confirmation :</string>
 
     <!-- Strings pour les boutons -->
     <string name="btn_confirm">Confirmer</string>
@@ -108,5 +109,6 @@
     <string name="str_code_postal">Code postal</string>
     <string name="str_phone">Téléphone</string>
     <string name="str_lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce et dui iaculis, suscipit arcu at, rhoncus libero. Nullam enim quam, facilisis sed scelerisque at, vestibulum vel mi. Nunc vestibulum tortor ut nisl dictum malesuada. Fusce id ligula at justo finibus efficitur. Aliquam laoreet, leo ut convallis posuere, tellus risus finibus nunc, a ultrices ante sem ac est. Vivamus dictum nisl a velit tempor molestie. Nullam leo risus, sodales vel scelerisque at, fringilla eu arcu. Suspendisse aliquet vestibulum nibh. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut dolor erat, volutpat sit amet sem in, lacinia tincidunt ligula. Proin auctor sapien vitae varius convallis. Morbi a orci sed risus lacinia pellentesque. Vivamus placerat vulputate erat, eget varius nulla pretium vel. Praesent et malesuada orci. In in tellus ac ante commodo efficitur ut quis risus. Interdum et malesuada fames ac ante ipsum primis in faucibus.</string>
+    <string name="btnReserver">Réserver</string>
 
 </resources>

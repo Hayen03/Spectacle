@@ -1,104 +1,167 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/IIBase"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:scrollIndicators="top|bottom"
+    android:scrollbarAlwaysDrawVerticalTrack="true"
+    android:scrollbars="horizontal|vertical"
+    app:layout_scrollFlags="scroll">
+
+    <LinearLayout
+        android:id="@+id/layoutTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp">
+
+        <TextView
+            android:id="@+id/reserverSpecTitre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif"
+            android:gravity="center|start"
+            android:text="Titre"
+            android:textColor="#006699"
+            android:textSize="24sp"
+            android:textStyle="bold|italic" />
+
+    </LinearLayout>
+
 
 
     <LinearLayout
+        android:id="@+id/layoutMainInfo"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_weight="1"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
         android:orientation="horizontal">
-        <!--android:background="#efefef"-->
 
-        <ImageView
-            android:id="@+id/ReservationImageView"
-            android:layout_width="150dp"
+        <LinearLayout
+            android:id="@+id/layoutImage"
+            android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:srcCompat="@drawable/clef_100" />
+            android:layout_margin="10dp"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/reserverImageView"
+                android:layout_width="match_parent"
+                android:layout_height="153dp"
+                android:background="@drawable/clef_100"
+                android:contentDescription="TODO" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="vertical"
             android:padding="5dp"
             android:paddingLeft="5dp">
-            <!--android:background="#efefef"-->
-
-
-            <TextView
-                android:id="@+id/reservationSpecTitre"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="0dp"
-                android:paddingBottom="10dp"
-                android:paddingLeft="10dp"
-                android:paddingTop="10dp"
-                android:text="@string/str_titre"
-                android:textColor="#006699"
-                android:textSize="24sp"
-                android:textStyle="bold|italic" />
 
             <LinearLayout
+                android:id="@+id/layoutInfos2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/reservationSpecDateLabel"
-                    android:layout_width="30dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="0dp"
+                    android:id="@+id/reserverLabelDate"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingLeft="10dp"
                     android:text="@string/str_date"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/reservationSpecDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="0dp"
+                    android:id="@+id/reserverTxtDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:text="@string/str_date"
+                    android:text="Date"
                     android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutInfos3"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_marginLeft="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="horizontal">
-                <!--android:background="#efefef"-->
 
                 <TextView
-                    android:id="@+id/reservationSpecArtiste"
-                    android:layout_width="20dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="0dp"
+                    android:id="@+id/reserverLabelGenre"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingLeft="10dp"
-                    android:text="@string/str_artiste"
+                    android:text="@string/str_genre"
                     android:textSize="18sp" />
 
                 <TextView
-                    android:id="@+id/reservationSpecListArtistes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="0dp"
+                    android:id="@+id/reserverTxtGenre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:paddingLeft="0dp"
-                    android:text="Liste artistes"
-                    android:textSize="18dp" />
+                    android:text="Genre"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutInfos4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reserverLabelSalle"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_salle"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/reserverTxtSalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Salle"
+                    android:textSize="18sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutInfos5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/reserverLabelDuree"
+                    android:layout_width="150dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/str_duree"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/reserverTxtDuree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Durée"
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
@@ -106,15 +169,138 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="0dp"
-        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
-        <!--android:background="#efefef"-->
 
         <TextView
-            android:id="@+id/reservationSectionLabelNum"
+            android:id="@+id/reserverLabelSectionChoice"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:gravity="left|center_vertical"
+            android:paddingLeft="15dp"
+            android:paddingTop="10dp"
+            android:text="No section :"
+            android:textSize="18dp" />
+
+        <!--<EditText-->
+        <!--android:id="@+id/reserverEditTxtSection"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:layout_marginRight="0dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:hint="0"-->
+        <!--android:inputType="number"-->
+        <!--android:paddingLeft="5dp" />-->
+        <Spinner
+            android:id="@+id/reserverNumSectionSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/reserverLabelNbPlacesChoice"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="5dp"
+            android:paddingTop="10dp"
+            android:text="Nb sièges: "
+            android:textSize="18dp" />
+
+        <!--<EditText-->
+        <!--android:id="@+id/reserverEditTxtNbSieges"-->
+        <!--android:layout_width="10dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:layout_marginRight="0dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:hint="0"-->
+        <!--android:inputType="number"-->
+        <!--android:paddingLeft="5dp" />-->
+
+        <Spinner
+            android:id="@+id/reserverNbSiegesSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:gravity="left|center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/reserverLabelTotal"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:text="Total :"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/reserverTxtTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left"
+            android:paddingLeft="15dp"
+            android:text="$ 0.0"
+            android:textSize="18dp" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/reserverBtnCalculer"
+            style="@style/Spectacle.Bouton"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="15dp"
+            android:padding="10dp"
+            android:text="Calculer" />
+
+        <Button
+            android:id="@+id/reserverbtnPayer"
+            style="@style/Spectacle.Bouton"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="15dp"
+            android:padding="10dp"
+            android:text="Payer" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/reserverSectionLabelNum"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:gravity="left"
@@ -123,8 +309,8 @@
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/reservationSectionLabelName"
-            android:layout_width="150dp"
+            android:id="@+id/reserverSectionLabelName"
+            android:layout_width="160dp"
             android:layout_height="match_parent"
             android:gravity="left"
             android:paddingLeft="5dp"
@@ -132,45 +318,55 @@
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/reservationSectionLabelPrice"
+            android:id="@+id/reserverSectionLabelPrice"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:paddingLeft="5dp"
+            android:paddingLeft="15dp"
             android:text="Prix"
             android:textSize="18dp" />
 
         <TextView
-            android:id="@+id/reservationSectionLabelNbFree"
-            android:layout_width="wrap_content"
+            android:id="@+id/reserverSectionLabelNbFree"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="0dp"
             android:gravity="left"
             android:paddingLeft="5dp"
-            android:text="Places disp."
+            android:text="Disp."
             android:textSize="18dp" />
+
+        <!--<TextView-->
+            <!--android:id="@+id/reserverSectionLabelNbSieges"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_marginLeft="0dp"-->
+            <!--android:gravity="left"-->
+            <!--android:paddingLeft="5dp"-->
+            <!--android:text="Nb"-->
+            <!--android:textSize="18dp" />-->
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
         android:layout_weight="1"
         android:orientation="vertical">
-        <!--android:background="#efefef"-->
-
         <ListView
-            android:id="@+id/listViewSections"
+            android:id="@+id/reserverListViewSections"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|clip_vertical|clip_horizontal"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="1" />
-    </LinearLayout>
+            android:layout_marginTop="10dp" >
 
+
+        </ListView>
+    </LinearLayout>
 
 
 </LinearLayout>

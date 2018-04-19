@@ -20,8 +20,8 @@ import org.junit.runner.RunWith;
 
 import java.util.List;
 
-import hayen.spectacle.data.dao.AdresseSQLHelper;
-import hayen.spectacle.data.dao.UtilisateurSQLHelper;
+
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Adresse;
 import hayen.spectacle.data.data.Utilisateur;
 
@@ -40,7 +40,7 @@ public class TestUtilisateur {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        UtilisateurSQLHelper dbHelper = UtilisateurSQLHelper.getInstance(appContext) ;// UtilisateurSQLHelper.getInstance(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext) ;// UtilisateurSQLHelper.getInstance(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -97,7 +97,7 @@ public class TestUtilisateur {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        UtilisateurSQLHelper dbHelper = UtilisateurSQLHelper.getInstance(appContext); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -122,13 +122,11 @@ public class TestUtilisateur {
         adresse.setProvince("QC");
         adresse.setCodePostal("S4P 3Y2");
 
-        AdresseSQLHelper adresseSQLHelper =  AdresseSQLHelper.getInstance(appContext); //(appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
-
        SQLiteDatabase database2 = dbHelper.getWritableDatabase();
 
         assertNotNull(database2);
 
-        long id =  adresseSQLHelper.addAdresse(adresse);
+        long id =  dbHelper.addAdresse(adresse);
 
         assert(id > 0);
 
@@ -168,7 +166,7 @@ public class TestUtilisateur {
         Log.i("RPI", "Effacer un utilisateur");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        UtilisateurSQLHelper dbHelper = UtilisateurSQLHelper.getInstance(appContext); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -223,7 +221,7 @@ public class TestUtilisateur {
         Log.i("RPI", "Mettre à jour un utilisateur");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        UtilisateurSQLHelper dbHelper = UtilisateurSQLHelper.getInstance(appContext); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); //Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

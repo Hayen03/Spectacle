@@ -64,7 +64,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <LinearLayout
                 android:id="@+id/layoutInfos2"
@@ -284,16 +285,18 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="75dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
 
         <Button
             android:id="@+id/btnReserver"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/btn_reserver" />
+            style="@style/Spectacle.Bouton"
+            android:layout_width="150dp"
+            android:layout_height="60dp"
+            android:padding="10dp"
+            android:text="@string/btnReserver" />
 
 
     </LinearLayout>

@@ -88,8 +88,8 @@ public class CalendrierFragment extends Fragment {
                 Log.i("RPI", "CLick!");
                 Log.i("RPI", "Spectacle  id: " + spectacle.getId());
 
-                Toast toast = Toast.makeText(getActivity().getApplicationContext(), "spectacle", Toast.LENGTH_LONG);
-                toast.show();
+          //      Toast toast = Toast.makeText(getActivity().getApplicationContext(), "spectacle", Toast.LENGTH_LONG);
+           //     toast.show();
 
                 Fragment fiche = FicheFragment.newInstance(spectacle.getId());
                 ((CalendrierActivity)getActivity()).overrideFragment(fiche);

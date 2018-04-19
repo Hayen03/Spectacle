@@ -18,7 +18,8 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.Constant;
 //import com.ift2905.reservation.database.entities.CarteCredit;
 
-import hayen.spectacle.data.dao.CarteCreditSQLHelper;
+
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.CarteCredit;
 
 import static org.junit.Assert.assertEquals;
@@ -36,7 +37,7 @@ public class TestCarteCredit {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        CarteCreditSQLHelper dbHelper = CarteCreditSQLHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -79,7 +80,7 @@ public class TestCarteCredit {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        CarteCreditSQLHelper dbHelper = CarteCreditSQLHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -135,7 +136,7 @@ public class TestCarteCredit {
         Log.i("RPI", "Effacer une CarteCredit");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        CarteCreditSQLHelper dbHelper = CarteCreditSQLHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -188,7 +189,7 @@ public class TestCarteCredit {
         Log.i("RPI", "Mettre à jour un CarteCredit");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        CarteCreditSQLHelper dbHelper = CarteCreditSQLHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext);// (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 

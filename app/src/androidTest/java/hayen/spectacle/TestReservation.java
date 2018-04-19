@@ -16,7 +16,7 @@ import java.util.List;
 //import com.ift2905.reservation.database.dao.ReservationSQLHelper;
 //import com.ift2905.reservation.database.entities.Reservation;
 
-import hayen.spectacle.data.dao.ReservationSQLHelper;
+import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Reservation;
 
 import static org.junit.Assert.assertEquals;
@@ -34,7 +34,7 @@ public class TestReservation {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ReservationSQLHelper dbHelper = ReservationSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -79,7 +79,7 @@ public class TestReservation {
 
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ReservationSQLHelper dbHelper = ReservationSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -131,7 +131,7 @@ public class TestReservation {
         Log.i("RPI", "Mettre à jour d'une Reservation");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ReservationSQLHelper dbHelper = ReservationSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
@@ -156,7 +156,7 @@ public class TestReservation {
         reservation.setDateReservation("2018-03-22 16:01:00");
 
 
-        dbHelper.updateReservation(reservation);
+        dbHelper.replaceReservation(reservation);
 
         int nbReservations2 = dbHelper.getReservationsCount();
 
@@ -177,7 +177,7 @@ public class TestReservation {
         Log.i("RPI", "Effacer une Reservation");
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        ReservationSQLHelper dbHelper = ReservationSQLHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         //  Log.i("RPI", "open: " + dbHelper);
         SQLiteDatabase database = dbHelper.getWritableDatabase();
 
