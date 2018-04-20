@@ -80,7 +80,7 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
     private String genre;
     private String salle;
     private int duree;
-    private int id;
+    private int  spectacleId;
     private float montantTotal;
 
 
@@ -118,7 +118,7 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
             genre = getArguments().getString(ARG_SPECTACLE_GENRE);
             duree = getArguments().getInt(ARG_SPECTACLE_DUREE);
             salle = getArguments().getString(ARG_SALLE_NOM);
-            id = getArguments().getInt(ARG_SPECTACLE_ID);
+            spectacleId = getArguments().getInt(ARG_SPECTACLE_ID);
 
 
         }
@@ -160,9 +160,6 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
         textViewSalle =  view.findViewById(R.id.reserverTxtSalle);
         textViewSalle.setText(salle);
 
-       // editTextNumSection =  view.findViewById(R.id.reserverEditTxtSection);
-       // editTextNbSieges =  view.findViewById(R.id.reserverEditTxtNbSieges);
-
 
         listView =  (ListView) view.findViewById(R.id.reserverListViewSections);
 
@@ -191,8 +188,8 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
         // Spinner Drop down elements
         List<String> sectionNumbers = new ArrayList<>();
 
-        final List<SpectacleSection> spectacleSections =  dbHelper.getSectionsBySpectacleId(id);
-        final List<Integer> nbPlacesLibres = dbHelper.getFreePlacesBySections(id);
+        final List<SpectacleSection> spectacleSections =  dbHelper.getSectionsBySpectacleId(spectacleId);
+        final List<Integer> nbPlacesLibres = dbHelper.getNbFreePlacesBySections(spectacleId);
 
 
 
@@ -310,7 +307,12 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
         btnPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment frag = PaiementFragment.newInstance(montantTotal);
+
+                String numSectionSelected =  String.valueOf(spinnerNumSection.getSelectedItemPosition() + 1);
+                int nbSieges =  spinnerNbSieges.getSelectedItemPosition() + 1;
+                int sectionId = spinnerNumSection.getSelectedItemPosition() + 1;
+
+                Fragment frag = PaiementFragment.newInstance(spectacleId, sectionId, nbSieges, montantTotal);
                 ((CalendrierActivity) getActivity()).overrideFragment(frag);
             }
         });

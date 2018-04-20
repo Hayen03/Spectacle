@@ -19,6 +19,7 @@ import java.util.List;
 
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Artiste;
+import hayen.spectacle.data.data.Siege;
 import hayen.spectacle.data.data.Spectacle;
 
 import static org.junit.Assert.assertEquals;
@@ -275,6 +276,35 @@ public class TestSpectacle {
 
 
         }
+
+    }
+    @Test
+    public void getSpectacleSection() {
+
+        Log.i("RPI", "Récupérer une Spectacle");
+
+        Context appContext = InstrumentationRegistry.getTargetContext();
+
+        DatabaseHelper dbHelper = DatabaseHelper.getInstance(appContext); // (appContext, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION)
+        //  Log.i("RPI", "open: " + dbHelper);
+        SQLiteDatabase database = dbHelper.getReadableDatabase();
+
+        assertNotNull(database);
+
+
+
+        List<Siege> sieges = dbHelper.getFreeSiegeBySections(1, 2, 4);
+
+        for (Siege siege: sieges) {
+            Log.i("RPI", siege.toString());
+      //      dbHelper.updateSpectacleSiege(1, siege.getId(), 1);
+        }
+
+
+
+
+
+
 
     }
 

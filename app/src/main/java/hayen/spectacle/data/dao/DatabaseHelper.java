@@ -1804,7 +1804,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     //************************************************************************************************
     //************************************************************************************************
 
-    public List<Integer> getFreePlacesBySections(int spectacleId) {
+    public List<Integer> getNbFreePlacesBySections(int spectacleId) {
 
         database = this.getReadableDatabase();
 
@@ -1848,6 +1848,63 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return freeSieges;
     }
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public List<Siege> getFreeSiegeBySections(int spectacleId, int sectionId, int limit) {
+
+        database = this.getReadableDatabase();
+
+        List<Siege> sieges = null;
+
+
+        String selectQuery =
+                " select siege.* from siege " +
+                "   inner join spectacle_siege as SSI on SSI.id_siege = siege.id " +
+                "   inner join section on section.id = siege.id_section " +
+                "   where siege.id_section=? " +
+                "   and SSI.reserve= 0 " +
+                "   and id_spectacle=? " +
+                "     limit ? "
+
+
+        ;
+
+        Cursor cursor = database.rawQuery(selectQuery,
+                        new String[]{Integer.toString(sectionId),
+                                    Integer.toString(spectacleId),
+                                    Integer.toString(limit)});
+
+        Log.i("RPI", "Section count: " + cursor.getCount());
+        if (cursor != null && cursor.moveToFirst()) {
+
+            sieges= new ArrayList<>();
+
+            do {
+
+
+                Siege siege = new Siege();
+                siege.setId(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_ID)));
+                siege.setRangee(cursor.getString(cursor.getColumnIndex(Siege.COLUMN_RANGEE)));
+                siege.setColonne(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_COLUMN)));
+                siege.setSectionId(cursor.getInt(cursor.getColumnIndex(Siege.COLUMN_SECTION_ID)));
+
+                sieges.add(siege);
+
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        Log.i("RPI", "nbSieges: "  + sieges.size());
+        close();
+
+        return sieges;
+    }
+
 
     //************************************************************************************************
     //************************************************************************************************
@@ -2027,6 +2084,32 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         return nbAffectedRows;
     }
+
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public int updateSpectacleSiege(int spectacleId, int siegeId, int reserve) {
+
+        database= this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("id_spectacle", spectacleId);
+        values.put("id_siege", siegeId);
+        values.put("reserve", reserve);
+
+        String updareQuery = " update spectacle_siege set reserve=? where id_spectacle=? and id_siege=?";
+
+        int nbAffectedRows= database.update ("spectacle_siege", values,
+                "id_spectacle = ? and id_siege = ? ",
+                new String[]{String.valueOf(spectacleId), String.valueOf(siegeId)});
+
+        close();
+
+        return nbAffectedRows;
+    }
+
 
 
     //************************************************************************************************

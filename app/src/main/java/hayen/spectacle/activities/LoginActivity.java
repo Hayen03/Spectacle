@@ -48,14 +48,14 @@ public class LoginActivity extends AppCompatActivity {
             String mdp_str = password.getText().toString();
 
             //******************************* FOR DEBUG ONLY **************************
-            Log.i("RPI", "courriel 1: " + email.getText().toString());
-            Log.i("RPI", "mot de passe 1: " + password.getText().toString());
-
-            email_str = "ArnaudFournier@dayrep.com";
-            mdp_str = "weWoh9zie";
-
-            Log.i("RPI", "courriel 2: " + email_str);
-            Log.i("RPI", "mot de passe 2: " + email_str);
+//            Log.i("RPI", "courriel 1: " + email.getText().toString());
+//            Log.i("RPI", "mot de passe 1: " + password.getText().toString());
+//
+//            email_str = "ArnaudFournier@dayrep.com";
+//            mdp_str = "weWoh9zie";
+//
+//            Log.i("RPI", "courriel 2: " + email_str);
+//            Log.i("RPI", "mot de passe 2: " + email_str);
             //******************************* FOR DEBUG ONLY **************************
 
             // 2. recuperer l'utilisateur

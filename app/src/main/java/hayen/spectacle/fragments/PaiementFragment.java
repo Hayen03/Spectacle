@@ -29,6 +29,7 @@ import hayen.spectacle.data.data.CarteCredit;
 import hayen.spectacle.data.data.Paiement;
 import hayen.spectacle.data.data.Reservation;
 import hayen.spectacle.data.data.Salle;
+import hayen.spectacle.data.data.Siege;
 import hayen.spectacle.data.data.Spectacle;
 import hayen.spectacle.data.data.Utilisateur;
 import hayen.spectacle.util.Constant;
@@ -36,7 +37,10 @@ import hayen.spectacle.util.Util;
 
 
 public class PaiementFragment extends Fragment {
-    private static final String ARG_PAIEMENT = "montant";
+    private static final String ARG_PAIEMENT_NB_SIEGES = "nb_sieges";
+    private static final String ARG_PAIEMENT_SPECTACLE_ID = "spectacle_idt";
+    private static final String ARG_PAIEMENT_SECTION_ID = "section_id";
+    private static final String ARG_PAIEMENT_MONTANT = "montant";
     private OnFragmentInteractionListener mListener;
 
     private EditText nomEditText;
@@ -50,7 +54,11 @@ public class PaiementFragment extends Fragment {
     private Button btnAnnuler;
     private Button btnPayer;
 
+    private int spectacleId;
+    private int sectionId;
+    private int nbSieges;
     private float montant;
+
 
 
     public PaiementFragment() {}
@@ -59,10 +67,13 @@ public class PaiementFragment extends Fragment {
         return new PaiementFragment();
     }
 
-    public static PaiementFragment newInstance(float montant) {
+    public static PaiementFragment newInstance(int spectacleId, int sectionId, int nbSieges, float montant) {
         PaiementFragment fragment = new PaiementFragment();
         Bundle bundle = new Bundle();
-        bundle.putFloat (ARG_PAIEMENT, montant);
+        bundle.putInt(ARG_PAIEMENT_SPECTACLE_ID, spectacleId);
+        bundle.putInt(ARG_PAIEMENT_SECTION_ID, sectionId);
+        bundle.putInt(ARG_PAIEMENT_NB_SIEGES, nbSieges);
+        bundle.putFloat (ARG_PAIEMENT_MONTANT, montant);
 
         fragment.setArguments(bundle);
 
@@ -73,7 +84,11 @@ public class PaiementFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null){
-            montant = getArguments().getFloat(ARG_PAIEMENT);
+            this.spectacleId = getArguments().getInt(ARG_PAIEMENT_SPECTACLE_ID);
+            this.sectionId = getArguments().getInt(ARG_PAIEMENT_SECTION_ID);
+            this.nbSieges = getArguments().getInt(ARG_PAIEMENT_NB_SIEGES);
+
+            this.montant = getArguments().getFloat(ARG_PAIEMENT_MONTANT);
         }
     }
 
@@ -82,12 +97,11 @@ public class PaiementFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_paiement, container, false);
 
-        // 1. trouver les champs d'editions
         nomEditText = (EditText) view.findViewById(R.id.payerNomEditText);
         numeroEditText = (EditText)view.findViewById(R.id.payerNumEditText);
         codeEditText = (EditText)view.findViewById(R.id.payerCodeSecEditText);
-        dateMoisSpinner = (Spinner)view.findViewById(R.id.payerDateMoisExpSpinner);
-        dateAnneeSpinner = (Spinner) view.findViewById(R.id.payerDateAnneeExpSpinner);
+        dateMoisSpinner = (Spinner)view.findViewById(R.id.paiementDateMoisExpSpinner);
+        dateAnneeSpinner = (Spinner) view.findViewById(R.id.paiementDateAnneeExpSpinner);
 
 
         montantTextView =  (TextView) view.findViewById(R.id.paiementTextViewMontant);
@@ -161,7 +175,7 @@ public class PaiementFragment extends Fragment {
         btnPayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 4.1 prendre toute les entrees
+
                 String  nom = nomEditText.getText().toString();
                 String numStr =  numeroEditText.getText().toString();
                 String mois =  String.valueOf(dateMoisSpinner.getSelectedItemPosition());
@@ -190,7 +204,7 @@ public class PaiementFragment extends Fragment {
                 catch (NumberFormatException e) {
                     Util.alert(activity, "Oops", "Veuillez entrer un numéro valide", null);
                     e.printStackTrace();
-                    Log.i("RPI", "exception: " + e.getMessage());
+                 //   Log.i("RPI", "exception: " + e.getMessage());
                     return;
                 }
 
@@ -212,7 +226,7 @@ public class PaiementFragment extends Fragment {
 
                 long id = DatabaseHelper.getInstance(activity).replaceReservation(reservation);
 
-
+                String listSieges = "";
                 if(id >= 0){
 
                     Paiement paiement = new Paiement();
@@ -220,24 +234,34 @@ public class PaiementFragment extends Fragment {
                     paiement.setMontant(montant);
                     paiement.setReservation_id((int)id);
                     long result = DatabaseHelper.getInstance(activity).addPaiement(paiement);
-                    Log.i("RPI", "id after replace in db: " + id + " result: " + result);
+                 //   Log.i("RPI", "id after replace in db: " + id + " result: " + result);
+
+                    if(result > 0){
+
+                        List<Siege> sieges = DatabaseHelper.getInstance(activity).getFreeSiegeBySections(spectacleId, sectionId, nbSieges);
+
+                        int i = 0;
+
+                        for (Siege siege: sieges) {
+                            DatabaseHelper.getInstance(activity).updateSpectacleSiege(spectacleId, siege.getId(), 1);
+
+                            String rangee = siege.getRangee();
+                            int colonne = siege.getColonne();
+
+                            listSieges += rangee + "-" + colonne;
+                            if(i < sieges.size() - 1){
+                                listSieges += ", ";
+                            }
+
+
+                        }
+
+                    }
                 }
 
-  ;
-
-
-
-
-                // 4.4 commit les modifs a la BD
-//                if (Constant.fightLaDB){
-//                    DatabaseHelper.getInstance(activity).updateUtilisateur(user);
-//                    DatabaseHelper.getInstance(activity).updateAdresse(adresse);
-//                }
-
                 String confirmMessage = "Votre réservation a été enregistrée avec succès.\n";
-                String confirmMessage2 = "Votre numéro de confirmation: " + resConfirmnationNum;
-             //   Util.alert(activity, "Oops", confirmMessage, null);
-                // 4.5 retourner au fragment de profil avec un message de succes
+                String confirmMessage2 = "Vos sièeges: " + listSieges + "\nVotre numéro de confirmation: " + resConfirmnationNum;
+
                 Util.alert(activity, confirmMessage, confirmMessage2,  new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

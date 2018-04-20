@@ -19,6 +19,7 @@ import java.util.List;
 
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.data.Section;
+import hayen.spectacle.data.data.Siege;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -66,6 +67,13 @@ public class TestSection {
 
 
         assertEquals(section.getId(), section2.getId());
+
+
+        List<Siege> sieges = dbHelper.getFreeSiegeBySections(1, 2, 4);
+
+        for (Siege siege: sieges) {
+            Log.i("RPI", siege.toString());
+        }
 
 
     }

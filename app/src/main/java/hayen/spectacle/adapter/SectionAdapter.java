@@ -111,7 +111,7 @@ public class SectionAdapter extends ArrayAdapter {
         DatabaseHelper dbHelper =  DatabaseHelper.getInstance(getContext());
         List<Section> sections = dbHelper.getSectionsBySalleId(1);
 
-        List<Integer> nbPlacesLibres = dbHelper.getFreePlacesBySections(spectacleSection.getSpectacleId());
+        List<Integer> nbPlacesLibres = dbHelper.getNbFreePlacesBySections(spectacleSection.getSpectacleId());
 
 
         for (Integer nb: nbPlacesLibres) {
