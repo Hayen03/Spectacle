@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
+//import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,8 +77,8 @@ public class FicheFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_fiche_spectacle, container, false);
         // Inflate the layout for this fragment
 
-        Toast toast = Toast.makeText(getActivity().getApplicationContext(), "id: " + spectacleId, Toast.LENGTH_LONG);
-        toast.show();
+     //   Toast toast = Toast.makeText(getActivity().getApplicationContext(), "id: " + spectacleId, Toast.LENGTH_LONG);
+      //  toast.show();
 
 
         DatabaseHelper dbHelper =  DatabaseHelper.getInstance(getActivity());
@@ -87,9 +87,9 @@ public class FicheFragment extends Fragment {
         Genre genre =  dbHelper.getGenreById(spectacle.getGenreId());
         spectacle.setGenre(genre);
         final Salle salle =  dbHelper.getSalleById(spectacle.getSalleId());
-
-        Log.i("RPI", " in FicheFragnent >> spectacle: " + spectacle);
-        Log.i("RPI", ">> genre: " + genre);
+//
+//        Log.i("RPI", " in FicheFragnent >> spectacle: " + spectacle);
+//        Log.i("RPI", ">> genre: " + genre);
 
         TextView textViewTitre = view.findViewById(R.id.ficheTxtSepcTitle);
         textViewTitre.setText(spectacle.getTitre());
@@ -114,29 +114,29 @@ public class FicheFragment extends Fragment {
         textViewDate.setText(formatedDate);
 
         TextView textViewGenre = view.findViewById(R.id.ficheTxtGenre);
-        Log.i("RPI", "salle: " + salle.getNom());
+ //       Log.i("RPI", "salle: " + salle.getNom());
         textViewGenre.setText(genre.getNom());
 
         TextView textViewSalle = view.findViewById(R.id.ficheTxtSalle);
         textViewSalle.setText(salle.getNom());
 
-        Log.i("RPI", "salle: " + salle.getNom());
+     //   Log.i("RPI", "salle: " + salle.getNom());
 
         TextView textViewDuree = view.findViewById(R.id.ficheTxtDuree);
         textViewDuree.setText(spectacle.getDuree() + " min.");
 
         final List<Artiste> artistes =  dbHelper.getAllArtistesBySpectacleId(spectacle.getId());
 
-        for (Artiste artiste: artistes) {
-            Log.i("RPI", "artiste: " + artiste);
-        }
+    //    for (Artiste artiste: artistes) {
+      //      Log.i("RPI", "artiste: " + artiste);
+    //    }
 
         spectacle.setArtistes(artistes);
 
         int size =  artistes.size();
 
-        Log.i("RPI", "size: " + size);
-        Log.i("RPI", "prenom: " + artistes.get(0).getPrenom());
+  //      Log.i("RPI", "size: " + size);
+  //      Log.i("RPI", "prenom: " + artistes.get(0).getPrenom());
 
 
         if(artistes != null && size > 0){
@@ -184,8 +184,8 @@ public class FicheFragment extends Fragment {
         btnReserver.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Log.i("RPI", "clic: " + spectacle.getId());
-                Log.i("RPI", "clic: " + spectacle.getGenre());
+         //       Log.i("RPI", "clic: " + spectacle.getId());
+          //      Log.i("RPI", "clic: " + spectacle.getGenre());
                 Fragment frag = ReserverFragment.newInstance(spectacle, salle);
                 ((CalendrierActivity)getActivity()).overrideFragment(frag);
             }

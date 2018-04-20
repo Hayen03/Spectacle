@@ -165,20 +165,20 @@
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
+        android:gravity="left|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp">
 
         <TextView
             android:id="@+id/reserverLabelSectionChoice"
-            android:layout_width="110dp"
+            android:layout_width="183dp"
             android:layout_height="wrap_content"
             android:gravity="left|center_vertical"
-            android:paddingLeft="15dp"
+            android:paddingLeft="25dp"
             android:paddingTop="10dp"
             android:text="No section :"
             android:textSize="18dp" />
@@ -194,24 +194,94 @@
         <!--android:hint="0"-->
         <!--android:inputType="number"-->
         <!--android:paddingLeft="5dp" />-->
-        <Spinner
-            android:id="@+id/reserverNumSectionSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp" />
+        <!--<Spinner-->
+            <!--android:id="@+id/reserverNumSectionSpinner"-->
+            <!--android:layout_width="76dp"-->
+            <!--android:layout_height="43dp"-->
+            <!--android:layout_gravity="fill_vertical"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="0dp" />-->
 
         <TextView
             android:id="@+id/reserverLabelNbPlacesChoice"
-            android:layout_width="110dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="left"
             android:paddingLeft="5dp"
             android:paddingTop="10dp"
             android:text="Nb sièges: "
             android:textSize="18dp" />
+
+        <!--<EditText-->
+        <!--android:id="@+id/reserverEditTxtNbSieges"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:layout_marginRight="0dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:hint="0"-->
+        <!--android:inputType="number"-->
+        <!--android:paddingLeft="5dp" />-->
+
+        <!--<Spinner-->
+            <!--android:id="@+id/reserverNbSiegesSpinner"-->
+            <!--android:layout_width="90dp"-->
+            <!--android:layout_height="43dp"-->
+            <!--android:layout_gravity="fill_vertical"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:layout_marginTop="10dp" />-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:gravity="left|center_horizontal"
+        android:orientation="horizontal"
+        android:paddingLeft="50dp">
+
+        <!--<TextView-->
+        <!--android:id="@+id/reserverLabelSectionChoice"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="left|center_vertical"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:text="No section :"-->
+        <!--android:textSize="18dp" />-->
+
+        <!--<EditText-->
+        <!--android:id="@+id/reserverEditTxtSection"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:layout_marginRight="0dp"-->
+        <!--android:layout_marginTop="0dp"-->
+        <!--android:gravity="center_vertical"-->
+        <!--android:hint="0"-->
+        <!--android:inputType="number"-->
+        <!--android:paddingLeft="5dp" />-->
+        <Spinner
+            android:id="@+id/reserverNumSectionSpinner"
+            android:layout_width="100dp"
+            android:layout_height="43dp"
+            android:layout_gravity="fill_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="0dp" />
+
+        <!--<TextView-->
+        <!--android:id="@+id/reserverLabelNbPlacesChoice"-->
+        <!--android:layout_width="77dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="left"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:paddingTop="10dp"-->
+        <!--android:text="Nb sièges: "-->
+        <!--android:textSize="18dp" />-->
 
         <!--<EditText-->
         <!--android:id="@+id/reserverEditTxtNbSieges"-->
@@ -227,10 +297,10 @@
 
         <Spinner
             android:id="@+id/reserverNbSiegesSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_height="43dp"
             android:layout_gravity="fill_vertical"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="40dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp" />
     </LinearLayout>
@@ -240,16 +310,16 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:gravity="left|center_horizontal"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/reserverLabelTotal"
-            android:layout_width="150dp"
+            android:layout_width="183dp"
             android:layout_height="wrap_content"
             android:gravity="left"
-            android:paddingLeft="15dp"
+            android:paddingLeft="25dp"
             android:text="Total :"
             android:textSize="18dp" />
 
@@ -262,12 +332,13 @@
             android:text="$ 0.0"
             android:textSize="18dp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:gravity="center_horizontal"
         android:orientation="horizontal">
 
@@ -275,7 +346,7 @@
             android:id="@+id/reserverBtnCalculer"
             style="@style/Spectacle.Bouton"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:layout_marginRight="15dp"
             android:padding="10dp"
             android:text="Calculer" />
@@ -284,7 +355,7 @@
             android:id="@+id/reserverbtnPayer"
             style="@style/Spectacle.Bouton"
             android:layout_width="150dp"
-            android:layout_height="60dp"
+            android:layout_height="40dp"
             android:layout_marginRight="15dp"
             android:padding="10dp"
             android:text="Payer" />
@@ -296,7 +367,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal">
 
         <TextView
@@ -337,14 +408,14 @@
             android:textSize="18dp" />
 
         <!--<TextView-->
-            <!--android:id="@+id/reserverSectionLabelNbSieges"-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:layout_marginLeft="0dp"-->
-            <!--android:gravity="left"-->
-            <!--android:paddingLeft="5dp"-->
-            <!--android:text="Nb"-->
-            <!--android:textSize="18dp" />-->
+        <!--android:id="@+id/reserverSectionLabelNbSieges"-->
+        <!--android:layout_width="30dp"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_marginLeft="0dp"-->
+        <!--android:gravity="left"-->
+        <!--android:paddingLeft="5dp"-->
+        <!--android:text="Nb"-->
+        <!--android:textSize="18dp" />-->
 
     </LinearLayout>
 
@@ -353,16 +424,17 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:orientation="vertical">
+
         <ListView
             android:id="@+id/reserverListViewSections"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|clip_vertical|clip_horizontal"
             android:layout_marginBottom="10dp"
-            android:layout_marginTop="10dp" >
+            android:layout_marginTop="10dp">
 
 
         </ListView>

@@ -196,8 +196,8 @@ public class PaiementFragment extends Fragment {
                 int code;
                 try {
 
-                    Log.i("RPI", numStr);
-                    Log.i("RPI", codeStr);
+           //         Log.i("RPI", numStr);
+           //         Log.i("RPI", codeStr);
                     num = Long.parseLong(numStr);
                     code = Integer.parseInt(codeStr);
                 }

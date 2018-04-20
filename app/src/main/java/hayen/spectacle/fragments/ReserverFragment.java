@@ -11,11 +11,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -174,16 +172,14 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
         spinnerNbSieges.setOnItemSelectedListener(this);
 
 
-
-        // 2. ca
         DatabaseHelper dbHelper =  DatabaseHelper.getInstance(getActivity());
 
 
         final List<Section> sections = dbHelper.getSectionsBySalleId(1);
 
-        for (Section section: sections) {
-            Log.i("RPI", "section: " + section);
-        }
+//        for (Section section: sections) {
+//            Log.i("RPI", "section: " + section);
+//        }
 
         // Spinner Drop down elements
         List<String> sectionNumbers = new ArrayList<>();
@@ -195,7 +191,7 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
 
         int nbSections =  spectacleSections.size();
         for (int i = 0; i < nbSections; i++) {
-            Log.i("RPI", "spectacleSection" + spectacleSections.get(i));
+         //   Log.i("RPI", "spectacleSection" + spectacleSections.get(i));
             sectionNumbers.add(String.valueOf(i+1));
         }
 
@@ -236,10 +232,8 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
             int i = 0;
             for (SpectacleSection spectacleSection: spectacleSections) {
                 sectionAdapter.add(spectacleSection);
-            //    sectionAdapter.addTextItem("0");
             }
 
-            sectionAdapter.initEditable(spectacleSections.size());
             listViewSections.setAdapter(sectionAdapter);
         }
 
@@ -251,22 +245,9 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
             public void onClick(View view) {
 
                 int nbSections =  spectacleSections.size();
-                for (int i =0; i< nbSections; i++){
-
-                    Log.i("RPI", "clic 1: " + spectacleSections.get(i).getPrice());
-                    Log.i("RPI", "clic 2: " + sectionAdapter.getItem(i));
-                    Log.i("RPI", "clic 3: " +  listViewSections.getItemAtPosition(i));
-                }
-
-
-              //  String numSectionValue =  editTextNumSection.getText().toString();
 
                 String numSectionValue =  String.valueOf(spinnerNumSection.getSelectedItemPosition() + 1);
-               // String nbSiegesValue =  editTextNbSieges.getText().toString();
-
                 String nbSiegesValue = String.valueOf(spinnerNbSieges.getSelectedItemPosition() + 1);
-                Log.i("RPI", "numSectionValue : " + numSectionValue);
-                Log.i("RPI", "nbSiegesValue 1: " + nbSiegesValue);
 
 
                 //TODO: Integrity verification: integers
@@ -291,13 +272,6 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
                     }
                 }
 
-
-
-//                String[] editables =  sectionAdapter.getEditText();
-//                Log.i("RPI", "les éditables: taille: " + editables.length );
-//                for (int i = 0; i < editables.length; i++){
-//                    Log.i("RPI", "i: " + i + " value: " + editables[i]);
-//                }
             }
         });
 
@@ -317,18 +291,6 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
             }
         });
 
-//
-//        spinnerNumSection.setOnItemClickListener(new AdapterView.OnItemSelectedListener(){
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
 
 
         return view;
@@ -341,9 +303,8 @@ public class ReserverFragment extends Fragment implements AdapterView.OnItemSele
         String item = parent.getItemAtPosition(position).toString();
 
         // Showing selected spinner item
-        Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
+     //   Toast.makeText(parent.getContext(), "Selected: " + item, Toast.LENGTH_LONG).show();
         Log.i("RPI", "Selected: " + item);
-
 
         }
 
