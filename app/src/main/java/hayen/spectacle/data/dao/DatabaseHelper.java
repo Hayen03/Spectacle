@@ -50,7 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         this.context =  context;
 
         //Uncomment to delete the database at the start and recreate it
-       //this.context.deleteDatabase(Constant.DATABASE_NAME);
+       this.context.deleteDatabase(Constant.DATABASE_NAME);
 
 
 

@@ -115,10 +115,14 @@ public class PaiementFragment extends Fragment {
         final CalendrierActivity activity = (CalendrierActivity) getActivity();
         final Utilisateur user = activity.getCurrentUser();
 
+
+
         CarteCredit carte = null;
         if (user.getId() >= 0) {
             carte = DatabaseHelper.getInstance(activity).getCarteByUserId(user.getId());
         }
+
+
 
 
 

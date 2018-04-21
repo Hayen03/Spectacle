@@ -439,7 +439,7 @@ public class DatabaseQueries {
             "insert into carte_credit (id_utilisateur, nom_utilisateur, nom_carte, numero, date_expiration, code) values\n" +
                     "   (3, 'Felicienne Gendron', 'VISA', '7394127927901230', '2019-02-01 00:00',  664),\n" +
                     "   (5, 'Claude Fortin', 'Master Card', '3792751870812842', '2020-08-01 00:00',  194), \n" +
-                    "   (1, 'Arnaud Fournier', 'Master Card', '4826802799200312', '2018-12-01 00:00',  521),\n" +
+                    "   (2, 'Arnaud Fournier', 'Master Card', '4826802799200312', '2018-12-01 00:00',  521),\n" +
                     "   (4, 'Saville Lacharité', 'VISA', '4548992196327140', '2021-07-01 00:00', 249)\n"
 
     };
