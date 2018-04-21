@@ -53,6 +53,7 @@
     <string name="err_email_invalide">L\'adresse couriel est incorecte.</string>
     <string name="err_no_user">Il n\'existe aucun utilisateur sous cette adresse couriel.</string>
     <string name="err_mdp_invalide">Le mot de passe entré est invalide.</string>
+    <string name="err_num_carte_invalide">Veuillez entrer un numéro de carte valide (sans espace)</string>
     
     <!-- Strings pour les message de succes -->
     <string name="suc_inscription">Vous êtes maintenant inscrit à Spectacle.</string>

@@ -509,12 +509,32 @@ public class DatabaseQueries {
                         "on section.id_salle = salle.id " +
             "where rss.id_reservation = ?";
 
+    static String A = "select reservation.id, reservation.num_confirmation from reservation where reservation.id_utilisateur = ?";
+
+    static String B = "select rss.id_spectacle, rss.id_siege " +
+            "from reservation_spectacle_siege as rss " +
+            "where rss.id_reservation = ?";
+
+    static String C = "select spectacle.titre, spectacle.date_spectacle as date, siege.rangee, siege.colonne, siege.id_section " +
+            "from spectacle " +
+            "join (" + B + ") as rss on rss.id_spectacle = spectacle.id " +
+            "join siege on rss.id_siege = siege.id";
+
+    static String D = "select rss.titre, rss.date, rss.rangee, rss.colonne, section.id_salle, section.nom as nom_section " +
+            "from section " +
+            "join (" + C + ") as rss on rss.id_section = section.id";
+
+    public static final String E = "select rss.titre, rss.date, rss.rangee, rss.colonne, salle.nom as nom_salle, rss.nom_section " +
+            "from salle " +
+            "join (" + D + ") as rss on rss.id_salle = salle.id";
+
     public static final String
             RESERVATION_QUERY_COLONNE_TITRE = "titre",
             RESERVATION_QUERY_COLONNE_DATE = "date",
             RESERVATION_QUERY_COLONNE_SALLE = "nom_salle",
             RESERVATION_QUERY_COLONNE_SECTION = "nom_section",
             RESERVATION_QUERY_COLONNE_RANGEE = "rangee",
+            RESERVATION_QUERY_NUM_CONFIRMATION = "num_confirmation",
             RESERVATION_QUERY_COLONNE_COLONNE = "colonne";
 
     public static final String SEARCH_QUERY =
