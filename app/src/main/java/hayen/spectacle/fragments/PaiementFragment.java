@@ -1,8 +1,10 @@
 package hayen.spectacle.fragments;
 
 import android.app.Fragment;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,6 +26,7 @@ import java.util.Random;
 import hayen.spectacle.R;
 import hayen.spectacle.activities.CalendrierActivity;
 import hayen.spectacle.data.dao.DatabaseHelper;
+import hayen.spectacle.data.dao.DatabaseQueries;
 import hayen.spectacle.data.data.Adresse;
 import hayen.spectacle.data.data.CarteCredit;
 import hayen.spectacle.data.data.Paiement;
@@ -136,7 +139,7 @@ public class PaiementFragment extends Fragment {
         List<Integer> selectionYears =  new ArrayList<>();
         List<Integer> selectionMonths =  new ArrayList<>();
 
-        int currentYear =  cal.get(Calendar.YEAR);
+        final int currentYear =  cal.get(Calendar.YEAR);
         for (int i = 0; i < 12 ; i++) {
             if(i < 5) {
                 selectionYears.add(currentYear + i);
@@ -188,7 +191,7 @@ public class PaiementFragment extends Fragment {
                     return;
                 }
                 if(numStr.length() != 16){
-                    Util.alert(activity, "Oops", "Veuillez entrer un numéro de carte valide (16 chiffres sans espace)", null);
+                    Util.alert(activity, R.string.err_titre, R.string.err_num_carte_invalide, null);
                     return;
                 }
 
@@ -253,6 +256,18 @@ public class PaiementFragment extends Fragment {
                                 listSieges += ", ";
                             }
 
+                            // ajouter l'entre dans reservation_spectacle_siege
+                            {
+                                Cursor cursor = DatabaseHelper.getInstance(getActivity()).getReadableDatabase().rawQuery("select id from reservation where num_confirmation = ?", new String[]{reservation.getNumeroConfirmation()});
+                                if (cursor != null && cursor.moveToFirst()){
+                                    int id_reserv = cursor.getInt(cursor.getColumnIndex(Reservation.COLUMN_ID));
+                                    ContentValues values = new ContentValues();
+                                    values.put("id_reservation", id_reserv);
+                                    values.put("id_spectacle", spectacleId);
+                                    values.put("id_siege", siege.getId());
+                                    DatabaseHelper.getInstance(getActivity()).getWritableDatabase().replace("reservation_spectacle_siege", null, values);
+                                }
+                            }
 
                         }
 

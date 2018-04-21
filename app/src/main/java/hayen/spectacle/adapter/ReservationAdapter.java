@@ -15,6 +15,10 @@ import hayen.spectacle.R;
 import hayen.spectacle.data.dao.DatabaseHelper;
 import hayen.spectacle.data.dao.DatabaseQueries;
 import hayen.spectacle.data.data.Reservation;
+import hayen.spectacle.data.data.Salle;
+import hayen.spectacle.data.data.Section;
+import hayen.spectacle.data.data.Siege;
+import hayen.spectacle.data.data.Spectacle;
 import hayen.spectacle.util.Constant;
 
 public class ReservationAdapter extends ArrayAdapter<Reservation> {
@@ -54,15 +58,34 @@ public class ReservationAdapter extends ArrayAdapter<Reservation> {
         if (Constant.fightLaDB){
             DatabaseHelper dbh = DatabaseHelper.getInstance(getContext());
             SQLiteDatabase db = dbh.getReadableDatabase();
-            Cursor cursor = db.rawQuery(DatabaseQueries.RESERVATION_QUERY, new String[]{Integer.toString(reservation.getId())});
-            cursor.moveToFirst(); // seul la premiere ligne nous interesse. De toute facon, il ne devrait pas y en avoir d'autre
-            titre = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_TITRE));
-            date = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_DATE));
-            salle = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_SALLE));
-            section = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_SECTION));
-            rangee = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_RANGEE));
-            // colonne est un tinyint
-            colonne = Integer.toString(cursor.getInt(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_COLONNE)));
+            int id_siege, id_spectacle;
+            Cursor cursor;
+            if ((cursor = db.rawQuery("select * from reservation_spectacle_siege as rss where rss.id_reservation = ?", new String[]{Integer.toString(reservation.getId())})) != null && cursor.moveToFirst()){
+                id_siege = cursor.getInt(cursor.getColumnIndex("id_siege"));
+                id_spectacle = cursor.getInt(cursor.getColumnIndex("id_spectacle"));
+                Siege siege = dbh.getSiegeById(id_siege);
+                Spectacle spectacle = dbh.getSpectacleById(id_spectacle);
+                Section section1 = dbh.getSectionById(siege.getSectionId());
+                Salle salle1 = dbh.getSalleById(section1.getId());
+                titre = spectacle.getTitre();
+                date = spectacle.getDate();
+                salle = salle1.getNom();
+                rangee = siege.getRangee();
+                colonne = Integer.toString(siege.getColonne());
+                section = section1.getName();
+            }
+            /*
+//            Cursor cursor = db.rawQuery(DatabaseQueries.E, new String[]{Integer.toString(reservation.getId())});
+            if (cursor!= null && cursor.moveToFirst()) { // seul la premiere ligne nous interesse. De toute facon, il ne devrait pas y en avoir d'autre
+                titre = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_TITRE));
+                date = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_DATE));
+                salle = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_SALLE));
+                section = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_SECTION));
+                rangee = cursor.getString(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_RANGEE));
+                // colonne est un tinyint
+                colonne = Integer.toString(cursor.getInt(cursor.getColumnIndex(DatabaseQueries.RESERVATION_QUERY_COLONNE_COLONNE)));
+            }
+            */
             db.close();
         }
 
