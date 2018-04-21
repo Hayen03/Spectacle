@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
 
@@ -24,7 +24,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="vertical"
         android:padding="5dp"
@@ -56,7 +56,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:orientation="horizontal">
             <!--android:background="#efefef"-->
@@ -64,7 +64,7 @@
             <TextView
                 android:id="@+id/ligneSpecArtiste"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="0dp"
                 android:paddingLeft="15dp"
                 android:text="@string/str_artiste"
@@ -73,7 +73,7 @@
             <TextView
                 android:id="@+id/ligneSpecListArtistes"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:paddingLeft="5dp"
                 android:text="Liste artistes"

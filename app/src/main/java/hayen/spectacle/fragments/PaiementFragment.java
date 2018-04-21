@@ -188,7 +188,7 @@ public class PaiementFragment extends Fragment {
                     return;
                 }
                 if(numStr.length() != 16){
-                    Util.alert(activity, "Oops", "Veuillez entrer un numéro de carte valide (sans espace)", null);
+                    Util.alert(activity, "Oops", "Veuillez entrer un numéro de carte valide (16 chiffres sans espace)", null);
                     return;
                 }
 

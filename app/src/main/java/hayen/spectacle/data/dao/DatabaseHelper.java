@@ -24,6 +24,7 @@ import hayen.spectacle.data.data.Salle;
 import hayen.spectacle.data.data.Section;
 import hayen.spectacle.data.data.Siege;
 import hayen.spectacle.data.data.Spectacle;
+import hayen.spectacle.data.data.SpectacleArtiste;
 import hayen.spectacle.data.data.SpectacleSection;
 import hayen.spectacle.data.data.Utilisateur;
 
@@ -41,17 +42,16 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private DatabaseHelper(Context context) {
         super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
         this.context =  context;
-       // database = this.getWritableDatabase();
+
     }
     private DatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
 
         this.context =  context;
 
-        //delete database
-        //this.context.deleteDatabase(Constant.DATABASE_NAME);
+        //Uncomment to delete the database at the start and recreate it
+       //this.context.deleteDatabase(Constant.DATABASE_NAME);
 
-       // database = this.getWritableDatabase();
 
 
     }
@@ -74,6 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        Log.i("RPI", "In SQLHelper onCreate: " + sqLiteDatabase);
 
 
         database =  sqLiteDatabase;
@@ -607,7 +608,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     public List<Artiste> getAllArtistesBySpectacleId(int spectacleId) {
 
-        Log.i("RPI", " >> In DBHelper: get artistes for spectacleId : " + spectacleId);
+      //  Log.i("RPI", " >> In DBHelper: get artistes for spectacleId : " + spectacleId);
 
         List<Artiste> artistes = null;
 
@@ -618,12 +619,14 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 //                "   where id_spectacle=?";
 
 
-        String selectQuery = " select * from artiste where id in (select id_artiste from spectacle_artiste where id_spectacle=?)";
+        String selectQuery = " select * from artiste " +
+                " where id in " +
+                " (select id_artiste from spectacle_artiste where id_spectacle=?)";
 
         database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(selectQuery, new String[]{Integer.toString(spectacleId)});
 
-        Log.i("RPI", " >> In DBHelper: cursor.count : " + cursor.getCount());
+     //   Log.i("RPI", " >> In DBHelper: cursor.count : " + cursor.getCount());
 
         if (cursor != null && cursor.moveToFirst()) {
 
@@ -736,6 +739,26 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         return nbAffectedRows;
     }
 
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+
+    public long replaceArtiste(Artiste artiste) {
+
+        database= this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(Artiste.COLUMN_FIRSTNAME, artiste.getPrenom());
+        values.put(Artiste.COLUMN_LASTNAME, artiste.getNom());
+
+        long nbAffectedRows = database.replace (Artiste.TABLE_NAME, null,  values);
+
+        close();
+
+        return nbAffectedRows;
+    }
     //************************************************************************************************
     //************************************************************************************************
 
@@ -1877,7 +1900,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                                     Integer.toString(spectacleId),
                                     Integer.toString(limit)});
 
-        Log.i("RPI", "Section count: " + cursor.getCount());
+      //  Log.i("RPI", "Section count: " + cursor.getCount());
         if (cursor != null && cursor.moveToFirst()) {
 
             sieges= new ArrayList<>();
@@ -2183,7 +2206,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         Cursor cursor = database.query(Spectacle.TABLE_NAME,
                 new String[]{   Spectacle.COLUMN_ID, Spectacle.COLUMN_TITRE, Spectacle.COLUMN_DATE_SPECTACLE,
-                        Spectacle.COLUMN_GENRE_ID, Spectacle.COLUMN_SALLE_ID, Spectacle.COLUMN_DUREE },
+                        Spectacle.COLUMN_GENRE_ID, Spectacle.COLUMN_SALLE_ID, Spectacle.COLUMN_DUREE, Spectacle.COLUMN_DESCRIPTION },
                 Spectacle.COLUMN_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null, null);
 
@@ -2195,7 +2218,8 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                     cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)),
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)),
                     cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)),
-                    cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
+                    cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)),
+                    cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DESCRIPTION)));
 
             cursor.close();
         }
@@ -2214,7 +2238,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         List<Spectacle> spectacles = null;
 
         String selectQuery = "SELECT  * FROM " + Spectacle.TABLE_NAME + " ORDER BY " +
-                Spectacle.COLUMN_ID + " ASC";
+                Spectacle.COLUMN_DATE_SPECTACLE + " ASC";
 
         Cursor cursor = database.rawQuery(selectQuery, null);
 
@@ -2231,6 +2255,50 @@ public class DatabaseHelper extends SQLiteOpenHelper{
                 spectacle.setDuree(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)));
                 spectacle.setGenreId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)));
                 spectacle.setSalleId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
+                spectacle.setDescription(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DESCRIPTION)));
+
+
+                spectacles.add(spectacle);
+
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        close();
+
+        return spectacles;
+    }
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public List<Spectacle> getSpectaclesByDate(String currentDate) {
+
+        database = this.getReadableDatabase();
+
+        List<Spectacle> spectacles = null;
+
+        String selectQuery = "SELECT  * FROM " + Spectacle.TABLE_NAME +
+                " where date_spectacle>=? " +
+                " ORDER BY " + Spectacle.COLUMN_DATE_SPECTACLE + " ASC";
+
+        Cursor cursor = database.rawQuery(selectQuery,
+                new String[]{currentDate});
+        if (cursor != null && cursor.moveToFirst()) {
+
+            spectacles = new ArrayList<>();
+
+            do {
+
+                Spectacle spectacle = new Spectacle();
+                spectacle.setId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_ID)));
+                spectacle.setTitre(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_TITRE)));
+                spectacle.setDate(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DATE_SPECTACLE)));
+                spectacle.setDuree(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_DUREE)));
+                spectacle.setGenreId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_GENRE_ID)));
+                spectacle.setSalleId(cursor.getInt(cursor.getColumnIndex(Spectacle.COLUMN_SALLE_ID)));
+                spectacle.setDescription(cursor.getString(cursor.getColumnIndex(Spectacle.COLUMN_DESCRIPTION)));
 
                 spectacles.add(spectacle);
 
@@ -2241,6 +2309,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
 
         close();
+
 
         return spectacles;
     }
@@ -2281,13 +2350,44 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(Spectacle.COLUMN_DATE_SPECTACLE, spectacle.getDate());
         values.put(Spectacle.COLUMN_GENRE_ID, spectacle.getGenreId());
         values.put(Spectacle.COLUMN_SALLE_ID, spectacle.getSalleId());
+        values.put(Spectacle.COLUMN_DESCRIPTION, spectacle.getDescription());
 
 
-        long nbAffectedRows= database.insert(Spectacle.TABLE_NAME, null, values);
+
+        long result= database.insert(Spectacle.TABLE_NAME, null, values);
 
         close();
 
-        return nbAffectedRows;
+        return result;
+    }
+
+
+
+
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public long addSpectacleArtistes(Spectacle spectacle, List<Artiste> artistes) {
+
+
+
+
+        database= this.getWritableDatabase();
+        long result = -1;
+
+
+        for (Artiste artiste: artistes) {
+            ContentValues values = new ContentValues();
+            values.put(SpectacleArtiste.COLUMN_SPECTACLE_ID, spectacle.getId());
+            values.put(SpectacleArtiste.COLUMN_ARTISTE_ID, artiste.getId());
+            result= database.insert(SpectacleArtiste.TABLE_NAME, null, values);
+            Log.i("RPI", "result: "  + result);
+        }
+
+
+        close();
+
+        return result;
     }
 
     //************************************************************************************************
@@ -2301,16 +2401,47 @@ public class DatabaseHelper extends SQLiteOpenHelper{
         values.put(Spectacle.COLUMN_TITRE, spectacle.getTitre());
         values.put(Spectacle.COLUMN_DATE_SPECTACLE, spectacle.getDate());
         values.put(Spectacle.COLUMN_GENRE_ID, spectacle.getGenreId());
+        values.put(Spectacle.COLUMN_DUREE, spectacle.getDuree());
         values.put(Spectacle.COLUMN_SALLE_ID, spectacle.getSalleId());
+        values.put(Spectacle.COLUMN_DESCRIPTION, spectacle.getDescription());
 
-
-        int nbAffectedRows= database.update (Spectacle.TABLE_NAME, values, Spectacle.COLUMN_ID + " = ?",
+        int result= database.update (Spectacle.TABLE_NAME, values, Spectacle.COLUMN_ID + " = ?",
                 new String[]{String.valueOf(spectacle.getId())});
 
         close();
 
-        return nbAffectedRows;
+        return result;
     }
+    //************************************************************************************************
+    //************************************************************************************************
+
+    public long replaceSpectacle(Spectacle spectacle) {
+
+      //  Log.i("RPI", "Ajout d'un spectacle: " + spectacle.getId());
+        database= this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        if(spectacle.getId() > 0){
+
+            values.put(Spectacle.COLUMN_ID, spectacle.getId());
+        }
+        values.put(Spectacle.COLUMN_TITRE, spectacle.getTitre());
+        values.put(Spectacle.COLUMN_DATE_SPECTACLE, spectacle.getDate());
+        values.put(Spectacle.COLUMN_GENRE_ID, spectacle.getGenreId());
+        values.put(Spectacle.COLUMN_DUREE, spectacle.getDuree());
+        values.put(Spectacle.COLUMN_SALLE_ID, spectacle.getSalleId());
+        values.put(Spectacle.COLUMN_DESCRIPTION, spectacle.getDescription());
+
+
+        long result= database.replace(Spectacle.TABLE_NAME, null, values);
+
+        close();
+
+        return result;
+    }
+
+    //************************************************************************************************
+    //************************************************************************************************
 
     //************************************************************************************************
     //************************************************************************************************

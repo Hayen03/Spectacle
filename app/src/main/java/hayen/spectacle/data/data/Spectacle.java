@@ -9,11 +9,11 @@ import java.util.List;
 
 public class Spectacle {
 
-    public static final Spectacle bidonA = new Spectacle(-1, "Bidon A", "Aujourd'hui", 3, -1, -1)
+    public static final Spectacle bidonA = new Spectacle(-1, "Bidon A", "Aujourd'hui", 3, -1, -1, "")
             .addArtiste(Artiste.bidonA);
-    public static final Spectacle bidonB = new Spectacle(-1, "Bidon B", "Aujourd'hui", 3, -1, -1)
+    public static final Spectacle bidonB = new Spectacle(-1, "Bidon B", "Aujourd'hui", 3, -1, -1, "")
             .addArtiste(Artiste.bidonB);
-    public static final Spectacle bidonC = new Spectacle(-1, "Bidon C", "Aujourd'hui", 3, -1, -1)
+    public static final Spectacle bidonC = new Spectacle(-1, "Bidon C", "Aujourd'hui", 3, -1, -1, "")
             .addArtiste(Artiste.bidonC);
     public static final Spectacle[] bidons = {bidonA, bidonB, bidonC};
 
@@ -28,6 +28,7 @@ public class Spectacle {
     public static final String COLUMN_GENRE_ID = "id_genre";
     public static final String COLUMN_DUREE = "duree";
     public static final String COLUMN_SALLE_ID = "id_salle";
+    public static final String COLUMN_DESCRIPTION = "description";
 
 
 
@@ -49,28 +50,31 @@ public class Spectacle {
     private Genre genre;
     private List<Artiste> artistes;
     private int salleId;
+    private String description;
 
     public Spectacle(){}
 
-    public Spectacle(String titre, String date, int duree, int genreId, int salleId){
+    public Spectacle(String titre, String date, int duree, int genreId, int salleId, String description){
         this.id = 0;
         this.titre = titre;
         this.date = date;
         this.duree = duree;
         this.genreId = genreId;
         this.salleId =  salleId;
+        this.description =  description;
     }
 
-    public Spectacle(int id, String titre, String date, int duree, int genreId, int salleId){
+    public Spectacle(int id, String titre, String date, int duree, int genreId, int salleId, String description){
         this.id = id;
         this.titre = titre;
         this.date = date;
         this.duree = duree;
         this.genreId = genreId;
         this.salleId =  salleId;
+        this.description =  description;
     }
 
-    public Spectacle(String titre, String date, int duree, Genre genre, int salleId, List<Artiste> artistes){
+    public Spectacle(String titre, String date, int duree, Genre genre, int salleId, List<Artiste> artistes, String description){
         this.id = 0;
         this.titre = titre;
         this.date = date;
@@ -78,6 +82,7 @@ public class Spectacle {
         this.genre = genre;
         this.artistes =  artistes;
         this.salleId =  salleId;
+        this.description =  description;
     }
 
 
@@ -160,6 +165,14 @@ public class Spectacle {
         }
         artistes.add(artiste);
         return this;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String toString(){

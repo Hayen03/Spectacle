@@ -10,6 +10,9 @@ import android.util.Log;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 //import com.ift2905.reservation.database.dao.Constant;
@@ -70,6 +73,30 @@ public class TestSpectacle {
         assertEquals(spectacle.getId(), spectacle2.getId());
 
 
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat formatter =  new SimpleDateFormat("yyyy-MM-dd");
+        String time =  formatter.format(cal.getTime());
+        Log.i("RPI", "date:  " + time);
+
+       spectacles = dbHelper.getSpectaclesByDate(time);
+
+        Log.i("RPI", "spectacle:  " + spectacles);
+       Log.i("RPI", "nb  Spectacles size: " + spectacles.size());
+
+      //  assertEquals(nbSpectacles, spectacles.size());
+
+        for (Spectacle spectacle5 : spectacles) {
+            Log.i("RPI", "spectacle: " + spectacle5);
+            Log.i("RPI", "description: " + spectacle5.getDescription());
+        }
+
+        Log.i("RPI", "get all spectacles");
+        spectacles =  dbHelper.getAllSpectacles();
+        for (Spectacle spectacle6 : spectacles) {
+            Log.i("RPI", "spectacle: " + spectacle6);
+            Log.i("RPI", "description: " + spectacle6.getDescription());
+        }
     }
 
     @Test
@@ -121,23 +148,55 @@ public class TestSpectacle {
         }
 
 
-
-        Spectacle spectacle = new Spectacle();
-        spectacle.setTitre("Martine Saint-Clair - Le grand retour ");
-        spectacle.setDate("2018-06-10 20:00:00");
-        spectacle.setGenreId(6);
-        spectacle.setSalleId(1);
+        Artiste artiste = new Artiste();
+        artiste.setNom("Presley");
+        artiste.setPrenom("Elvis");
 
 
-        Log.i("RPI", "Ajout d'une spectacle: " + spectacle);
+        long result = dbHelper.replaceArtiste(artiste);
 
-        long result = dbHelper.addSpectacle(spectacle);
 
+
+        Log.i("RPI", "Ajout de l'artiste : " + artiste + "; result: "+ result);
+
+//
+//        Spectacle spectacle = new Spectacle();
+//        spectacle.setTitre("Martine Saint-Clair - Le grand retour ");
+//        spectacle.setDate("2018-06-10 20:00:00");
+//        spectacle.setGenreId(6);
+//        spectacle.setSalleId(1);
+//        spectacle.setDuree(115);
+
+
+        if(result > 0) {
+
+            Spectacle spectacle = new Spectacle();
+            spectacle.setTitre("Elvis Presley - He's Back! ");
+            spectacle.setDate("2018-07-12 20:00");
+            spectacle.setGenreId(4);
+            spectacle.setSalleId(1);
+            spectacle.setDuree(90);
+            long result2 = dbHelper.replaceSpectacle(spectacle);
+            Log.i("RPI", "Ajout d'un spectacle: " + spectacle + "; result: " + result2);
+
+            if(result2 > 0) {
+
+                artiste.setId((int)result);
+                spectacle.setId((int) result2);
+                List<Artiste> artistes = new ArrayList<>();
+                artistes.add(artiste);
+
+                result = dbHelper.addSpectacleArtistes(spectacle, artistes);
+                Log.i("RPI", "Ajout de l'artiste et spectacle dans SA table ; result: " + result);
+
+
+            }
+        }
         int nbSpectacles2 = dbHelper.getSpectaclesCount();
 
         assertEquals(nbSpectacles2, nbSpectacles + 1);
 
-        Log.i("RPI", "Ajout de la spectacle : " + result);
+
 
         spectacles = dbHelper.getAllSpectacles();
 
@@ -182,12 +241,14 @@ public class TestSpectacle {
 
 
 
-        Spectacle spectacle =  spectacles.get(spectacles.size()-1);
+        Spectacle spectacle =  spectacles.get(spectacles.size()-1); //on update le dernier spectacle
+
         Log.i("RPI", "Spectacle avant la mise à jour: " + spectacle);
 
 
-        spectacle.setTitre("Frank Sinatra - My  Way - Final Tour");
+        spectacle.setTitre("Frank Sinatra - Beyond the Grave Tour");
         spectacle.setDate("2018-08-23 19:30:00");
+        spectacle.setDuree(103);
         spectacle.setGenreId(5);
         spectacle.setSalleId(1);
 
@@ -256,6 +317,7 @@ public class TestSpectacle {
         Log.i("RPI: ", "nbSpectacles: " + nbSpectacles);
         int nbSpectacles2 = 0;
 
+        index = 11;
         Spectacle spectacle = dbHelper.getSpectacleById(index);
 
         if(spectacle != null) {

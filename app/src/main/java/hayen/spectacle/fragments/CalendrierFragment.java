@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import hayen.spectacle.R;
@@ -61,12 +63,20 @@ public class CalendrierFragment extends Fragment {
         listSpectacles = view.findViewById(R.id.listViewSpectacle);
 
         DatabaseHelper dbHelper = DatabaseHelper.getInstance(getActivity().getBaseContext());
-        final List<Spectacle> spectacles = dbHelper.getAllSpectacles();
+
+
+        Calendar cal = Calendar.getInstance();
+
+        SimpleDateFormat formatter =  new SimpleDateFormat("yyyy-MM-dd");
+        String currentDate =  formatter.format(cal.getTime());
+
+        final List<Spectacle> spectacles = dbHelper.getSpectaclesByDate(currentDate);
+
 
         if(spectacles != null && spectacles.size() > 0) {
             spectacleAdapter = new SpectacleAdapter(this.getActivity(), R.layout.ligne_spectacle);
             for (Spectacle spectacle : spectacles) {
-                Log.i("RPI", "spectacle: " + spectacle);
+              //  Log.i("RPI", "spectacle: " + spectacle);
 
                 List<Artiste> artistes = dbHelper.getAllArtistesBySpectacleId(spectacle.getId());
 
@@ -83,13 +93,6 @@ public class CalendrierFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Spectacle spectacle =  spectacles.get(i);
-
-                System.out.println("spectacle: " + spectacle);
-                Log.i("RPI", "CLick!");
-                Log.i("RPI", "Spectacle  id: " + spectacle.getId());
-
-          //      Toast toast = Toast.makeText(getActivity().getApplicationContext(), "spectacle", Toast.LENGTH_LONG);
-           //     toast.show();
 
                 Fragment fiche = FicheFragment.newInstance(spectacle.getId());
                 ((CalendrierActivity)getActivity()).overrideFragment(fiche);

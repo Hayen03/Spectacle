@@ -54,6 +54,7 @@ public class DatabaseQueries {
                     "   duree integer default 0, " +
                     "   id_genre integer not null, " +
                     "   id_salle integer not null, " +
+                    "   description text, " +
                     "   foreign key(id_genre) references genre(id), " +
                     "   foreign key(id_salle) references salle(id))",
 
@@ -262,18 +263,20 @@ public class DatabaseQueries {
                     "   (11, 'Zdenek', 'Kováč'), \n" +
                     "   (12, 'Antônio Carlos', 'Jobim'), \n" +
                     "   (13, '', 'Orchestre Symphonique de Montréal'), \n" +
-                    "   (14, 'Kent', 'Nagano') \n"
+                    "   (14, 'Kent', 'Nagano'), \n" +
+                    "   (15, '', 'Le Choeur de l''OSM'), \n" +
+                    "   (16, 'Alain', 'Lefebvre') \n"
 
     };
 
     public static final String[] INSERT_SPECTACLE_QUERIES = {
-            "insert into spectacle (id, titre, date_spectacle, duree, id_genre, id_salle) values \n" +
-                    "   (1, 'McCartney en concert', '2018-04-10 20:00:00', 100, 11, 1), \n" +
-                    "   (2, 'Jobim en concert', '2018-05-27 20:00:00', 145, 10, 1), \n" +
-                    "   (3, 'Beethoven en folie', '2018-06-02 20:00:00', 135, 3, 1), \n" +
-                    "   (4, 'Mahler: Symphonie #3', '2018-06-12 19:00:00', 195, 3, 1), \n" +
-                    "   (5, 'Azanavour: 18e tournée d''adieu', '2018-05-22 20:00:00', 125, 8, 1), \n" +
-                    "   (6, 'Rolling Stones: Money Tour', '2018-07-21 20:00:00', 110, 4, 1)"
+            "insert into spectacle (id, titre, date_spectacle, duree, id_genre, id_salle, description) values \n" +
+                    "   (1, 'McCartney en concert', '2018-05-13 20:00:00', 100, 11, 1, 'Le retour de l’ex Beatle au Québec était attendu depuis son passage sur les plaines d’Abraham à Québec en 2008 lors des célébrations du 400e anniversaire de la fondation de la ville. Même si son dernier album remonte à 2013, la musique de Sir Paul ne se démode pas et ses fans seront ravis de le revoir.'), \n" +
+                    "   (2, 'Jobim en concert', '2018-05-27 20:00:00', 145, 10, 1, 'Nous croyions ne plus jamais le revoir, mais le père de la Bossa Nova s’ennuyait dans l’au-delà et a décidé de nous offrir ce merveilleux concert d’outre-tombe. Jazz et musique bésilienne seront au rendez-vous pour les nostalgiques de ce musicien hors du commun.'), \n" +
+                    "   (3, 'Beethoven en folie', '2018-06-02 20:00:00', 135, 3, 1, 'Soirée réservée à Ludvig van Beethoven. Au programme : le 5e concereto pour piano, ’Empereur’; la 3e symphonie, ’Héroïque’.'), \n" +
+                    "   (4, 'Mahler: Symphonie #2', '2018-06-12 19:00:00', 85, 3, 1, 'La soirée sera consacrée à la monumentale symphonie, dite ’Résurrection’, de Gustav Mahler. Le chef Kent Nagano et l’Orchestre Symphonique de Montréal, accompagnés du Choeur de l’OSM, rêvaient depuis longtemps d’offrir au public montréalais cette magnifique symphonie du compositeur autrichien.'), \n" +
+                    "   (5, 'Azanavour: 18e tournée d''adieu', '2018-05-22 20:00:00', 125, 8, 1, 'Après une carrière bien remplie, Charles Aznavour nous avait annoncé son retrait de la scène. Mais nous sommes heureux qu’il soit revenu sur sa décision et qu’il nous offre un concert lors de sa nouvelle tournée d’adieu.'), \n" +
+                    "   (6, 'Rolling Stones: Money Tour', '2018-07-21 20:00:00', 110, 4, 1, 'Sans commentaires ...')"
 
     };
 
@@ -283,8 +286,10 @@ public class DatabaseQueries {
                     "   (2, 12),\n" +
                     "   (3, 13),\n" +
                     "   (3, 14),\n" +
+                    "   (3, 16),\n" +
                     "   (4, 13),\n" +
                     "   (4, 14),\n" +
+                    "   (4, 15),\n" +
                     "   (5, 7), \n" +
                     "   (6, 4) "
 

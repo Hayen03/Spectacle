@@ -160,24 +160,28 @@ public class FicheFragment extends Fragment {
                 txtArtiste03.setText(artistes.get(2).getFullName());
                 txtArtiste03.setVisibility(View.VISIBLE);
             }
-            if(size > 3){
-                TextView txtArtiste04 = view.findViewById(R.id.ficheTxtViewArtiste04);
-                txtArtiste04.setText(artistes.get(3).getFullName());
-                txtArtiste04.setVisibility(View.VISIBLE);
-            }
-            if(size > 4){
-                TextView txtArtiste05 = view.findViewById(R.id.ficheTxtViewArtiste05);
-                txtArtiste05.setText(artistes.get(4).getFullName());
-                txtArtiste05.setVisibility(View.VISIBLE);
-            }
-            if(size > 5){
-                TextView txtArtiste06 = view.findViewById(R.id.ficheTxtViewArtiste06);
-                txtArtiste06.setText(artistes.get(5).getFullName());
-                txtArtiste06.setVisibility(View.VISIBLE);
-            }
+//            if(size > 3){
+//                TextView txtArtiste04 = view.findViewById(R.id.ficheTxtViewArtiste04);
+//                txtArtiste04.setText(artistes.get(3).getFullName());
+//                txtArtiste04.setVisibility(View.VISIBLE);
+//            }
+//            if(size > 4){
+//                TextView txtArtiste05 = view.findViewById(R.id.ficheTxtViewArtiste05);
+//                txtArtiste05.setText(artistes.get(4).getFullName());
+//                txtArtiste05.setVisibility(View.VISIBLE);
+//            }
+//            if(size > 5){
+//                TextView txtArtiste06 = view.findViewById(R.id.ficheTxtViewArtiste06);
+//                txtArtiste06.setText(artistes.get(5).getFullName());
+//                txtArtiste06.setVisibility(View.VISIBLE);
+//            }
 
 
         }
+
+      Log.i("RPI", "description: " + spectacle.getDescription());
+        TextView txtDescription =  (TextView) view.findViewById(R.id.ficheTxtViewDescription);
+        txtDescription.setText(spectacle.getDescription());
 
         Button btnReserver =  view.findViewById(R.id.btnReserver);
 

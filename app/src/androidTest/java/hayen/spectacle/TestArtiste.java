@@ -60,6 +60,13 @@ public class TestArtiste {
         assertEquals(artiste.getPrenom(), artiste2.getPrenom());
         assertEquals(artiste.getNom(), artiste2.getNom());
 
+        Log.i("RPI", "Liste des artistes:");
+        for (Artiste artiste3 : artistes) {
+            Log.i("RPI", "artiste: " + artiste3);
+        }
+
+
+
 
     }
 
@@ -146,6 +153,8 @@ public class TestArtiste {
         Log.i("RPI: ", "nbArtistes: " + nbArtistes);
         int nbArtistes2 = 0;
 
+
+        index = 22;
         Artiste artiste = dbHelper.getArtisteById(index);
 
         if(artiste != null) {
