@@ -123,9 +123,6 @@ public class PaiementFragment extends Fragment {
         }
 
 
-
-
-
         Calendar cal = Calendar.getInstance();
         int mois =  cal.get(Calendar.MONTH);
         int annee =  cal.get(Calendar.YEAR);
@@ -136,7 +133,7 @@ public class PaiementFragment extends Fragment {
             numeroEditText.setText(carte.getNumero());
             dateMoisSpinner.setSelection(mois);
             dateAnneeSpinner.setSelection(annee);
-            codeEditText.setText(carte.getCode());
+            codeEditText.setText(String.valueOf(carte.getCode()));
 
         }
 

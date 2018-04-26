@@ -17,3 +17,13 @@
 
 - on peut modifier/insérer des entrées et effacer la base de données en déommentant la ligne #53 pour recharger les tables 
 
+- date 26-04-2018:
+- REMARQUE: le fichier PaiementFragment.java a été modifié pour régler un bug qui faisait arrêter lapplication
+- lors du chargement des informations  de carte de crédit de l'utilisateur la récupération des infosane pouvaietêtre chargées
+- seule la ligne 136 a été modifiée:
+
+- l'instruction:   codeEditText.setText(carte.getCode()); 
+- a été remplacée par : codeEditText.setText(String.valueOf(carte.getCode()));
+
+
+
